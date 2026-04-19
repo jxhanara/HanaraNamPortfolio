@@ -1,0 +1,546 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.navOuter {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+}
+
+.navInner {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  backdrop-filter: blur(var(--nav-blur));
+  background: rgba(0, 0, 0, 0.85);
+  border-bottom: 1px solid transparent;
+}
+
+.navContent {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+  max-width: var(--content-max);
+  padding: 25px var(--space-x) 24px;
+}
+
+.logo {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding-top: 3px;
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logoImage {
+  display: block;
+  height: 49px;
+  width: auto;
+  object-fit: contain;
+}
+
+.navLinks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+}
+
+.navLink {
+  font-size: 16px;
+  line-height: 22.4px;
+  font-weight: 400;
+  text-decoration: none;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.navLink:hover {
+  opacity: 0.85;
+}
+
+.main {
+  width: 100%;
+  max-width: var(--content-max);
+  padding: 0 var(--space-x) 40px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-section);
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+}
+
+/* Same 1037px rail as case-study blocks so hero copy lines up with TRIPPY, etc. */
+.heroInner {
+  width: 100%;
+  max-width: 1037px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.42fr);
+  gap: clamp(32px, 4vw, 56px);
+  align-items: end;
+  min-height: min(530px, 85vh);
+  padding: clamp(32px, 6vw, 90px) 0 0;
+}
+
+.heroCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 100%;
+}
+
+.heroGreeting {
+  font-family: var(--font-instrument-serif), serif;
+  font-style: italic;
+  font-size: clamp(28px, 3.2vw, 34px);
+  line-height: 1.2;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.heroLead {
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 38px;
+  letter-spacing: -1px;
+  font-weight: 400;
+  color: var(--color-text);
+  margin: 0;
+  max-width: 38rem;
+}
+
+.heroMeta {
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 400;
+  color: var(--color-muted-hero);
+  margin: 0;
+  max-width: 32rem;
+}
+
+.heroMeta a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.heroMeta a:hover {
+  color: var(--color-text);
+}
+
+.heroVisual {
+  position: relative;
+  display: flex;
+  min-height: 280px;
+  height: clamp(280px, 36vw, 400px);
+  border-radius: var(--radius-card);
+  background: #0a0a0c;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.heroLottie {
+  display: block;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+}
+
+.portfolios {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 56px;
+}
+
+.projectBlock {
+  width: 100%;
+  max-width: 1037px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.projectCardLink {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  overflow: hidden;
+}
+
+.projectStack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.projectCardLink:hover .thumb {
+  transform: scale(1.02);
+}
+
+.projectHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  width: 100%;
+}
+
+.projectTitle {
+  font-size: 36px;
+  line-height: 40px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.projectDesc {
+  margin: 12px 0 0;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  color: var(--color-muted);
+  max-width: 42rem;
+}
+
+.projectDate {
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--color-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.thumbWrap {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  aspect-ratio: 1037 / 580;
+  background: #111;
+}
+
+.thumb {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.45s ease;
+}
+
+.mediaStrip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 2.8vw, 40px);
+  width: 100%;
+  max-width: 1037px;
+}
+
+.mediaCell {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 321 / 624;
+  background: linear-gradient(
+    180deg,
+    rgba(40, 40, 44, 0.9) 0%,
+    rgba(10, 10, 12, 1) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mediaCell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 30% 20%,
+    rgba(255, 255, 255, 0.12),
+    transparent 55%
+  );
+  pointer-events: none;
+}
+
+.mediaCellVideo {
+  background: #000000;
+}
+
+.mediaCellVideo::after {
+  display: none;
+}
+
+/* Top-align so multi-column strips don’t vertically “float” differently per asset. */
+.mediaVideoScale {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.mediaVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+/*
+ * Bumble + Trippy: same fill as each other — cover + light overscan + top anchor
+ * (matches phone size in the strip; flex-start on .mediaVideoScale keeps tops aligned).
+ */
+.mediaStripBumble .mediaVideoScale,
+.mediaStripTrippy .mediaVideoScale {
+  inset: -3%;
+}
+
+.mediaStripBumble .mediaVideo,
+.mediaStripTrippy .mediaVideo {
+  object-fit: cover;
+  object-position: center top;
+}
+
+.about {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(40px, 8vw, 80px) clamp(24px, 5vw, 50px);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.aboutInner {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 0 24px;
+}
+
+.aboutHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.aboutTitle {
+  font-family: var(--font-display-serif), serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(40px, 5vw, 53px);
+  line-height: 1.05;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.aboutSubtitle {
+  margin: 0;
+  font-size: 20px;
+  line-height: 24px;
+  color: var(--color-muted);
+  max-width: 48rem;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(24px, 4vw, 45px);
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.columnHeader {
+  position: relative;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.columnIndex {
+  font-size: 16px;
+  line-height: 22.4px;
+  font-style: italic;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.columnTitle {
+  font-size: 30px;
+  line-height: 39px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.columnBody {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.columnBody p {
+  margin: 0;
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 400;
+  color: var(--color-text);
+}
+
+.footer {
+  width: 100%;
+  max-width: var(--content-max);
+  padding: 0 var(--space-x) 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.footerTitle {
+  margin: 0;
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.footerLine {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--color-muted);
+  text-align: center;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 50px;
+  padding: 0 24px 0 20px;
+  border-radius: 999px;
+  font-size: 16px;
+  line-height: 24px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.pill:hover {
+  opacity: 0.92;
+}
+
+.pillLight {
+  background: #ffffff;
+  color: #000000;
+}
+
+.pillLight span {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.pillDark {
+  background: var(--color-pill-dark);
+  color: #ffffff;
+  border-color: var(--color-border-subtle);
+}
+
+.pillDark span {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.pillIcon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 1024px) {
+  .heroInner {
+    grid-template-columns: 1fr;
+    align-items: start;
+    min-height: unset;
+  }
+
+  .heroVisual {
+    min-height: 220px;
+    max-width: 420px;
+    width: 100%;
+  }
+
+  .columns {
+    grid-template-columns: 1fr;
+  }
+
+  .mediaStrip {
+    grid-template-columns: 1fr;
+    max-width: 420px;
+  }
+
+  .mediaCell {
+    aspect-ratio: 9 / 16;
+    max-height: 480px;
+  }
+}
+
+@media (max-width: 640px) {
+  .projectHead {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .projectDate {
+    order: -1;
+  }
+
+  .navContent {
+    justify-content: flex-start;
+  }
+
+  .navLinks {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
