@@ -48,8 +48,7 @@ export default function HomePage() {
               dateLabel="2026"
               imageSrc="/images/bumbleflowthumbnail.png"
               imageAlt="Bumble Flow project preview"
-              href="https://hanaranam.com/3/bumbleflow"
-              external
+              href="/bumble-flow-case-study"
             />
           </div>
           <MediaStrip

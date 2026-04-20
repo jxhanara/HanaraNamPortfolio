@@ -351,9 +351,9 @@
 }
 
 .aboutTitle {
-  font-family: var(--font-display-serif), serif;
+  font-family: var(--font-instrument-serif), serif;
   font-style: italic;
-  font-weight: 500;
+  font-weight: 400;
   font-size: clamp(40px, 5vw, 53px);
   line-height: 1.05;
   margin: 0;

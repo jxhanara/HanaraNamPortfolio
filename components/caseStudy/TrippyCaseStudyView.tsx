@@ -1,6 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
+import { CaseStudyStrategyPivotArrow } from "./CaseStudyStrategyPivotArrow";
 import {
   trippyCaseStudyMeta,
+  trippyCoreComponents,
   trippyNextProject,
   trippyProblem,
   trippyReflection,
@@ -14,6 +17,7 @@ import {
 import { CaseStudyFooter } from "./CaseStudyFooter";
 import { CaseStudyTocNav } from "./CaseStudyTocNav";
 import { StrategicReadDiagram } from "./StrategicReadDiagram";
+import { ProblemFrownIcon, SolutionSmileIcon } from "./CaseStudyMoodIcons";
 import { MediaStrip } from "@/components/home/MediaStrip";
 import { SiteNav } from "@/components/home/SiteNav";
 import { TRIPPY_STRIP_VIDEOS } from "@/components/home/trippyStrip";
@@ -28,29 +32,6 @@ const PROBLEM_ICON_COLOR: Record<
   orange: "#f4a261",
   blue: "#6eb5ff",
 };
-
-function ProblemFrownIcon({ color }: { color: string }) {
-  return (
-    <svg
-      className={cs.problemCardIconSvg}
-      width="44"
-      height="44"
-      viewBox="0 0 44 44"
-      aria-hidden
-    >
-      <circle cx="22" cy="22" r="15.5" fill="none" stroke={color} strokeWidth="1" />
-      <circle cx="17.25" cy="17" r="1.05" fill="none" stroke={color} strokeWidth="1" />
-      <circle cx="26.75" cy="17" r="1.05" fill="none" stroke={color} strokeWidth="1" />
-      <path
-        d="M 15.5 25.5 Q 22 32.5 28.5 25.5"
-        fill="none"
-        stroke={color}
-        strokeWidth="1"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
 
 export function TrippyCaseStudyView() {
   return (
@@ -197,13 +178,8 @@ export function TrippyCaseStudyView() {
             <h2 className={cs.h2}>{trippyStrategy.title}</h2>
             <p className={cs.body}>{trippyStrategy.body}</p>
 
-            <div className={cs.synthesis}>
-              <p className={cs.synthesisLabel}>{trippyStrategy.pivotEyebrow}</p>
-              <p className={cs.synthesisText}>{trippyStrategy.pivotTitle}</p>
-            </div>
-
             <div className={cs.strategySplit}>
-              <div className={cs.strategyCol}>
+              <div className={cs.strategyCol} data-pivot="from">
                 <p className={cs.strategyColTitle}>{trippyStrategy.initialLabel}</p>
                 <p className={cs.strategyHeadline}>{trippyStrategy.initialHeadline}</p>
                 <ul className={cs.miniBullets}>
@@ -215,7 +191,8 @@ export function TrippyCaseStudyView() {
                   ))}
                 </ul>
               </div>
-              <div className={cs.strategyCol}>
+              <CaseStudyStrategyPivotArrow />
+              <div className={cs.strategyCol} data-pivot="to">
                 <p className={cs.strategyColTitle}>{trippyStrategy.workedLabel}</p>
                 <p className={cs.strategyHeadline}>{trippyStrategy.workedHeadline}</p>
                 <ul className={cs.miniBullets}>
@@ -289,7 +266,12 @@ export function TrippyCaseStudyView() {
               {trippySolution.pillars.map((p) => (
                 <div key={p.kicker} className={cs.solutionPillar}>
                   <p className={cs.solutionPillarKicker}>{p.kicker}</p>
-                  <p className={cs.bodyTight}>{p.body}</p>
+                  <p className={`${cs.bodyTight} ${cs.solutionPillarBody}`}>{p.body}</p>
+                  <div className={cs.problemCardFooter}>
+                    <span className={cs.problemCardIcon}>
+                      <SolutionSmileIcon color={PROBLEM_ICON_COLOR[p.accent]} />
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>
@@ -317,6 +299,23 @@ export function TrippyCaseStudyView() {
                 </div>
               </article>
             ))}
+          </section>
+
+          <section id="core-components" className={cs.section}>
+            <p className={cs.sectionEyebrow}>{trippyCoreComponents.eyebrow}</p>
+            <h2 className={cs.h2}>{trippyCoreComponents.title}</h2>
+            <p className={cs.body}>{trippyCoreComponents.body}</p>
+            <div className={cs.designSystemVisualRoot}>
+              <div className={cs.moduleMediaFull}>
+                <Image
+                  src={trippyCoreComponents.imageSrc}
+                  alt={trippyCoreComponents.imageAlt}
+                  fill
+                  className={cs.designSystemImageFill}
+                  sizes="(max-width: 900px) 100vw, min(1100px, 95vw)"
+                />
+              </div>
+            </div>
           </section>
 
           <section id="reflection" className={`${cs.section} ${cs.sectionBeforeNext}`}>
@@ -348,12 +347,7 @@ export function TrippyCaseStudyView() {
 
           <section className={cs.nextProject} aria-label="Next case study">
             <p className={cs.nextProjectEyebrow}>{trippyNextProject.eyebrow}</p>
-            <a
-              href={trippyNextProject.href}
-              className={cs.nextProjectCard}
-              target="_blank"
-              rel="noreferrer"
-            >
+            <Link href={trippyNextProject.href} className={cs.nextProjectCard}>
               <h2 className={cs.nextProjectTitle}>{trippyNextProject.title}</h2>
               <p className={cs.nextProjectDesc}>{trippyNextProject.description}</p>
               <div className={cs.nextProjectMedia}>
@@ -370,7 +364,7 @@ export function TrippyCaseStudyView() {
                 <span>{trippyNextProject.metaLeft}</span>
                 <span className={cs.nextProjectMetaYear}>{trippyNextProject.metaYear}</span>
               </div>
-            </a>
+            </Link>
           </section>
           </div>
 

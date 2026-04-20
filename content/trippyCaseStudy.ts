@@ -202,14 +202,17 @@ export const trippySolution = {
     {
       kicker: "Reduce planning effort",
       body: "Generate and refine trips without building everything from scratch.",
+      accent: "green",
     },
     {
       kicker: "Personalized, vibe-based discovery",
       body: "Surface new, relevant spots instantly by combining preferences, selected vibes, and community-driven insights.",
+      accent: "orange",
     },
     {
       kicker: "End app hopping",
       body: "Bring discovery, community, and planning into one seamless flow — reducing the need to switch tools and manually piece trips together.",
+      accent: "blue",
     },
   ],
   modules: [
@@ -243,8 +246,18 @@ export const trippySolution = {
   ],
 } as const;
 
+export const trippyCoreComponents = {
+  eyebrow: "06 · Core components",
+  title: "Design system",
+  body: "The design system for Trippy is a comprehensive toolkit that ensures consistency and efficiency across all user interfaces. It includes a set of reusable components, style guidelines, and design patterns that maintain a cohesive look and feel throughout the app.",
+  imageSrc: "/assets/trippy/trippydesignsystem.png",
+  imageAlt: "Trippy design system overview — components, tokens, and UI patterns",
+  imageWidth: 2218,
+  imageHeight: 1856,
+} as const;
+
 export const trippyReflection = {
-  eyebrow: "06 · Reflection",
+  eyebrow: "07 · Reflection",
   title: "End-to-end design",
   intro: [
     "Building Trippy taught me that great travel experiences aren’t about adding more features — they’re about removing the noise. I translated the high-anxiety chaos of planning into a modular “playlist” system that feels as intuitive as listening to music.",
@@ -281,6 +294,7 @@ export const trippyToc = [
   { id: "strategy", label: "Strategy" },
   { id: "validation", label: "Validation" },
   { id: "solution", label: "Solution" },
+  { id: "core-components", label: "Core components" },
   { id: "reflection", label: "Reflection" },
 ] as const;
 
@@ -289,7 +303,7 @@ export const trippyNextProject = {
   eyebrow: "Next project",
   title: "Bumble Flow",
   description: "Redesigning dating from passive matching to active coordination.",
-  href: "https://hanaranam.com/3/bumbleflow",
+  href: "/bumble-flow-case-study",
   imageSrc: "/images/bumbleflowthumbnail.png",
   imageAlt: "Bumble Flow project preview",
   metaLeft: "Product design · Mobile",
