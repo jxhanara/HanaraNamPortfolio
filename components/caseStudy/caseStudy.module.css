@@ -398,6 +398,14 @@
   max-width: var(--case-study-section-copy-max);
 }
 
+/* Strategic read bundle — same vertical rhythm as intro → competitive grid */
+.strategicReadBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: clamp(40px, 5vw, 56px);
+}
+
 .competitiveGrid {
   margin-top: clamp(40px, 5vw, 56px);
   display: grid;
@@ -960,7 +968,7 @@
   font-weight: 700;
   letter-spacing: 0.04em;
   color: #fff;
-  background: linear-gradient(135deg, #6d5ae6 0%, #9b7dff 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #3881ff 48%, #5a97ff 100%);
 }
 
 .takeawayCardTitle {

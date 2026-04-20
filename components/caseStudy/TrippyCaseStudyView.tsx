@@ -13,6 +13,7 @@ import {
 } from "@/content/trippyCaseStudy";
 import { CaseStudyFooter } from "./CaseStudyFooter";
 import { CaseStudyTocNav } from "./CaseStudyTocNav";
+import { StrategicReadDiagram } from "./StrategicReadDiagram";
 import { MediaStrip } from "@/components/home/MediaStrip";
 import { SiteNav } from "@/components/home/SiteNav";
 import { TRIPPY_STRIP_VIDEOS } from "@/components/home/trippyStrip";
@@ -179,7 +180,7 @@ export function TrippyCaseStudyView() {
               <p className={cs.competitiveFootnote}>{trippyResearchCompetitors.footnote}</p>
             </div>
 
-            <div className={cs.stack56} style={{ marginTop: 56 }}>
+            <div className={cs.strategicReadBlock}>
               <div>
                 <p className={cs.eyebrow}>{trippyResearchInsights.eyebrow}</p>
                 <h2 className={cs.h2}>{trippyResearchInsights.title}</h2>
@@ -187,14 +188,7 @@ export function TrippyCaseStudyView() {
                   {trippyResearchInsights.body}
                 </p>
               </div>
-              <div className={cs.pillarGrid}>
-                {trippyResearchInsights.pillars.map((p) => (
-                  <div key={p.title} className={cs.pillarCard}>
-                    <h3 className={cs.h3}>{p.title}</h3>
-                    <p className={cs.bodyTight}>{p.body}</p>
-                  </div>
-                ))}
-              </div>
+              <StrategicReadDiagram convergence={trippyResearchInsights.strategicConvergence} />
             </div>
           </section>
 

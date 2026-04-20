@@ -105,21 +105,28 @@ export const trippyResearchCompetitors = {
 export const trippyResearchInsights = {
   eyebrow: "Strategic read",
   title: "Expert-led curation could unlock authenticity",
-  body: "From the competitor analysis, we saw a potential opportunity: if you could combine expert-led local recommendations — like marketplace platforms do for services — with a travel planning workflow, you might deliver authentic travel discovery that travelers couldn’t get from existing products.",
-  pillars: [
-    {
-      title: "Planning without local context",
-      body: "Integrated itinerary tools make planning easier, but recommendations are generic and lack local perspective. (Wanderlog, Triple)",
+  body: "Across competitors, the same pattern kept surfacing: generic planning flows, booking-first discovery, and untapped expert trust — leaving room to pair curated local guidance with a real itinerary workflow.",
+  /** Converging diagram — 01 (left) + 02 (right) taper to shared opportunity */
+  strategicConvergence: {
+    opportunity:
+      "Pair expert-led local picks with planning workflow to raise discovery quality without the tourist-default noise.",
+    left: {
+      kicker: "01",
+      title: "Discovery Lacks Meaningful Context",
+      primary:
+        "Planning tools and booking platforms optimize for ease and volume, not relevance.",
+      supporting:
+        "Users are left sorting through generic recommendations and overwhelming options to find what actually fits their vibe.",
+      refs: "Wanderlog · Trip.com · Klook · Tripadvisor",
     },
-    {
-      title: "Discovery overloaded by bookings",
-      body: "Booking platforms prioritize listings and deals, overwhelming users with options instead of helping them decide what actually fits their vibe. (Trip.com, Klook, Tripadvisor)",
+    right: {
+      kicker: "02",
+      title: "Experts Exist, Just Not for Travel Planning",
+      primary: "People already trust vetted local experts in other marketplaces.",
+      supporting: "That model hasn’t been applied to travel discovery yet.",
+      refs: "Soomgo",
     },
-    {
-      title: "Experts exist — but not for travel planning",
-      body: "Successful marketplaces prove users value trusted local experts, but this model hasn’t been applied to travel discovery. (Soomgo)",
-    },
-  ],
+  },
 } as const;
 
 export const trippyStrategy = {
