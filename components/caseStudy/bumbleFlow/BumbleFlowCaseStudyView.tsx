@@ -10,10 +10,9 @@ import { BumbleChallengeSection } from "./BumbleChallengeSection";
 import { BumbleCoreComponentsSection } from "./BumbleCoreComponentsSection";
 import { BumbleNextProjectSection } from "./BumbleNextProjectSection";
 import { BumbleOverviewSection } from "./BumbleOverviewSection";
-import { BumblePrototypeSection } from "./BumblePrototypeSection";
+import { BumblePrototypePyramidSection } from "./BumblePrototypePyramidSection";
 import { BumbleReflectionSection } from "./BumbleReflectionSection";
 import { BumbleResearchSection } from "./BumbleResearchSection";
-import { BumbleScenariosSection } from "./BumbleScenariosSection";
 import { BumbleSolutionSection } from "./BumbleSolutionSection";
 import { BumbleStrategySection } from "./BumbleStrategySection";
 import { BumbleValidationSection } from "./BumbleValidationSection";
@@ -22,7 +21,7 @@ export function BumbleFlowCaseStudyView() {
   return (
     <div className={homeStyles.page}>
       <SiteNav />
-      <div id="top" className={cs.caseStudyPage}>
+      <div id="top" className={`${cs.caseStudyPage} ${cs.caseStudyPageAccentBumble}`}>
         <div className={cs.heroOuter}>
           <div className={cs.heroCard}>
             <div className={cs.heroTop}>
@@ -44,12 +43,11 @@ export function BumbleFlowCaseStudyView() {
             <BumbleOverviewSection />
             <BumbleChallengeSection />
             <BumbleResearchSection />
-            <BumbleStrategySection />
             <BumbleValidationSection />
+            <BumbleStrategySection />
             <BumbleSolutionSection />
-            <BumbleScenariosSection />
+            <BumblePrototypePyramidSection />
             <BumbleCoreComponentsSection />
-            <BumblePrototypeSection />
             <BumbleReflectionSection />
             <BumbleNextProjectSection />
           </div>

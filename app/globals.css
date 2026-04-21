@@ -16,6 +16,8 @@
   --case-study-copy-max: min(38rem, 100%);
   /* ~⅔ of readable rail — section titles + lead paragraphs (not full width) */
   --case-study-section-copy-max: min(49rem, 90%);
+  /* Hero subtitle under case study title — wide measure (~2 lines for long taglines) */
+  --case-study-hero-subtitle-max: min(70rem, 100%);
   /* Instrument Serif italic display lines (overview thesis, section h2s, next project title) */
   --case-study-instrument-italic-size: 40px;
 }

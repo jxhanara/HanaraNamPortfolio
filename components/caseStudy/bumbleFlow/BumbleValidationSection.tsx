@@ -1,5 +1,8 @@
+import Image from "next/image";
 import { bumbleValidation } from "@/content/bumbleFlowCaseStudy";
 import cs from "../caseStudy.module.css";
+
+const INITIAL_CONCEPT_SRC = "/assets/bumbleflow/BumbleFlow_InitialConcept.png";
 
 export function BumbleValidationSection() {
   return (
@@ -8,18 +11,20 @@ export function BumbleValidationSection() {
       <p className={cs.display}>{bumbleValidation.displayLine}</p>
       <p className={cs.body}>{bumbleValidation.body}</p>
 
-      <div className={cs.statsRow}>
-        {bumbleValidation.stats.map((s) => (
-          <div key={s.label} className={cs.validationStatBlock}>
-            <p className={cs.statValue}>{s.value}</p>
-            <p className={cs.statLabel}>{s.label}</p>
-          </div>
-        ))}
+      <p className={`${cs.body} ${cs.validationIssuesIntro}`}>{bumbleValidation.issuesIntro}</p>
+
+      <div className={cs.validationConceptWrap}>
+        <Image
+          className={cs.validationConceptImg}
+          src={INITIAL_CONCEPT_SRC}
+          alt={bumbleValidation.initialConceptAlt}
+          width={bumbleValidation.initialConceptWidth}
+          height={bumbleValidation.initialConceptHeight}
+          sizes="(max-width: 900px) 100vw, min(1100px, 92vw)"
+          priority={false}
+        />
       </div>
 
-      <p className={cs.specLabel} style={{ marginTop: 8 }}>
-        From testing, key issues
-      </p>
       <div className={cs.issueTestStack}>
         {bumbleValidation.issueModules.map((m) => (
           <article key={m.n} className={cs.issueTestCard}>

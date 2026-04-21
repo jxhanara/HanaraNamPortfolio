@@ -63,8 +63,14 @@ export const bumbleResearch = {
   engagementCaption: "Engagement with proximity alerts (0–20% scale for comparison)",
   engagementWasLabel: "Six months ago",
   engagementWasValue: "18%",
+  engagementWasPct: 18,
   engagementNowLabel: "Today",
   engagementNowValue: "6%",
+  engagementNowPct: 6,
+  /** Upper bound for the chart axis (comparison scale). */
+  engagementScaleMax: 20,
+  engagementDeltaLabel: "−12 pts",
+  engagementDeltaSub: "Engagement vs six months prior",
   themeCards: [
     {
       kicker: "Misleading proximity",
@@ -86,11 +92,23 @@ export const bumbleResearch = {
   bridgeTitle: "Bridging business goals with user needs through real-world coordination",
   bridgeBody:
     "By solving coordination friction, I could offer a tangible reason to upgrade that proximity alerts lacked. I moved location out of the UI and into system logic — treating proximity as one signal among many, not the headline.",
+  /** Design-shift block: strategic read + `NewBeforeAfterPicture.png` in `BumbleBridgeShiftVisual`. */
+  bridgeDesignShift: {
+    tag: "Design shift",
+    headlineLead: "I moved location out of the UI and into ",
+    headlineAccent: "system logic",
+    /** `public/assets/bumbleflow/NewBeforeAfterPicture.png` — keep in sync with source in `assets/bumbleflow/`. */
+    newBeforeAfterWidth: 1535,
+    newBeforeAfterHeight: 631,
+    newBeforeAfterAlt:
+      "Before and after: proximity-led notification versus multi-signal decision flow and output.",
+  },
+  hmwEyebrow: "HMW question",
   hmw: "How might we help users recognize moments of shared readiness — moving beyond proximity to enable real meetups?",
 } as const;
 
 export const bumbleStrategy = {
-  eyebrow: "03 · Strategy",
+  eyebrow: "04 · Strategy",
   title: "Design transformation",
   body: "I pivoted from a system that simply found gaps in a calendar to one that aligns shared intent before surfacing availability — ensuring every coordination nudge is grounded in mutual readiness, not just empty time.",
   pivotEyebrow: "The pivot",
@@ -139,43 +157,44 @@ export const bumbleStrategy = {
 } as const;
 
 export const bumbleValidation = {
-  eyebrow: "04 · Validation",
+  eyebrow: "03 · Validation",
   displayLine: "Fully automated scheduling felt invasive and reduced user control",
   body: "My initial concept fully automated same-day scheduling through calendar syncing. Testing showed that efficiency came at the cost of control — users felt overexposed, and real-time availability made interactions feel monitored rather than natural.",
-  stats: [
-    { value: "3", label: "Critical usability themes surfaced from concept testing" },
-    { value: "1", label: "Pivot: from calendar gaps to intent-first coordination" },
-  ],
+  issuesIntro: "From testing, three key issues emerged:",
+  initialConceptWidth: 1536,
+  initialConceptHeight: 1024,
+  initialConceptAlt:
+    "Initial Bumble Flow concept: automated same-day scheduling and calendar-led coordination before validation.",
   issueModules: [
     {
       n: "01",
       title: "High-friction premium entry",
       bullets: [
-        "Forcing full calendar sync as the only premium entry point created a friction-heavy conversion path.",
-        "The value proposition relied on high-friction data access, weakening the business upsell.",
+        "Full calendar sync as the only entry point created early drop-off",
+        "Value depended on too much upfront user effort",
       ],
       quote:
-        "Wait, if I don’t sync my Google Calendar, this whole feature just… doesn’t work for me? That feels like a huge ask before I even know if the matches are good.",
+        "Wait, if I don’t sync my Google Calendar, this whole feature doesn’t work for me? That feels like a huge ask before I even know if the matches are good.",
     },
     {
       n: "02",
-      title: "Calendar logic over human readiness",
+      title: "Calendar logic ≠ human readiness",
       bullets: [
-        "Automatic switches from Focus Mode to “Available” based on calendar gaps failed to account for non-booked downtime.",
-        "The system prioritized schedule holes over how people actually experience free time.",
+        "Empty time ≠ emotional availability",
+        "System optimized for schedule gaps, not real-life energy",
       ],
       quote:
-        "An empty calendar block doesn’t mean I’m emotionally ‘on’ for a date — it just means nothing was booked.",
+        "Just because I’m not in a meeting at 5 PM doesn’t mean I’m available. Sometimes I just need time to decompress before talking to anyone.",
     },
     {
       n: "03",
-      title: "Real-time status and safety",
+      title: "Real-time status breaks safety",
       bullets: [
-        'Identifying users as “Available now” and “Nearby” removed social alibi, creating risk for unwanted confrontation.',
-        "Real-time status broadcasting created safety vulnerabilities and social entitlement.",
+        "“Available now” + “Nearby” removed social cover",
+        "Created pressure and unwanted confrontation",
       ],
       quote:
-        "Broadcasting availability feels less like support and more like being watched — I need room to say no without drama.",
+        "If someone thinks I’m free and nearby, it can lead to pushy ‘why can’t you meet?’ messages. I need the ability to say I’m busy without the app calling me a liar.",
     },
   ],
   synthesis:
@@ -223,28 +242,51 @@ export const bumbleSolution = {
   ],
 } as const;
 
-export const bumbleScenarios = {
-  eyebrow: "06 · Scenarios",
-  title: "User experience scenarios",
-  lead: "Three relationship tiers show how the coordination engine behaves at different levels of data access and subscription:",
-  tiers: [
+/** Combined prototype narrative + interactive scenario diamond (Figma 40:652–689, 40:663). */
+export const bumblePrototypeInteractive = {
+  eyebrow: "06 · Prototype & use cases",
+  title: "Building out Bumble Flow with vibe coding",
+  intro: [
+    "Using Codex, I vibe coded an interactive prototype by translating my high-fidelity wireframes and design system into a working flow — allowing users to define availability, signal intent, and explore how the system surfaces overlapping or alternative meeting times in real time.",
+    "I connected my Figma file — where the design system and high-fidelity wireframes lived — into Codex, then iterated by giving detailed, handoff-style instructions. I combined structured prompts, screenshots of specific UI states, and MCP links to guide layout, interaction logic, and edge cases — treating the system like a design partner rather than a generator.",
+  ],
+  pyramidHint:
+    "Click each band of the diamond to see how coordination changes across pairings. Premium × Premium opens the live prototype on the right.",
+  prototypeEmbedUrl: "https://hanaranam.github.io/BumbleFlowCMU/",
+  /** Apex → base in reading order; `showPrototypeEmbed` only for top (happy path). */
+  pyramidTiers: [
     {
-      id: "pp",
-      label: "Premium × Premium",
-      body: "Highest mutual signal fidelity — precise windows, automation, and the fastest path to a confirmed plan.",
+      level: 1,
+      slug: "premium-premium",
+      pairingLabel: "Premium × Premium",
+      detailTitle: "The happy path",
+      detailBody:
+        "Both calendars sync. Overlapping blocks (e.g. 2:30—3:30 PM) appear in chat. Users adjust duration or choose “Suggest another time” for a live recalculation of shared gaps.",
+      showPrototypeEmbed: true,
     },
     {
-      id: "pf",
-      label: "Premium × Free",
-      body: "Blended coordination: one side brings precision while the other receives guided suggestions without full data exposure.",
+      level: 2,
+      slug: "premium-free",
+      pairingLabel: "Premium × Free",
+      detailTitle: "The conversion nudge",
+      detailBody:
+        "John (Free) sees that coffee preference and Jennifer’s availability may overlap today — but the full calendar grid stays locked, nudging upgrade while he can still send a broad “Afternoon” window.",
+      showPrototypeEmbed: false,
     },
     {
-      id: "ff",
-      label: "Free × Free",
-      body: "Lightweight coordination nudges and generalized availability — still useful, with a clear upgrade path when both users want more automation.",
+      level: 3,
+      slug: "free-free",
+      pairingLabel: "Free × Free",
+      detailTitle: "Intent-only",
+      detailBody:
+        "With no sync, the experience scales to shared intent: broad windows from vibe tags so coordination stays consistent without automation.",
+      showPrototypeEmbed: false,
     },
   ],
 } as const;
+
+export type BumblePyramidTierSlug =
+  (typeof bumblePrototypeInteractive.pyramidTiers)[number]["slug"];
 
 export const bumbleCoreComponents = {
   eyebrow: "07 · Core components",
@@ -252,22 +294,34 @@ export const bumbleCoreComponents = {
   body: "The Bumble Flow design system ensures consistency and efficiency through components, guidelines, and patterns — so flows for availability, chat coordination, and subscription surfaces stay coherent as edge cases multiply.",
 } as const;
 
-export const bumblePrototype = {
-  eyebrow: "08 · Prototype",
-  title: "Building Bumble Flow with vibe coding",
-  lead: [
-    "Using Codex, I vibe coded an interactive prototype by translating high-fidelity wireframes and the design system into a working flow — letting users define availability, signal intent, and explore how the system surfaces overlapping or alternative meeting times in real time.",
-    "I connected my Figma file — where the design system and high-fidelity wireframes lived — into Codex, then iterated with handoff-style instructions. I combined structured prompts, screenshots of specific UI states, and MCP links to guide layout, interaction logic, and edge cases — treating the system like a design partner rather than a one-shot generator.",
-  ],
-} as const;
-
 export const bumbleReflection = {
-  eyebrow: "09 · Reflection",
-  title: "Reframing the issue: coordination, systems thinking, and real-world outcomes",
+  eyebrow: "08 · Reflection",
+  title:
+    "Reframing the Issue: Designing for Coordination, Systems Thinking, and Real-World Outcomes",
   intro: [
-    "This project pushed me to balance user empathy with business goals in a more intentional way. By reframing the problem from proximity to coordination, I could address real user pain — like the awkward gap in scheduling — while creating a clearer path for premium value.",
-    "Designing for Premium vs Free users and mismatched availability forced systems thinking: every state needed to feel intentional and safe, not like a leaky broadcast of personal data.",
-    "On the execution side, I shifted from one-shot prompting to a collaborative workflow with AI — Figma as source of truth, with detailed instructions, screenshots, and checkpoints to guide output like working with a teammate.",
+    "This project pushed me to balance user empathy with business goals more intentionally. By reframing the problem from proximity to coordination, I addressed real user pain — like the awkward gap in scheduling — while creating a clearer path for premium value.",
+  ],
+  takeaways: [
+    {
+      n: "01",
+      title: "Reframe to unlock value",
+      body: "Shifting from proximity to coordination revealed a more meaningful problem space. Solving for scheduling friction not only improved the user experience, but also created a natural foundation for premium features.",
+    },
+    {
+      n: "02",
+      title: "Design systems, not screens",
+      body: "Designing across Premium vs Free users and mismatched availability required systems thinking. Every state needed to feel intentional, cohesive, and clearly differentiated.",
+    },
+    {
+      n: "03",
+      title: "Privacy is part of the UX",
+      body: "Availability is sensitive. Interactions were designed to feel safe and controlled, avoiding any sense of broadcasting personal data or exposing users unintentionally.",
+    },
+    {
+      n: "04",
+      title: "AI is a collaborator, not a shortcut",
+      body: "I moved from one-shot prompting to a structured, iterative workflow with AI — using Figma as the source of truth, and guiding outputs through detailed instructions, screenshots, and checkpoints, similar to working with a teammate.",
+    },
   ],
 } as const;
 
@@ -275,12 +329,11 @@ export const bumbleToc = [
   { id: "overview", label: "Overview" },
   { id: "challenge", label: "Challenge" },
   { id: "research", label: "Research" },
-  { id: "strategy", label: "Strategy" },
   { id: "validation", label: "Validation" },
+  { id: "strategy", label: "Strategy" },
   { id: "solution", label: "Solution" },
-  { id: "scenarios", label: "Scenarios" },
+  { id: "prototype", label: "Prototype & use cases" },
   { id: "core-components", label: "Core components" },
-  { id: "prototype", label: "Prototype" },
   { id: "reflection", label: "Reflection" },
 ] as const;
 
