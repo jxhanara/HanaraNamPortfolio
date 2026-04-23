@@ -2,14 +2,22 @@
 
 import { useMemo, useState } from "react";
 import type { CSSProperties } from "react";
+import type { StaticImageData } from "next/image";
 import {
   bumblePrototypeInteractive,
   type BumblePyramidTierSlug,
 } from "@/content/bumbleFlowCaseStudy";
+import pyramidComplete from "@/assets/bumbleflow/pyramid_complete.png";
+import middlePyramidSvg from "@/assets/bumbleflow/middle pyramid.svg";
+import bottomPyramidSvg from "@/assets/bumbleflow/bottom pyramid.svg";
 import cs from "../caseStudy.module.css";
 import py from "./bumblePrototypePyramid.module.css";
 
 const DEFAULT_SLUG: BumblePyramidTierSlug = "premium-premium";
+
+function assetUrl(src: string | StaticImageData): string {
+  return typeof src === "string" ? src : src.src;
+}
 
 type PyramidBullet = string | { readonly boldPrefix: string; readonly text: string };
 
@@ -26,6 +34,25 @@ export function BumblePrototypePyramidSection() {
       bumblePrototypeInteractive.pyramidTiers[0],
     [activeSlug],
   );
+
+  const pyramidVisual = useMemo(() => {
+    if (activeSlug === "premium-free") {
+      return {
+        src: assetUrl(middlePyramidSvg),
+        alt: "Pyramid with Premium × Free tier emphasized: middle trapezoid highlighted.",
+      };
+    }
+    if (activeSlug === "free-free") {
+      return {
+        src: assetUrl(bottomPyramidSvg),
+        alt: "Pyramid with Free × Free tier emphasized: bottom trapezoid highlighted.",
+      };
+    }
+    return {
+      src: assetUrl(pyramidComplete),
+      alt: "Pyramid showing three use-case tiers: Premium × Premium, Premium × Free, and Free × Free.",
+    };
+  }, [activeSlug]);
 
   return (
     <section id="prototype" className={cs.section}>
@@ -48,8 +75,8 @@ export function BumblePrototypePyramidSection() {
               aria-label="Use case tiers"
             >
               <img
-                src="/assets/bumbleflow/pyramid_complete.png"
-                alt="Pyramid showing three use-case tiers: Premium × Premium, Premium × Free, and Free × Free."
+                src={pyramidVisual.src}
+                alt={pyramidVisual.alt}
                 className={py.pyramidImage}
                 draggable={false}
               />

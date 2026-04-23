@@ -1,3 +1,8 @@
+import bumbleDesignSystem from "@/assets/bumbleflow/BumbleFlow_DesignSystem.png";
+import bumbleDiscoverAnnotations from "@/assets/bumbleflow/BumbleFlow_DiscoverAnnotations.png";
+import bumbleOverlappingTimesAnnotations from "@/assets/bumbleflow/BumbleFlow_OverlappingTimesAnnotations.png";
+import bumbleSetUpTimeAnnotations from "@/assets/bumbleflow/BumbleFlow_SetUpTimeAnnotations.png";
+
 /**
  * Bumble Flow case study copy (sourced from Portfolio-MCP frame `32:3` / published case study).
  * Structured to match the Trippy / inspiration case study layout system.
@@ -229,10 +234,8 @@ export const bumbleSolution = {
       title: "Defining availability and intent signals",
       body: "Users input when they’re available and what they’re looking for — combining manual controls, calendar sync, and preference signals to shape matches and time suggestions.",
       image: {
-        src: "/assets/bumbleflow/BumbleFlow_DiscoverAnnotations.png",
+        src: bumbleDiscoverAnnotations,
         alt: "Annotated Discover screens showing intent before availability, flexible availability options, manual gap filling, and preferred times.",
-        width: 2400,
-        height: 2026,
       },
     },
     {
@@ -240,10 +243,8 @@ export const bumbleSolution = {
       title: "Coordinating the right time to meet",
       body: "Shared availability surfaces across chat, calendar, and list views — helping users compare options quickly, select a time, and move from conversation to a confirmed plan.",
       image: {
-        src: "/assets/bumbleflow/BumbleFlow_OverlappingTimesAnnotations.png",
+        src: bumbleOverlappingTimesAnnotations,
         alt: "Annotated screens showing calendar view of overlapping times, suggested times in chat, and mutual availability list view.",
-        width: 2400,
-        height: 2026,
       },
     },
     {
@@ -251,10 +252,8 @@ export const bumbleSolution = {
       title: "Turning plans into confirmed meetups",
       body: "Users move from selecting a time to committing to a plan — proposing, confirming, and managing meetups while keeping availability flexible for future coordination.",
       image: {
-        src: "/assets/bumbleflow/BumbleFlow_SetUpTimeAnnotations.png",
+        src: bumbleSetUpTimeAnnotations,
         alt: "Annotated screens showing proposing a time in chat, locking in the plan with venue details, and confirmed meetups appearing in Bumble Flow.",
-        width: 2400,
-        height: 2026,
       },
     },
   ],
@@ -262,11 +261,11 @@ export const bumbleSolution = {
 
 /** Combined prototype narrative + interactive scenario pyramid (Figma 40:652–689, 40:663). */
 export const bumblePrototypeInteractive = {
-  eyebrow: "06 · Prototype & use cases",
+  eyebrow: "06 · Prototype",
   title: "Building out Bumble Flow with vibe coding",
   intro: [
-    "Using Codex, I vibe coded an interactive prototype by translating my high-fidelity wireframes and design system into a working flow — allowing users to define availability, signal intent, and explore how the system surfaces overlapping or alternative meeting times in real time.",
-    "I connected my Figma file — where the design system and high-fidelity wireframes lived — into Codex, then iterated by giving detailed, handoff-style instructions. I combined structured prompts, screenshots of specific UI states, and MCP links to guide layout, interaction logic, and edge cases — treating the system like a design partner rather than a generator.",
+    "Using Codex, I vibe coded an interactive prototype that translated my high-fidelity wireframes and design system into a working flow. This let users set availability, signal intent, and see how the system surfaces overlapping or alternative meeting times in real time.",
+    "I connected my Figma file into Codex and iterated with detailed, handoff-style instructions. I used structured prompts, screenshots of key UI states, and MCP links to guide layout, interaction logic, and edge cases, treating the system like a design partner rather than just a generator.",
   ],
   prototypeEmbedUrl: "https://hanaranam.github.io/BumbleFlowCMU/",
   /** Apex → base in reading order; `showPrototypeEmbed` only for top (happy path). */
@@ -383,14 +382,12 @@ export type BumblePyramidTierSlug =
   (typeof bumblePrototypeInteractive.pyramidTiers)[number]["slug"];
 
 export const bumbleCoreComponents = {
-  eyebrow: "07 · Core components",
+  eyebrow: "07 · Decisions",
   title: "Design system",
   body: "The Bumble Flow design system ensures consistency and efficiency through components, guidelines, and patterns — so flows for availability, chat coordination, and subscription surfaces stay coherent as edge cases multiply.",
   image: {
-    src: "/assets/bumbleflow/BumbleFlow_DesignSystem.png",
+    src: bumbleDesignSystem,
     alt: "Bumble Flow design system overview: cards, list items, tags, nav bar, microinteractions, icons, keyboards, buttons, and miscellaneous components.",
-    width: 2400,
-    height: 2026,
   },
 } as const;
 
@@ -405,22 +402,22 @@ export const bumbleReflection = {
     {
       n: "01",
       title: "Reframe to unlock value",
-      body: "Shifting from proximity to coordination revealed a more meaningful problem space. Solving for scheduling friction not only improved the user experience, but also created a natural foundation for premium features.",
+      body: "Shifting from proximity to coordination uncovered a more meaningful problem. Focusing on scheduling friction improved the experience and created a clear path for premium features.",
     },
     {
       n: "02",
       title: "Design systems, not screens",
-      body: "Designing across Premium vs Free users and mismatched availability required systems thinking. Every state needed to feel intentional, cohesive, and clearly differentiated.",
+      body: "Designing for Premium and Free users, along with mismatched availability, required systems thinking. Each state needed to feel intentional, cohesive, and clearly distinct.",
     },
     {
       n: "03",
       title: "Privacy is part of the UX",
-      body: "Availability is sensitive. Interactions were designed to feel safe and controlled, avoiding any sense of broadcasting personal data or exposing users unintentionally.",
+      body: "Availability is sensitive. Interactions were designed to feel safe and controlled, without exposing or broadcasting personal data.",
     },
     {
       n: "04",
       title: "AI is a collaborator, not a shortcut",
-      body: "I moved from one-shot prompting to a structured, iterative workflow with AI — using Figma as the source of truth, and guiding outputs through detailed instructions, screenshots, and checkpoints, similar to working with a teammate.",
+      body: "I moved from one-shot prompting to a structured, iterative workflow with AI. I used Figma as the source of truth and guided outputs with clear instructions, screenshots, and checkpoints, similar to working with a teammate.",
     },
   ],
 } as const;
@@ -432,8 +429,8 @@ export const bumbleToc = [
   { id: "validation", label: "Validation" },
   { id: "strategy", label: "Strategy" },
   { id: "solution", label: "Solution" },
-  { id: "prototype", label: "Prototype & use cases" },
-  { id: "core-components", label: "Core components" },
+  { id: "prototype", label: "Prototype" },
+  { id: "decisions", label: "Decisions" },
   { id: "reflection", label: "Reflection" },
 ] as const;
 

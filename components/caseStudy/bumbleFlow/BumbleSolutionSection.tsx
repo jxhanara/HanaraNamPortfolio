@@ -41,13 +41,11 @@ export function BumbleSolutionSection() {
             </div>
           </div>
           {mod.image ? (
-            <div className={cs.validationConceptWrap}>
+            <div className={cs.validationConceptWrapFull}>
               <Image
                 className={cs.validationConceptImg}
                 src={mod.image.src}
                 alt={mod.image.alt}
-                width={mod.image.width}
-                height={mod.image.height}
                 sizes="(max-width: 900px) 100vw, min(1100px, 92vw)"
               />
             </div>
