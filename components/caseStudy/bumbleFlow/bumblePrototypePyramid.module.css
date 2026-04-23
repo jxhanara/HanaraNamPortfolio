@@ -1,4 +1,4 @@
-/* Interactive scenario diamond + prototype embed — Bumble Flow */
+/* Interactive scenario pyramid + prototype embed — Bumble Flow */
 
 .shell {
   margin-top: clamp(28px, 4vw, 40px);
@@ -33,153 +33,99 @@
   min-width: 0;
 }
 
-/* Diamond + hint (Figma: hint to the right of the graphic on desktop) */
-.leftTopRow {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: clamp(18px, 2.5vw, 24px);
+/* Pyramid column — no side hint */
+.pyramidColumn {
   min-width: 0;
-}
-
-@media (min-width: 960px) {
-  .leftTopRow {
-    flex-direction: row;
-    align-items: center;
-    gap: clamp(20px, 3vw, 32px);
-  }
-}
-
-.diamondWrap {
-  flex-shrink: 0;
-  width: min(100%, 300px);
-  max-width: 100%;
-  margin: 0 auto;
-}
-
-@media (min-width: 960px) {
-  .diamondWrap {
-    margin: 0;
-    width: min(100%, 280px);
-  }
-}
-
-.diamond {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 100%;
-  gap: 0;
+}
+
+/*
+ * Image-based pyramid (public/assets/bumbleflow/pyramid_complete.png, 561×429).
+ * Three absolute-positioned hit buttons follow each tier’s silhouette via clip-path,
+ * so only the tier shape responds to hover/click.
+ */
+.pyramidImageWrap {
+  position: relative;
+  width: min(561px, calc(100vw - 48px));
+  max-width: 100%;
+  aspect-ratio: 561 / 429;
+  margin: 0 auto;
   filter: drop-shadow(0 10px 28px rgba(0, 0, 0, 0.45));
 }
 
-.tierBtn {
+@media (min-width: 960px) {
+  .pyramidImageWrap {
+    margin: 0;
+  }
+}
+
+.pyramidImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+.tierHit {
+  position: absolute;
+  left: 0;
+  right: 0;
   margin: 0;
   padding: 0;
-  border: none;
+  border: 0;
+  background: transparent;
   cursor: pointer;
+  color: transparent;
   font: inherit;
-  text-align: center;
   transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease,
+    background 0.15s ease,
     filter 0.15s ease;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  color: #141204;
-  width: 100%;
-  position: relative;
-  isolation: isolate;
-  /* Clip-path defines the diamond silhouette; keep padding generous for label wrap */
   -webkit-clip-path: var(--tier-clip);
   clip-path: var(--tier-clip);
 }
 
-.tierBtn:focus-visible {
+.tierHit:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.tierHit:focus-visible {
   outline: 2px solid #ffce08;
-  outline-offset: 3px;
+  outline-offset: 0;
 }
 
-.tierBtn:hover {
-  filter: brightness(1.04);
+.tierHitActive {
+  background: rgba(255, 255, 255, 0.12);
 }
 
-.tierBtnActive {
-  filter: brightness(1.06) drop-shadow(0 0 16px rgba(255, 206, 8, 0.55));
-  transform: translateY(-1px);
-  z-index: 2;
+.tierHitActive:hover {
+  background: rgba(255, 255, 255, 0.16);
 }
 
-.tierBtnActive:hover {
-  filter: brightness(1.08) drop-shadow(0 0 18px rgba(255, 206, 8, 0.6));
+/*
+ * Tier bounds (from 561×429 source):
+ *   Tier 1: y 0–133 (0% – 31.002%), triangle apex (50%,0) → base at y=133, x ∈ [34.136%, 65.864%]
+ *   Tier 2: y 141–280 (32.867% – 65.268%), top 178 wide, bottom 370 wide
+ *   Tier 3: y 288–429 (67.133% – 100%), top 370 wide, bottom full
+ */
+.hitTier1 {
+  --tier-clip: polygon(50% 0%, 65.864% 100%, 34.136% 100%);
+  top: 0;
+  height: 31.002%;
 }
 
-/* Top band — narrow at apex, flares to meet the middle band */
-.tier1 {
-  --tier-clip: polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%);
-  padding: 16px 26% 18px;
-  min-height: 58px;
-  background: linear-gradient(180deg, #fffef4 0%, #fff6d2 100%);
+.hitTier2 {
+  --tier-clip: polygon(34.136% 0%, 65.864% 0%, 82.977% 100%, 17.023% 100%);
+  top: 32.867%;
+  height: 32.401%;
 }
 
-/* Middle — widest (equator of the diamond) */
-.tier2 {
-  --tier-clip: polygon(0% 0%, 100% 0%, 86% 100%, 14% 100%);
-  margin-top: -1px;
-  padding: 20px 12% 22px;
-  min-height: 64px;
-  background: linear-gradient(180deg, #ffe566 0%, #ffce08 100%);
-}
-
-/* Bottom — tapers to a point */
-.tier3 {
-  --tier-clip: polygon(14% 0%, 86% 0%, 50% 100%);
-  margin-top: -1px;
-  padding: 22px 18% 30px;
-  min-height: 76px;
-  background: linear-gradient(180deg, #e6b000 0%, #c89400 100%);
-  color: #0f0d00;
-}
-
-.tierLevel {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-
-.tierLabel {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  line-height: 1.25;
-  max-width: 12rem;
-}
-
-.tier3 .tierLabel {
-  font-size: 12px;
-}
-
-.hint {
-  flex: 1;
-  margin: 0;
-  min-width: 0;
-  font-size: 14px;
-  line-height: 1.55;
-  color: rgba(255, 255, 255, 0.55);
-}
-
-@media (min-width: 960px) {
-  .hint {
-    align-self: center;
-    padding-top: 0;
-    max-width: 28rem;
-  }
+.hitTier3 {
+  --tier-clip: polygon(17.023% 0%, 82.977% 0%, 100% 100%, 0% 100%);
+  top: 67.133%;
+  height: 32.867%;
 }
 
 .detailBelow {
@@ -189,9 +135,10 @@
 }
 
 .detailRow {
+  --detail-badge-fill: #ffec76;
   display: flex;
   align-items: flex-start;
-  gap: 14px;
+  gap: 16px;
 }
 
 .detailBadge {
@@ -205,35 +152,82 @@
   font-size: 14px;
   font-weight: 700;
   color: #1a1400;
-  background: linear-gradient(135deg, #ffe566 0%, #ffce08 55%, #e6b000 100%);
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: var(--detail-badge-fill);
+  border: 2px solid rgba(0, 0, 0, 0.22);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+}
+
+.detailCopy {
+  min-width: 0;
 }
 
 .detailTitle {
-  margin: 0 0 10px;
-  font-size: 17px;
+  margin: 0 0 12px;
+  font-size: clamp(18px, 2.4vw, 22px);
   font-weight: 600;
   letter-spacing: -0.02em;
-  line-height: 1.3;
-  color: var(--color-text);
+  line-height: 1.28;
+  color: #fff;
 }
 
-.detailBody {
-  margin: 0;
+.detailLead {
+  margin: 0 0 22px;
   font-size: 15px;
   line-height: 1.62;
-  color: rgba(255, 255, 255, 0.74);
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.detailSection {
+  margin: 0 0 20px;
+}
+
+.detailSection:last-child {
+  margin-bottom: 0;
+}
+
+.detailSectionTitle {
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #fff;
+}
+
+.detailList {
+  margin: 0;
+  padding: 0 0 0 1.15rem;
+  list-style-type: disc;
+}
+
+.detailListItem {
+  margin: 0 0 8px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.detailListItem:last-child {
+  margin-bottom: 0;
+}
+
+.detailBulletLead {
+  font-weight: 600;
+  color: #fff;
 }
 
 .rightPane {
   position: relative;
-  min-height: min(720px, 78vh);
+  min-height: min(640px, 72vh);
   border-radius: 16px;
   border: 1px solid var(--color-border-subtle);
   background: #0a0a0c;
   overflow: hidden;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 2.5vw, 24px);
   min-width: 0;
   width: 100%;
   max-width: 100%;
@@ -242,26 +236,34 @@
 .rightPaneEmpty {
   min-height: min(400px, 50vh);
   background: rgba(10, 10, 12, 0.65);
+  padding: 0;
 }
 
+/*
+ * Portrait phone proportion (~9:16). Height leads: fill the card’s vertical space,
+ * width follows aspect ratio so the prototype reads as a phone, not a wide strip.
+ */
 .embedFrame {
-  flex: 1;
-  width: 100%;
+  flex: 1 1 auto;
+  width: auto;
+  height: 100%;
   max-width: 100%;
-  min-width: 0;
-  min-height: min(680px, 72vh);
+  max-height: 100%;
+  aspect-ratio: 9 / 16;
+  min-height: min(560px, 70dvh);
   border: none;
+  border-radius: 14px;
   display: block;
   background: #fff;
 }
 
 .embedCaption {
   flex-shrink: 0;
-  padding: 10px 14px;
+  margin-top: 12px;
+  padding: 6px 2px 0;
   font-size: 11px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
-  border-top: 1px solid var(--color-border-subtle);
-  background: rgba(0, 0, 0, 0.35);
+  color: rgba(255, 255, 255, 0.55);
+  text-align: center;
 }

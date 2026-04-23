@@ -228,21 +228,39 @@ export const bumbleSolution = {
       n: "01",
       title: "Defining availability and intent signals",
       body: "Users input when they’re available and what they’re looking for — combining manual controls, calendar sync, and preference signals to shape matches and time suggestions.",
+      image: {
+        src: "/assets/bumbleflow/BumbleFlow_DiscoverAnnotations.png",
+        alt: "Annotated Discover screens showing intent before availability, flexible availability options, manual gap filling, and preferred times.",
+        width: 2400,
+        height: 2026,
+      },
     },
     {
       n: "02",
       title: "Coordinating the right time to meet",
       body: "Shared availability surfaces across chat, calendar, and list views — helping users compare options quickly, select a time, and move from conversation to a confirmed plan.",
+      image: {
+        src: "/assets/bumbleflow/BumbleFlow_OverlappingTimesAnnotations.png",
+        alt: "Annotated screens showing calendar view of overlapping times, suggested times in chat, and mutual availability list view.",
+        width: 2400,
+        height: 2026,
+      },
     },
     {
       n: "03",
       title: "Turning plans into confirmed meetups",
       body: "Users move from selecting a time to committing to a plan — proposing, confirming, and managing meetups while keeping availability flexible for future coordination.",
+      image: {
+        src: "/assets/bumbleflow/BumbleFlow_SetUpTimeAnnotations.png",
+        alt: "Annotated screens showing proposing a time in chat, locking in the plan with venue details, and confirmed meetups appearing in Bumble Flow.",
+        width: 2400,
+        height: 2026,
+      },
     },
   ],
 } as const;
 
-/** Combined prototype narrative + interactive scenario diamond (Figma 40:652–689, 40:663). */
+/** Combined prototype narrative + interactive scenario pyramid (Figma 40:652–689, 40:663). */
 export const bumblePrototypeInteractive = {
   eyebrow: "06 · Prototype & use cases",
   title: "Building out Bumble Flow with vibe coding",
@@ -250,8 +268,6 @@ export const bumblePrototypeInteractive = {
     "Using Codex, I vibe coded an interactive prototype by translating my high-fidelity wireframes and design system into a working flow — allowing users to define availability, signal intent, and explore how the system surfaces overlapping or alternative meeting times in real time.",
     "I connected my Figma file — where the design system and high-fidelity wireframes lived — into Codex, then iterated by giving detailed, handoff-style instructions. I combined structured prompts, screenshots of specific UI states, and MCP links to guide layout, interaction logic, and edge cases — treating the system like a design partner rather than a generator.",
   ],
-  pyramidHint:
-    "Click each band of the diamond to see how coordination changes across pairings. Premium × Premium opens the live prototype on the right.",
   prototypeEmbedUrl: "https://hanaranam.github.io/BumbleFlowCMU/",
   /** Apex → base in reading order; `showPrototypeEmbed` only for top (happy path). */
   pyramidTiers: [
@@ -259,27 +275,105 @@ export const bumblePrototypeInteractive = {
       level: 1,
       slug: "premium-premium",
       pairingLabel: "Premium × Premium",
-      detailTitle: "The happy path",
-      detailBody:
-        "Both calendars sync. Overlapping blocks (e.g. 2:30—3:30 PM) appear in chat. Users adjust duration or choose “Suggest another time” for a live recalculation of shared gaps.",
+      pairingLines: ["Premium ×", "Premium"] as const,
+      accentColor: "#EBE4D4",
+      detailTitle: "Full coordination, minimal friction",
+      detailLead:
+        "Both users share intent and availability, allowing the system to make confident, real-time matches.",
+      detailSections: [
+        {
+          heading: "What the system knows",
+          bullets: [
+            "Shared meeting vibe (coffee, drinks, etc.)",
+            "Both users’ availability windows",
+          ],
+        },
+        {
+          heading: "What users see",
+          bullets: [
+            "Clear overlap in time and intent",
+            "Multiple viable meeting options surfaced",
+          ],
+        },
+        {
+          heading: "Experience",
+          bullets: [
+            "Suggested time blocks directly in chat",
+            "“Look at more times” reveals full overlap across the week",
+            "Calendar + list views for flexible coordination",
+          ],
+        },
+      ],
       showPrototypeEmbed: true,
     },
     {
       level: 2,
       slug: "premium-free",
       pairingLabel: "Premium × Free",
-      detailTitle: "The conversion nudge",
-      detailBody:
-        "John (Free) sees that coffee preference and Jennifer’s availability may overlap today — but the full calendar grid stays locked, nudging upgrade while he can still send a broad “Afternoon” window.",
+      accentColor: "#FFEC76",
+      detailTitle: "Protected availability, guided coordination",
+      detailLead:
+        "Only one user shares availability, so the system balances suggestions with privacy protection.",
+      detailSections: [
+        {
+          heading: "What the system knows",
+          bullets: [
+            "Shared meeting vibe (e.g. coffee, drinks, etc.)",
+            "One user’s availability is visible to the system",
+          ],
+        },
+        {
+          heading: "What users see",
+          bullets: [
+            { boldPrefix: "Free user:", text: " General time suggestions (e.g. morning, afternoon)" },
+            {
+              boldPrefix: "Premium user:",
+              text: " Specific available time options based on their schedule",
+            },
+          ],
+        },
+        {
+          heading: "Experience",
+          bullets: [
+            "One side proposes broadly, the system refines suggestions using available data",
+            "More guesswork when suggesting times from partial availability.",
+          ],
+        },
+      ],
       showPrototypeEmbed: false,
     },
     {
       level: 3,
       slug: "free-free",
       pairingLabel: "Free × Free",
-      detailTitle: "Intent-only",
-      detailBody:
-        "With no sync, the experience scales to shared intent: broad windows from vibe tags so coordination stays consistent without automation.",
+      accentColor: "#F4C700",
+      detailTitle: "Intent-only coordination, highest friction",
+      detailLead:
+        "No availability is shared, so coordination relies entirely on user input and messaging.",
+      detailSections: [
+        {
+          heading: "What the system knows",
+          bullets: ["Shared meeting vibe (e.g., coffee, drinks, etc.)"],
+        },
+        {
+          heading: "What users see",
+          bullets: [
+            {
+              boldPrefix: "Both users:",
+              text: " General time-of-day suggestions (e.g. morning, afternoon, evening)",
+            },
+            "No visibility into actual availability or overlap",
+          ],
+        },
+        {
+          heading: "Experience",
+          bullets: [
+            "Users propose times without knowing if they align",
+            "Higher guesswork when suggesting options",
+            "More back-and-forth needed to reach a confirmed plan",
+          ],
+        },
+      ],
       showPrototypeEmbed: false,
     },
   ],
@@ -292,6 +386,12 @@ export const bumbleCoreComponents = {
   eyebrow: "07 · Core components",
   title: "Design system",
   body: "The Bumble Flow design system ensures consistency and efficiency through components, guidelines, and patterns — so flows for availability, chat coordination, and subscription surfaces stay coherent as edge cases multiply.",
+  image: {
+    src: "/assets/bumbleflow/BumbleFlow_DesignSystem.png",
+    alt: "Bumble Flow design system overview: cards, list items, tags, nav bar, microinteractions, icons, keyboards, buttons, and miscellaneous components.",
+    width: 2400,
+    height: 2026,
+  },
 } as const;
 
 export const bumbleReflection = {

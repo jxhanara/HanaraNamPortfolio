@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import type { CSSProperties } from "react";
 import {
   bumblePrototypeInteractive,
   type BumblePyramidTierSlug,
@@ -9,6 +10,12 @@ import cs from "../caseStudy.module.css";
 import py from "./bumblePrototypePyramid.module.css";
 
 const DEFAULT_SLUG: BumblePyramidTierSlug = "premium-premium";
+
+type PyramidBullet = string | { readonly boldPrefix: string; readonly text: string };
+
+function isBoldBullet(b: PyramidBullet): b is { readonly boldPrefix: string; readonly text: string } {
+  return typeof b === "object" && b !== null && "boldPrefix" in b;
+}
 
 export function BumblePrototypePyramidSection() {
   const [activeSlug, setActiveSlug] = useState<BumblePyramidTierSlug>(DEFAULT_SLUG);
@@ -34,41 +41,74 @@ export function BumblePrototypePyramidSection() {
 
       <div className={`${py.shell} ${py.grid}`}>
         <div className={py.leftStack}>
-          <div className={py.leftTopRow}>
-            <div className={py.diamondWrap}>
-              <div className={py.diamond} role="group" aria-label="Use case tiers">
-                {bumblePrototypeInteractive.pyramidTiers.map((tier) => {
-                  const tierClass =
-                    tier.level === 1 ? py.tier1 : tier.level === 2 ? py.tier2 : py.tier3;
-                  const isActive = tier.slug === active.slug;
-                  return (
-                    <button
-                      key={tier.slug}
-                      type="button"
-                      className={`${py.tierBtn} ${tierClass} ${isActive ? py.tierBtnActive : ""}`}
-                      aria-pressed={isActive}
-                      onClick={() => setActiveSlug(tier.slug)}
-                    >
-                      <span className={py.tierLevel} aria-hidden>
-                        {tier.level}
-                      </span>
-                      <span className={py.tierLabel}>{tier.pairingLabel}</span>
-                    </button>
-                  );
-                })}
-              </div>
+          <div className={py.pyramidColumn}>
+            <div
+              className={py.pyramidImageWrap}
+              role="group"
+              aria-label="Use case tiers"
+            >
+              <img
+                src="/assets/bumbleflow/pyramid_complete.png"
+                alt="Pyramid showing three use-case tiers: Premium × Premium, Premium × Free, and Free × Free."
+                className={py.pyramidImage}
+                draggable={false}
+              />
+              {bumblePrototypeInteractive.pyramidTiers.map((tier) => {
+                const tierClass =
+                  tier.level === 1
+                    ? py.hitTier1
+                    : tier.level === 2
+                      ? py.hitTier2
+                      : py.hitTier3;
+                const isActive = tier.slug === active.slug;
+                return (
+                  <button
+                    key={tier.slug}
+                    type="button"
+                    className={`${py.tierHit} ${tierClass} ${isActive ? py.tierHitActive : ""}`}
+                    aria-pressed={isActive}
+                    aria-label={tier.pairingLabel}
+                    onClick={() => setActiveSlug(tier.slug)}
+                  />
+                );
+              })}
             </div>
-            <p className={py.hint}>{bumblePrototypeInteractive.pyramidHint}</p>
           </div>
 
           <div className={py.detailBelow}>
-            <div className={py.detailRow}>
+            <div
+              className={py.detailRow}
+              style={
+                {
+                  "--detail-badge-fill": active.accentColor,
+                } as CSSProperties
+              }
+            >
               <span className={py.detailBadge} aria-hidden>
                 {active.level}
               </span>
-              <div>
+              <div className={py.detailCopy}>
                 <h3 className={py.detailTitle}>{active.detailTitle}</h3>
-                <p className={py.detailBody}>{active.detailBody}</p>
+                <p className={py.detailLead}>{active.detailLead}</p>
+                {active.detailSections.map((section) => (
+                  <div key={section.heading} className={py.detailSection}>
+                    <h4 className={py.detailSectionTitle}>{section.heading}</h4>
+                    <ul className={py.detailList}>
+                      {section.bullets.map((bullet, i) => (
+                        <li key={i} className={py.detailListItem}>
+                          {isBoldBullet(bullet) ? (
+                            <>
+                              <strong className={py.detailBulletLead}>{bullet.boldPrefix}</strong>
+                              {bullet.text}
+                            </>
+                          ) : (
+                            bullet
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

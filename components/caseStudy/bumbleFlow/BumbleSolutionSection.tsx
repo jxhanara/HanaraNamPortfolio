@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { bumbleSolution } from "@/content/bumbleFlowCaseStudy";
 import { SolutionSmileIcon } from "../CaseStudyMoodIcons";
 import cs from "../caseStudy.module.css";
@@ -39,6 +40,18 @@ export function BumbleSolutionSection() {
               <p className={cs.moduleBody}>{mod.body}</p>
             </div>
           </div>
+          {mod.image ? (
+            <div className={cs.validationConceptWrap}>
+              <Image
+                className={cs.validationConceptImg}
+                src={mod.image.src}
+                alt={mod.image.alt}
+                width={mod.image.width}
+                height={mod.image.height}
+                sizes="(max-width: 900px) 100vw, min(1100px, 92vw)"
+              />
+            </div>
+          ) : null}
         </article>
       ))}
     </section>
