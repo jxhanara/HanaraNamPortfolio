@@ -1344,40 +1344,35 @@
   margin: 0 0 12px;
 }
 
-/* HMW — muted warm panel (less stark vs black than bright cream) */
+/* HMW — same soft yellow → lime surface as vibe pipeline diagram */
 .caseStudyPageAccentBumble .hmwCallout {
   margin-top: clamp(28px, 4vw, 40px);
   padding: clamp(22px, 3.2vw, 30px) clamp(24px, 4vw, 40px);
   border-radius: 14px;
-  border: 1px solid rgba(150, 135, 100, 0.22);
-  background: linear-gradient(
-    165deg,
-    rgba(52, 48, 42, 0.94) 0%,
-    rgba(44, 40, 36, 0.96) 100%
-  );
-  box-shadow:
-    0 1px 0 rgba(255, 230, 170, 0.06) inset,
-    0 6px 24px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(253, 199, 0, 0.38);
+  background: var(--bumble-vibe-surface-gradient);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
 }
 
 .caseStudyPageAccentBumble .hmwQuestionLabel {
   margin: 0 0 clamp(12px, 1.8vw, 16px);
   text-align: center;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(255, 206, 8, 0.55);
+  color: #7a6b18;
 }
 
 .caseStudyPageAccentBumble .hmwCalloutText {
-  font-family: inherit;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: clamp(16px, 1.95vw, 20px);
   line-height: 1.5;
   letter-spacing: -0.015em;
-  color: rgba(255, 255, 255, 0.9);
+  color: #141510;
   text-align: center;
   max-width: 44rem;
   margin-left: auto;

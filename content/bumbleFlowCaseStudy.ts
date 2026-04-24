@@ -259,127 +259,152 @@ export const bumbleSolution = {
   ],
 } as const;
 
-/** Combined prototype narrative + interactive scenario pyramid (Figma 40:652–689, 40:663). */
+const BUMBLE_FLOW_PROTOTYPE_URL = "https://hanaranam.github.io/BumbleFlowCMU/" as const;
+
+/** Prototype section: structured intro, methods, pipeline, then tabbed scenarios (profiles + phones). */
 export const bumblePrototypeInteractive = {
   eyebrow: "06 · Prototype",
-  title: "Building out Bumble Flow with vibe coding",
-  intro: [
-    "Using Codex, I vibe coded an interactive prototype that translated my high-fidelity wireframes and design system into a working flow. This let users set availability, signal intent, and see how the system surfaces overlapping or alternative meeting times in real time.",
-    "I connected my Figma file into Codex and iterated with detailed, handoff-style instructions. I used structured prompts, screenshots of key UI states, and MCP links to guide layout, interaction logic, and edge cases, treating the system like a design partner rather than just a generator.",
+  title: "From Figma to code, and back again",
+  /** Short lead under the section title (method cards carry the detail). */
+  introLead: [
+    "To bring Bumble Flow to life, I worked across two modes of prototyping. I used each one where it made the most sense.",
   ],
-  prototypeEmbedUrl: "https://hanaranam.github.io/BumbleFlowCMU/",
-  /** Apex → base in reading order; `showPrototypeEmbed` only for top (happy path). */
-  pyramidTiers: [
+  /** Two-column “how I built it” summary above the pipeline. */
+  prototypeMethods: [
     {
-      level: 1,
-      slug: "premium-premium",
-      pairingLabel: "Premium × Premium",
-      pairingLines: ["Premium ×", "Premium"] as const,
-      accentColor: "#EBE4D4",
-      detailTitle: "Full coordination, minimal friction",
-      detailLead:
-        "Both users share intent and availability, allowing the system to make confident, real-time matches.",
-      detailSections: [
-        {
-          heading: "What the system knows",
-          bullets: [
-            "Shared meeting vibe (coffee, drinks, etc.)",
-            "Both users’ availability windows",
-          ],
-        },
-        {
-          heading: "What users see",
-          bullets: [
-            "Clear overlap in time and intent",
-            "Multiple viable meeting options surfaced",
-          ],
-        },
-        {
-          heading: "Experience",
-          bullets: [
-            "Suggested time blocks directly in chat",
-            "“Look at more times” reveals full overlap across the week",
-            "Calendar + list views for flexible coordination",
-          ],
-        },
-      ],
-      showPrototypeEmbed: true,
+      methodLabel: "Method 01 · Vibe coded",
+      title: "Premium × Premium",
+      body: "I vibe coded a fully interactive prototype in Codex—translating high-fidelity wireframes and the design system into working flow, and treating the tool like a design partner so I could show real system behavior static screens couldn’t.",
+      tag: "Working code · live logic",
     },
     {
-      level: 2,
-      slug: "premium-free",
-      pairingLabel: "Premium × Free",
-      accentColor: "#FFEC76",
-      detailTitle: "Protected availability, guided coordination",
-      detailLead:
-        "Only one user shares availability, so the system balances suggestions with privacy protection.",
-      detailSections: [
-        {
-          heading: "What the system knows",
-          bullets: [
-            "Shared meeting vibe (e.g. coffee, drinks, etc.)",
-            "One user’s availability is visible to the system",
-          ],
-        },
-        {
-          heading: "What users see",
-          bullets: [
-            { boldPrefix: "Free user:", text: " General time suggestions (e.g. morning, afternoon)" },
-            {
-              boldPrefix: "Premium user:",
-              text: " Specific available time options based on their schedule",
-            },
-          ],
-        },
-        {
-          heading: "Experience",
-          bullets: [
-            "One side proposes broadly, the system refines suggestions using available data",
-            "More guesswork when suggesting times from partial availability.",
-          ],
-        },
+      methodLabel: "Method 02 · Figma",
+      title: "Premium × Free & Free × Free",
+      body: "For the other scenarios, I used high-fidelity Figma prototypes to show how the experience shifts when one or both users haven’t unlocked the full feature set—so the range of the design stayed clear without shipping three codebases.",
+      tag: "High-fidelity · full range",
+    },
+  ],
+  /** Small caps label above scenario tabs (same tone as pipeline eyebrow). */
+  scenariosEyebrow: "The different use case scenarios",
+  vibeCoding: {
+    eyebrow: "The vibe coding pipeline",
+    intro: [
+      "I connected my Figma file into Codex, where my design system and high-fidelity wireframes lived. I iterated with handoff-style instructions—structured prompts, screenshots of specific UI states, and MCP links—to guide layout, interaction logic, and edge cases.",
+      "The diagram below shows the full pipeline, from requirements to vibe coding.",
+    ],
+    diagramAriaLabel:
+      "Pipeline from three requirement inputs to PRD prompt, product requirements document, and vibe coding.",
+    prdBullets: ["Goals", "Purpose", "Features", "Functionality", "Measures"] as const,
+  },
+  prototypeEmbedUrl: BUMBLE_FLOW_PROTOTYPE_URL,
+  /** Design size for scaled iframe embeds (CSS transform). */
+  prototypeDesignWidth: 375,
+  prototypeDesignHeight: 812,
+  prototypeScenarios: [
+    {
+      id: "premium-premium",
+      tabLabel: "Premium × Premium",
+      title: "Full coordination, minimal friction",
+      description: [
+        "Both users have synced their calendars and set meeting vibes. The system surfaces real overlap and suggests times directly in chat.",
       ],
-      showPrototypeEmbed: false,
+      outcomeLead: "What users see:",
+      outcomeBody:
+        "Clear overlap in time and intent · Multiple viable meeting options surfaced · “Look at more times” reveals full week availability",
+      userA: {
+        initial: "A",
+        name: "Alex",
+        badge: "★ Premium",
+        lines: ["📅 Calendar synced", "☕ Coffee · 🥂 Drinks", "Free: Mon, Thu, Fri"],
+      },
+      userB: {
+        initial: "L",
+        name: "Lindsey",
+        badge: "★ Premium",
+        lines: ["📅 Calendar synced", "☕ Coffee · 🥂 Drinks", "Free: Tue, Wed, Sat"],
+      },
+      phoneLeft: {
+        viewerLabel: "Alex's view",
+        iframeSrc: BUMBLE_FLOW_PROTOTYPE_URL,
+      },
+      phoneRight: {
+        viewerLabel: "Lindsey's view",
+        iframeSrc: BUMBLE_FLOW_PROTOTYPE_URL,
+      },
     },
     {
-      level: 3,
-      slug: "free-free",
-      pairingLabel: "Free × Free",
-      accentColor: "#F4C700",
-      detailTitle: "Intent-only coordination, highest friction",
-      detailLead:
-        "No availability is shared, so coordination relies entirely on user input and messaging.",
-      detailSections: [
-        {
-          heading: "What the system knows",
-          bullets: ["Shared meeting vibe (e.g., coffee, drinks, etc.)"],
-        },
-        {
-          heading: "What users see",
-          bullets: [
-            {
-              boldPrefix: "Both users:",
-              text: " General time-of-day suggestions (e.g. morning, afternoon, evening)",
-            },
-            "No visibility into actual availability or overlap",
-          ],
-        },
-        {
-          heading: "Experience",
-          bullets: [
-            "Users propose times without knowing if they align",
-            "Higher guesswork when suggesting options",
-            "More back-and-forth needed to reach a confirmed plan",
-          ],
-        },
+      id: "premium-premium-partial",
+      tabLabel: "Premium × Free",
+      title: "One-sided readiness",
+      description: [
+        "Jennifer is Premium with a synced calendar; John is on Free. The system can only partially coordinate — it surfaces Jennifer’s availability and prompts John to sync or upgrade when he’s ready.",
       ],
-      showPrototypeEmbed: false,
+      outcomeLead: "What users see:",
+      outcomeBody:
+        "One-sided availability shown · Prompt to sync calendar · System waits before suggesting times",
+      userA: {
+        initial: "Je",
+        name: "Jennifer",
+        badge: "★ Premium",
+        lines: ["📅 Calendar synced", "☕ Coffee · 🥂 Drinks", "Free: Mon, Thu, Fri"],
+      },
+      userB: {
+        initial: "Jo",
+        name: "John",
+        badge: "Free",
+        lines: ["📅 No calendar", "🍽️ Dinner · ☕ Coffee", "No availability set"],
+      },
+      phoneLeft: {
+        viewerLabel: "Jennifer's view",
+        iframeSrc: BUMBLE_FLOW_PROTOTYPE_URL,
+      },
+      phoneRight: {
+        viewerLabel: "John's view",
+        iframeSrc: null,
+        placeholderTitle: "Prototype coming soon",
+        placeholderHint: "Add John’s prototype link here",
+      },
+    },
+    {
+      id: "free-free",
+      tabLabel: "Free × Free",
+      title: "Vibe only — no coordination",
+      description: [
+        "Neither user has unlocked Intent Planner. The system matches on vibe alone with no schedule data, surfacing the upgrade prompt as the natural next step.",
+      ],
+      outcomeLead: "What users see:",
+      outcomeBody:
+        "Vibe match only · No time overlap · Upgrade prompt to unlock Flow",
+      userA: {
+        initial: "M",
+        name: "Maya",
+        badge: "Free",
+        lines: ["📅 No calendar", "☕ Coffee", "No availability set"],
+      },
+      userB: {
+        initial: "R",
+        name: "Ryan",
+        badge: "Free",
+        lines: ["📅 No calendar", "🥂 Drinks", "No availability set"],
+      },
+      phoneLeft: {
+        viewerLabel: "Maya's view",
+        iframeSrc: null,
+        placeholderTitle: "Add Free user prototype",
+        placeholderHint: "Paste Maya's prototype link here",
+      },
+      phoneRight: {
+        viewerLabel: "Ryan's view",
+        iframeSrc: null,
+        placeholderTitle: "Add Free user prototype",
+        placeholderHint: "Paste Ryan's prototype link here",
+      },
     },
   ],
 } as const;
 
-export type BumblePyramidTierSlug =
-  (typeof bumblePrototypeInteractive.pyramidTiers)[number]["slug"];
+export type BumblePrototypeScenarioId =
+  (typeof bumblePrototypeInteractive.prototypeScenarios)[number]["id"];
 
 export const bumbleCoreComponents = {
   eyebrow: "07 · Decisions",

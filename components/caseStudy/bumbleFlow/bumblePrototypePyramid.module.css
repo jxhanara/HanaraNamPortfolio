@@ -1,269 +1,907 @@
-/* Interactive scenario pyramid + prototype embed — Bumble Flow */
+/* Bumble Flow prototype — tabbed scenario pairs (profiles + dual phone embeds) */
 
-.shell {
-  margin-top: clamp(28px, 4vw, 40px);
+/* Single full-width column inside shellMain: aligns eyebrow, title, body, cards, pipeline, tabs. */
+.prototypeRail {
   width: 100%;
   max-width: 100%;
   min-width: 0;
+}
+
+.prototypeInRail {
+  max-width: 100%;
+}
+
+.scenarioRoot {
+  margin-top: clamp(20px, 3vw, 28px);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: visible;
+}
+
+/* —— Prototype structure: dual method cards —— */
+.methodGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(14px, 2vw, 22px);
+  margin-top: clamp(28px, 4vw, 40px);
+  width: 100%;
+}
+
+@media (max-width: 720px) {
+  .methodGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.methodCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: clamp(20px, 3vw, 26px) clamp(18px, 2.5vw, 22px) clamp(22px, 3vw, 28px);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(26, 26, 30, 0.92);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  min-width: 0;
+}
+
+.methodKicker {
+  margin: 0;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 206, 8, 0.78);
+}
+
+.methodTitle {
+  margin: 0;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: clamp(17px, 2vw, 20px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: #fff;
+}
+
+.methodBody {
+  margin: 0;
+  flex: 1 1 auto;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.58;
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.methodTag {
+  margin: 4px 0 0;
+  align-self: flex-start;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: rgba(255, 255, 255, 0.88);
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.prototypeStructureRule {
+  height: 1px;
+  background: var(--color-border-subtle);
+  margin: clamp(28px, 4vw, 40px) 0 clamp(24px, 3.5vw, 32px);
+  width: 100%;
+}
+
+.pipelineSection {
+  width: 100%;
+  margin: clamp(32px, 4.5vw, 48px) 0 0;
+  padding-top: clamp(28px, 4vw, 40px);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.pipelineIntro {
+  margin: 0 0 clamp(18px, 2.5vw, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pipelineIntroBody {
+  margin: 0;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.62;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+/* Shared small header (THE VIBE CODING PIPELINE / THE DIFFERENT USE CASE SCENARIOS). */
+.prototypeMicroEyebrow {
+  margin: 0 0 14px;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: 1.5;
+  color: rgba(200, 200, 205, 0.88);
+}
+
+.tabArea {
+  width: 100%;
+  margin: 0 0 clamp(20px, 3vw, 28px);
+}
+
+/* Full-width tab row: equal columns, equal gaps; each tab’s underline spans its column. */
+.prototypeTabList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: clamp(12px, 2vw, 20px);
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
   box-sizing: border-box;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(32px, 5vw, 48px);
-  align-items: start;
-  width: 100%;
-  min-width: 0;
-}
-
-@media (min-width: 960px) {
-  .grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(28px, 4vw, 48px);
-    align-items: stretch;
-  }
-}
-
-.leftStack {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: clamp(24px, 3vw, 32px);
-  min-width: 0;
-}
-
-/* Pyramid column — no side hint */
-.pyramidColumn {
-  min-width: 0;
-  width: 100%;
-}
-
-/*
- * Image-based pyramid (public/assets/bumbleflow/pyramid_complete.png, 561×429).
- * Three absolute-positioned hit buttons follow each tier’s silhouette via clip-path,
- * so only the tier shape responds to hover/click.
- */
-.pyramidImageWrap {
+.prototypeTabList .tab {
   position: relative;
-  width: min(561px, calc(100vw - 48px));
-  max-width: 100%;
-  aspect-ratio: 561 / 429;
-  margin: 0 auto;
-  filter: drop-shadow(0 10px 28px rgba(0, 0, 0, 0.45));
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  padding: 12px 0 15px;
+  border: none;
+  border-radius: 0;
+  box-sizing: border-box;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.46);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+  text-align: left;
+  text-wrap: balance;
+  cursor: pointer;
+  box-shadow: none;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  transition: color 0.18s ease, border-color 0.18s ease;
 }
 
-@media (min-width: 960px) {
-  .pyramidImageWrap {
-    margin: 0;
-  }
+.prototypeTabList .tab:hover:not(.tabActive) {
+  color: rgba(255, 255, 255, 0.78);
+  border-bottom-color: rgba(255, 255, 255, 0.32);
 }
 
-.pyramidImage {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  user-select: none;
-  -webkit-user-drag: none;
-  pointer-events: none;
+.prototypeTabList .tab:focus-visible {
+  outline: 2px solid #ffce08;
+  outline-offset: 2px;
 }
 
-.tierHit {
+.prototypeTabList .tabActive {
+  color: #fff;
+  background: transparent;
+  border-bottom-color: transparent;
+}
+
+.prototypeTabList .tabActive::after {
+  content: "";
   position: absolute;
   left: 0;
   right: 0;
+  bottom: 0;
+  height: 3px;
+  background: #fff;
+  pointer-events: none;
+}
+
+.prototypeTabList .tabActive:hover {
+  color: #fff;
+}
+
+.tabList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 20px;
+  padding: 0 0 6px;
+  list-style: none;
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.tab {
   margin: 0;
   padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  color: transparent;
+  border: none;
+  background: rgba(36, 36, 40, 0.85);
+  color: rgba(255, 255, 255, 0.55);
   font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
   transition:
-    background 0.15s ease,
-    filter 0.15s ease;
-  -webkit-clip-path: var(--tier-clip);
-  clip-path: var(--tier-clip);
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.tierHit:hover {
-  background: rgba(255, 255, 255, 0.08);
+.tab:hover {
+  color: rgba(255, 255, 255, 0.82);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
-.tierHit:focus-visible {
+.tab:focus-visible {
   outline: 2px solid #ffce08;
-  outline-offset: 0;
+  outline-offset: 2px;
 }
 
-.tierHitActive {
-  background: rgba(255, 255, 255, 0.12);
+.tabActive {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-.tierHitActive:hover {
-  background: rgba(255, 255, 255, 0.16);
+.rule {
+  height: 1px;
+  background: var(--color-border-subtle);
+  margin: 0 0 clamp(22px, 3vw, 28px);
 }
 
-/*
- * Tier bounds (from 561×429 source):
- *   Tier 1: y 0–133 (0% – 31.002%), triangle apex (50%,0) → base at y=133, x ∈ [34.136%, 65.864%]
- *   Tier 2: y 141–280 (32.867% – 65.268%), top 178 wide, bottom 370 wide
- *   Tier 3: y 288–429 (67.133% – 100%), top 370 wide, bottom full
- */
-.hitTier1 {
-  --tier-clip: polygon(50% 0%, 65.864% 100%, 34.136% 100%);
-  top: 0;
-  height: 31.002%;
+.scenarioPanel {
+  margin: 0;
+  padding: 0;
 }
 
-.hitTier2 {
-  --tier-clip: polygon(34.136% 0%, 65.864% 0%, 82.977% 100%, 17.023% 100%);
-  top: 32.867%;
-  height: 32.401%;
+.scenarioPanel:not([hidden]) {
+  display: block;
+  animation: scenarioFadeIn 0.45s ease;
 }
 
-.hitTier3 {
-  --tier-clip: polygon(17.023% 0%, 82.977% 0%, 100% 100%, 0% 100%);
-  top: 67.133%;
-  height: 32.867%;
+.scenarioPanel[hidden] {
+  display: none !important;
 }
 
-.detailBelow {
-  padding-top: 8px;
-  border-top: 1px solid var(--color-border-subtle);
-  min-width: 0;
+@keyframes scenarioFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.detailRow {
-  --detail-badge-fill: #ffec76;
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
+.scenarioTitle {
+  margin: 0 0 12px;
+  font-size: clamp(22px, 3vw, 28px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  color: #fff;
 }
 
-.detailBadge {
-  flex-shrink: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+.scenarioDesc {
+  margin: 0 0 20px;
+  max-width: 100%;
+  font-size: 15px;
+  line-height: 1.62;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.profileBand {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: clamp(12px, 2vw, 20px);
+  align-items: stretch;
+  margin-bottom: clamp(20px, 3vw, 28px);
+}
+
+@media (max-width: 720px) {
+  .profileBand {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .profileArrow {
+    display: none;
+  }
+}
+
+.profileArrow {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
-  font-weight: 700;
-  color: #1a1400;
-  background: var(--detail-badge-fill);
-  border: 2px solid rgba(0, 0, 0, 0.22);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 22px;
+  user-select: none;
 }
 
-.detailCopy {
+.profileCard {
+  border-radius: 16px;
+  border: 1px solid var(--color-border-subtle);
+  background: rgba(22, 22, 26, 0.75);
+  padding: 18px 18px 16px;
+  min-width: 0;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.profileTop {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #fff4c8 0%, #e8d48a 100%);
+  color: #1a1400;
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.avatarCompact {
+  font-size: 13px;
+  letter-spacing: -0.03em;
+}
+
+.profileMeta {
   min-width: 0;
 }
 
-.detailTitle {
-  margin: 0 0 12px;
-  font-size: clamp(18px, 2.4vw, 22px);
+.profileName {
+  margin: 0 0 6px;
+  font-size: 17px;
   font-weight: 600;
+  color: #fff;
   letter-spacing: -0.02em;
-  line-height: 1.28;
-  color: #fff;
 }
 
-.detailLead {
-  margin: 0 0 22px;
-  font-size: 15px;
-  line-height: 1.62;
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #c9a000 0%, #ffce08 55%, #fff4b0 100%);
+  color: #1a1400;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.badgeFree {
+  background: rgba(255, 255, 255, 0.12);
   color: rgba(255, 255, 255, 0.88);
+  border-color: rgba(255, 255, 255, 0.14);
+  text-transform: none;
+  letter-spacing: 0.04em;
 }
 
-.detailSection {
-  margin: 0 0 20px;
-}
-
-.detailSection:last-child {
-  margin-bottom: 0;
-}
-
-.detailSectionTitle {
-  margin: 0 0 10px;
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.35;
-  color: #fff;
-}
-
-.detailList {
+.profileLines {
   margin: 0;
-  padding: 0 0 0 1.15rem;
-  list-style-type: disc;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.detailListItem {
-  margin: 0 0 8px;
-  font-size: 15px;
-  line-height: 1.55;
-  color: rgba(255, 255, 255, 0.86);
+.profileLine {
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.72);
 }
 
-.detailListItem:last-child {
-  margin-bottom: 0;
+.phoneRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(16px, 2.5vw, 28px);
+  align-items: start;
+  justify-items: center;
+  width: 100%;
+  max-width: 100%;
+  margin-inline: 0;
 }
 
-.detailBulletLead {
+@media (max-width: 900px) {
+  .phoneRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+.phoneColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  /* 375px screen + 10px metal border each side (box-sizing on device includes border). */
+  width: min(395px, 100%);
+  max-width: 100%;
+}
+
+.phoneViewerLabel {
+  margin: 0 0 10px;
+  font-size: 10px;
   font-weight: 600;
-  color: #fff;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
 }
 
-.rightPane {
+/* —— Device shell (live): metal border uses box-sizing so inner width = 375px at max size —— */
+.iphoneDevice {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 46px;
+  border: 10px solid #4a4a4e;
+  background: linear-gradient(
+    155deg,
+    #7a7a7e 0%,
+    #4a4a4e 22%,
+    #3a3a3c 48%,
+    #2e2e30 72%,
+    #252527 100%
+  );
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.2) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.35) inset,
+    0 28px 56px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(0, 0, 0, 0.45);
+}
+
+.iphoneDeviceMuted {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 42px;
+  border: 8px solid #2e2e32;
+  background: rgba(22, 22, 26, 0.98);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+}
+
+.iphoneMetal {
+  border-radius: 36px;
+  background: #050505;
+  box-shadow:
+    inset 0 0 0 2px #000,
+    inset 0 0 0 3px rgba(255, 255, 255, 0.05);
+}
+
+.iphoneMetalMuted {
+  border-radius: 34px;
+  background: rgba(8, 8, 10, 0.95);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.iphoneScreen {
   position: relative;
-  min-height: min(640px, 72vh);
-  border-radius: 16px;
-  border: 1px solid var(--color-border-subtle);
-  background: #0a0a0c;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 34px;
   overflow: hidden;
-  overflow-x: hidden;
+  background: #fff;
+  /* Inner glass is exactly the 375×812 design canvas (minus bezel handled by parent padding). */
+  aspect-ratio: 375 / 812;
+  max-height: min(82dvh, 812px);
+}
+
+.iphoneScreenMuted {
+  background: rgba(24, 24, 28, 0.96);
+  aspect-ratio: 375 / 812;
+  max-height: min(78dvh, 720px);
+}
+
+.iphoneNotch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 4;
+  transform: translateX(-50%);
+  width: 118px;
+  height: 30px;
+  background: #000;
+  border-radius: 0 0 20px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  pointer-events: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.iphoneNotchSpeaker {
+  width: 38px;
+  height: 4px;
+  border-radius: 999px;
+  background: #1a1a1a;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+}
+
+.iphoneNotchCam {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #6cb4ff 0%, #1f3a5c 38%, #0a1628 100%);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+}
+
+.iframeViewport {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* Layout box matches scaled paint so overflow:hidden on the screen does not clip the right edge. */
+.iframeScaleClip {
+  isolation: isolate;
+}
+
+.iframeScaleHost {
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.protoIframe {
+  display: block;
+  width: var(--proto-design-w, 375px);
+  height: var(--proto-design-h, 812px);
+  border: 0;
+  background: #fff;
+}
+
+.placeholderInner {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: clamp(16px, 2.5vw, 24px);
-  min-width: 0;
-  width: 100%;
-  max-width: 100%;
-}
-
-.rightPaneEmpty {
-  min-height: min(400px, 50vh);
-  background: rgba(10, 10, 12, 0.65);
-  padding: 0;
-}
-
-/*
- * Portrait phone proportion (~9:16). Height leads: fill the card’s vertical space,
- * width follows aspect ratio so the prototype reads as a phone, not a wide strip.
- */
-.embedFrame {
-  flex: 1 1 auto;
-  width: auto;
-  height: 100%;
-  max-width: 100%;
-  max-height: 100%;
-  aspect-ratio: 9 / 16;
-  min-height: min(560px, 70dvh);
-  border: none;
-  border-radius: 14px;
-  display: block;
-  background: #fff;
-}
-
-.embedCaption {
-  flex-shrink: 0;
-  margin-top: 12px;
-  padding: 6px 2px 0;
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
   text-align: center;
+  padding: 24px 18px;
+  gap: 8px;
 }
+
+.placeholderInner p {
+  margin: 0;
+}
+
+.placeholderEmoji {
+  font-size: 28px;
+  line-height: 1;
+  opacity: 0.85;
+}
+
+.placeholderTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.iphoneScreen:not(.iphoneScreenMuted) .placeholderTitle {
+  color: #111;
+}
+
+.placeholderHint {
+  font-size: 13px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.5);
+  max-width: 220px;
+}
+
+.iphoneScreen:not(.iphoneScreenMuted) .placeholderHint {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.pipelineShell {
+  margin-top: 0;
+  border-radius: 22px;
+  padding: clamp(20px, 3.5vw, 36px) clamp(16px, 3vw, 40px);
+  background: var(--bumble-vibe-surface-gradient);
+  border: 1px solid rgba(253, 199, 0, 0.38);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+  overflow-x: hidden;
+}
+
+/* Viewport for JS scale-to-fit — no horizontal scroll; inner row measured at intrinsic width. */
+.pipelineViewport {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.pipelineFitClip {
+  position: relative;
+  overflow: hidden;
+  margin-inline: auto;
+  min-height: 80px;
+}
+
+.pipelineScaleHost {
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.pipeline {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: clamp(28px, 4.5vw, 56px);
+  width: max-content;
+  margin-inline: auto;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  color: #0a0a0c;
+}
+
+/* Lead block: input pills + arrow + PRD share one stretched height (tops/bottoms align). */
+.pipelineLead {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: clamp(24px, 3.5vw, 48px);
+  flex: 0 0 auto;
+  min-height: 0;
+}
+
+.pipelineLeadColInputs {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  min-height: 0;
+  flex: 0 0 auto;
+  align-self: stretch;
+}
+
+.pipelineLeadColPrd {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 0;
+  flex: 0 1 auto;
+  align-self: stretch;
+}
+
+.pipelineInputStackStretch {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  width: max-content;
+  align-self: stretch;
+}
+
+.pipelineLead .pipelineInputStack {
+  gap: clamp(10px, 1.25vw, 14px);
+}
+
+.pipelineLead .pipelinePill {
+  flex: 1 1 0;
+  min-height: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pipelineLead .pipelineArrowGlyph {
+  align-self: center;
+}
+
+.pipelineLead .pipelinePrdCard {
+  flex: 1 1 auto;
+  min-height: 100%;
+  align-self: stretch;
+  height: auto;
+}
+
+.pipelineCol {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  align-self: stretch;
+}
+
+.pipeline > .pipelineArrowGlyph {
+  align-self: center;
+}
+
+.pipelineInputStack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.5vw, 14px);
+  width: max-content;
+}
+
+.pipelinePill {
+  margin: 0;
+  padding: clamp(14px, 2vw, 18px) clamp(14px, 2vw, 20px);
+  border-radius: 26px;
+  font-size: clamp(13px, 1.35vw, 15px);
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: center;
+  white-space: nowrap;
+  background: linear-gradient(180deg, rgba(253, 199, 0, 0.14) 0%, rgba(255, 255, 255, 0.78) 42%);
+  background-color: rgba(255, 255, 255, 0.72);
+  box-shadow:
+    0 1px 2px -1px rgba(0, 0, 0, 0.1),
+    0 1px 4px rgba(0, 0, 0, 0.08);
+  outline: 2px solid rgba(253, 199, 0, 0.55);
+  outline-offset: -2px;
+}
+
+.pipelineArrowGlyph {
+  flex: 0 0 auto;
+  align-self: center;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1;
+  color: #fdc700;
+  min-width: 1.25em;
+  text-align: center;
+  user-select: none;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.pipelinePrdCard {
+  flex: 0 0 auto;
+  min-width: 26rem;
+  width: max-content;
+  max-width: none;
+  padding: clamp(18px, 2.5vw, 26px) clamp(18px, 2.5vw, 24px) clamp(14px, 2vw, 18px);
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(253, 199, 0, 0.58) 0%, rgba(253, 199, 0, 0.38) 100%);
+  box-shadow:
+    0 4px 8px -5px rgba(0, 0, 0, 0.1),
+    0 12px 20px -4px rgba(0, 0, 0, 0.1);
+  outline: 2px solid #fdc700;
+  outline-offset: -2px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2vw, 20px);
+}
+
+.pipelinePrdTitle {
+  margin: 0;
+  font-size: clamp(17px, 1.8vw, 20px);
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.3;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+}
+
+.pipelinePrdList {
+  margin: 0;
+  padding: clamp(14px, 2vw, 18px) clamp(16px, 2vw, 22px);
+  list-style: none;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.82);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: max-content;
+  min-width: 100%;
+  box-sizing: border-box;
+}
+
+.pipelinePrdList li {
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.45;
+  white-space: nowrap;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+}
+
+.pipelinePrdList li::before {
+  content: "• ";
+  font-weight: 600;
+}
+
+.pipelineDocCard {
+  flex: 0 0 auto;
+  width: max-content;
+  min-width: 12.5rem;
+  min-height: 168px;
+  padding: clamp(20px, 3vw, 28px) clamp(20px, 2.5vw, 28px);
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(253, 199, 0, 0.16) 0%, rgba(255, 255, 255, 0.72) 55%);
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 3px 7px -3px rgba(0, 0, 0, 0.1),
+    0 7px 12px -2px rgba(0, 0, 0, 0.08);
+  outline: 2px solid rgba(253, 199, 0, 0.55);
+  outline-offset: -2px;
+}
+
+.pipelineDocTitle {
+  margin: 0;
+  font-size: clamp(16px, 1.65vw, 19px);
+  font-weight: 700;
+  line-height: 1.32;
+  max-width: 14rem;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+}
+
+.pipelineVibeCard {
+  flex: 0 0 auto;
+  width: max-content;
+  min-width: 11rem;
+  min-height: 168px;
+  padding: clamp(20px, 3vw, 28px) clamp(20px, 2.5vw, 28px);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow:
+    0 4px 8px -5px rgba(0, 0, 0, 0.1),
+    0 12px 20px -4px rgba(0, 0, 0, 0.1);
+  outline: 2px solid #fdc700;
+  outline-offset: -2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pipelineVibeCard::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 17px;
+  background: linear-gradient(135deg, rgba(253, 199, 0, 0.22) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.pipelineVibeLine {
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  white-space: nowrap;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+}
+
