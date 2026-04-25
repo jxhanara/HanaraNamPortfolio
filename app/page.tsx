@@ -63,6 +63,7 @@ export default function HomePage() {
               dateLabel="2025 - 2026"
               imageSrc="/images/uiforaithumbnail.png"
               imageAlt="UI for AI project preview"
+              href="/ui-for-ai-case-study"
             />
           </div>
         </div>

@@ -346,10 +346,16 @@ export function TrippyCaseStudyView() {
           </section>
 
           <section className={cs.nextProject} aria-label="Next case study">
-            <p className={cs.nextProjectEyebrow}>{trippyNextProject.eyebrow}</p>
-            <Link href={trippyNextProject.href} className={cs.nextProjectCard}>
-              <h2 className={cs.nextProjectTitle}>{trippyNextProject.title}</h2>
-              <p className={cs.nextProjectDesc}>{trippyNextProject.description}</p>
+            <Link
+              href={trippyNextProject.href}
+              className={cs.nextProjectCard}
+              aria-label={`${trippyNextProject.title} case study — ${trippyNextProject.description}`}
+            >
+              <div className={cs.nextProjectLead}>
+                <p className={cs.nextProjectEyebrow}>{trippyNextProject.eyebrow}</p>
+                <h2 className={cs.nextProjectTitle}>{trippyNextProject.title}</h2>
+                <p className={cs.nextProjectDesc}>{trippyNextProject.description}</p>
+              </div>
               <div className={cs.nextProjectMedia}>
                 <Image
                   src={trippyNextProject.imageSrc}

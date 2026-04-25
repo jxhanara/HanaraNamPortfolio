@@ -4,16 +4,23 @@ import { bumbleNextProject } from "@/content/bumbleFlowCaseStudy";
 import cs from "../caseStudy.module.css";
 
 export function BumbleNextProjectSection() {
+  const p = bumbleNextProject;
   return (
     <section className={cs.nextProject} aria-label="Next case study">
-      <p className={cs.nextProjectEyebrow}>{bumbleNextProject.eyebrow}</p>
-      <Link href={bumbleNextProject.href} className={cs.nextProjectCard}>
-        <h2 className={cs.nextProjectTitle}>{bumbleNextProject.title}</h2>
-        <p className={cs.nextProjectDesc}>{bumbleNextProject.description}</p>
+      <Link
+        href={p.href}
+        className={cs.nextProjectCard}
+        aria-label={`${p.title} case study — ${p.description}`}
+      >
+        <div className={cs.nextProjectLead}>
+          <p className={cs.nextProjectEyebrow}>{p.eyebrow}</p>
+          <h2 className={cs.nextProjectTitle}>{p.title}</h2>
+          <p className={cs.nextProjectDesc}>{p.description}</p>
+        </div>
         <div className={cs.nextProjectMedia}>
           <Image
-            src={bumbleNextProject.imageSrc}
-            alt={bumbleNextProject.imageAlt}
+            src={p.imageSrc}
+            alt={p.imageAlt}
             fill
             className={cs.nextProjectImage}
             sizes="(max-width: 900px) 100vw, 800px"
@@ -21,8 +28,8 @@ export function BumbleNextProjectSection() {
           />
         </div>
         <div className={cs.nextProjectMeta}>
-          <span>{bumbleNextProject.metaLeft}</span>
-          <span className={cs.nextProjectMetaYear}>{bumbleNextProject.metaYear}</span>
+          <span>{p.metaLeft}</span>
+          <span className={cs.nextProjectMetaYear}>{p.metaYear}</span>
         </div>
       </Link>
     </section>

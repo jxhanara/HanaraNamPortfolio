@@ -76,6 +76,89 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
+/* UI for AI / Context Switching — accent #89C5EA */
+.caseStudyPageAccentUiForAi {
+  --ui-ai-accent: #89c5ea;
+  --ui-ai-quote-bg: #0c1518;
+  /* Wider reading measure so section titles align with body copy below */
+  --ui-for-ai-rag-max: min(56rem, 94%);
+}
+
+.caseStudyPageAccentUiForAi .tocLinkActive {
+  color: #89c5ea;
+}
+
+.caseStudyPageAccentUiForAi .tocLinkActive:hover {
+  color: #a8d4f0;
+}
+
+.caseStudyPageAccentUiForAi .sectionEyebrow {
+  color: #89c5ea;
+  max-width: var(--ui-for-ai-rag-max);
+}
+
+.caseStudyPageAccentUiForAi .nextProjectCard:hover {
+  border-color: rgba(137, 197, 234, 0.45);
+  background: rgba(20, 28, 32, 0.75);
+}
+
+.caseStudyPageAccentUiForAi .h2,
+.caseStudyPageAccentUiForAi .body,
+.caseStudyPageAccentUiForAi .eyebrow,
+.caseStudyPageAccentUiForAi .twoCol {
+  max-width: var(--ui-for-ai-rag-max);
+}
+
+.caseStudyPageAccentUiForAi .body strong {
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
+}
+
+/* HMW / reflection callouts — Bumble card structure, blue (#89C5EA) surface */
+.caseStudyPageAccentUiForAi .hmwCallout {
+  margin-top: clamp(28px, 4vw, 40px);
+  padding: clamp(22px, 3.2vw, 30px) clamp(24px, 4vw, 40px);
+  border-radius: 14px;
+  border: 1px solid rgba(74, 160, 214, 0.42);
+  background: linear-gradient(
+    118deg,
+    #e8f6fd 0%,
+    #c5e8f8 24%,
+    #9fdcf4 48%,
+    #89c5ea 62%,
+    #b0dff2 82%,
+    #eaf6fd 100%
+  );
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14);
+}
+
+.caseStudyPageAccentUiForAi .hmwQuestionLabel {
+  margin: 0 0 clamp(12px, 1.8vw, 16px);
+  text-align: center;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #1f5f82;
+}
+
+.caseStudyPageAccentUiForAi .hmwCalloutText {
+  margin: 0;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: clamp(16px, 1.95vw, 20px);
+  line-height: 1.5;
+  letter-spacing: -0.015em;
+  color: #0f1a22;
+  text-align: center;
+  max-width: 44rem;
+  margin-left: auto;
+  margin-right: auto;
+  text-wrap: balance;
+}
+
 .heroMedia {
   margin-top: clamp(24px, 4vw, 36px);
   padding: 0 clamp(14px, 3vw, 28px) clamp(24px, 4vw, 36px);
@@ -87,6 +170,8 @@
 .shellTrack {
   position: relative;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   padding-bottom: clamp(64px, 10vw, 120px);
 }
 
@@ -94,6 +179,7 @@
   box-sizing: border-box;
   width: 100%;
   max-width: var(--case-study-rail);
+  min-width: 0;
   margin-left: auto;
   margin-right: auto;
   padding-inline: var(--space-x);
@@ -247,6 +333,12 @@
 #reflection .h2,
 #reflection .body {
   max-width: var(--case-study-copy-max);
+}
+
+/* UI for AI: match reflection headings + intro to the same rail as other sections */
+.caseStudyPageAccentUiForAi #reflection .h2,
+.caseStudyPageAccentUiForAi #reflection .body {
+  max-width: var(--ui-for-ai-rag-max);
 }
 
 .h3 {
@@ -1124,14 +1216,48 @@
 }
 
 .nextProjectCard {
-  display: block;
+  display: flex;
+  flex-direction: column;
   text-decoration: none;
   color: inherit;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
   border-radius: var(--radius-card);
   border: 1px solid var(--color-border-subtle);
   background: rgba(24, 24, 27, 0.55);
   overflow: hidden;
   transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+/* Title + description vertically centered in the top band (meta row uses the same vertical rhythm). */
+.nextProjectLead {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  flex: 0 0 auto;
+  min-height: clamp(148px, 24vw, 252px);
+  padding-inline: clamp(20px, 3vw, 28px);
+  padding-block: clamp(16px, 2.5vw, 22px);
+}
+
+.nextProjectLead .nextProjectEyebrow {
+  margin: 0 0 10px;
+  padding: 0;
+  max-width: var(--case-study-section-copy-max);
+}
+
+.nextProjectLead .nextProjectTitle {
+  margin: 0;
+  padding: 0 0 8px;
+  max-width: var(--case-study-section-copy-max);
+}
+
+.nextProjectLead .nextProjectDesc {
+  margin: 0;
+  padding: 0;
+  max-width: var(--case-study-section-copy-max);
 }
 
 .nextProjectCard:hover {
@@ -1164,6 +1290,7 @@
 .nextProjectMedia {
   position: relative;
   width: 100%;
+  flex-shrink: 0;
   aspect-ratio: 1037 / 580;
   background: #0a0a0c;
 }
@@ -1177,6 +1304,7 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+  flex-shrink: 0;
   gap: 12px 24px;
   padding: clamp(16px, 2.5vw, 22px) clamp(20px, 3vw, 28px);
   font-size: 13px;

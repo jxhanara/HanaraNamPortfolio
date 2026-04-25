@@ -10,8 +10,9 @@
   --radius-card: 24px;
   --space-section: clamp(72px, 10vw, 140px);
   --space-x: clamp(24px, 6vw, 80px);
-  /* Trippy case study main column + footer (matches shellMain) */
-  --case-study-rail: min(1180px, calc(100vw - 2 * var(--space-x)));
+  /* Trippy case study main column + footer (matches shellMain). Use 100% not 100vw so the rail
+     never exceeds the scrollable layout width (100vw includes scrollbar gutter on some UAs). */
+  --case-study-rail: min(1180px, 100%);
   /* Tighter measure (reflection intro + dense card copy) */
   --case-study-copy-max: min(38rem, 100%);
   /* ~⅔ of readable rail — section titles + lead paragraphs (not full width) */
@@ -33,7 +34,8 @@
 
 @media (min-width: 1024px) {
   :root {
-    --case-study-rail: min(1180px, calc(100vw - 200px));
+    /* Reserve horizontal space for the fixed TOC; 100% resolves on shellMain’s containing block. */
+    --case-study-rail: min(1180px, calc(100% - 200px));
   }
 }
 

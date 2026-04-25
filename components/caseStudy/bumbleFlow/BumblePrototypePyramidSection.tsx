@@ -155,14 +155,19 @@ function ScenarioPhoneFrame({
     if (!node) return;
 
     const measure = () => {
-      const rect = node.getBoundingClientRect();
-      const cw = rect.width;
-      const ch = rect.height;
+      /* clientWidth/Height match the content box and stay in sync with the absolute iframe layer. */
+      const cw = node.clientWidth;
+      const ch = node.clientHeight;
       if (cw <= 0 || ch <= 0) return;
-      /* Insets shrink scale so content clears the mask; transform:scale does not shrink layout width, so we also clip in a box sized to scaled pixels (see iframeScaleClip). */
-      const insetX = 14;
-      const insetY = 6;
-      const s = Math.min(1, (cw - insetX) / designW, (ch - insetY) / designH);
+      /* Small inset for rounded-corner mask; then hard-fit so scaled paint never exceeds the glass
+         (avoids right-edge clipping when aspect-ratio + max-height makes subpixel width drift). */
+      const insetX = 4;
+      const insetY = 4;
+      let s = Math.min(1, (cw - insetX) / designW, (ch - insetY) / designH);
+      let scaledW = designW * s;
+      let scaledH = designH * s;
+      if (scaledW > cw) s *= cw / scaledW;
+      if (scaledH > ch) s *= ch / scaledH;
       setFrame({ scale: s, cw, ch });
     };
 
@@ -175,10 +180,14 @@ function ScenarioPhoneFrame({
   const s = frame.scale;
   // Outer clip box is designW·scale px wide; transform:scale alone does not shrink layout width.
   const measured = frame.cw > 0 && frame.ch > 0;
-  const scaledW = measured ? designW * s : 0;
-  const scaledH = measured ? designH * s : 0;
-  const clipLeft = measured ? Math.max(0, (frame.cw - scaledW) / 2) : 0;
-  const clipTop = measured ? Math.max(0, (frame.ch - scaledH) / 2) : 0;
+  const scaledW = measured ? Math.min(designW * s, frame.cw) : 0;
+  const scaledH = measured ? Math.min(designH * s, frame.ch) : 0;
+  const sClip =
+    measured && designW > 0 && designH > 0
+      ? Math.min(s, scaledW / designW, scaledH / designH)
+      : s;
+  const clipLeft = measured ? Math.max(0, (frame.cw - designW * sClip) / 2) : 0;
+  const clipTop = measured ? Math.max(0, (frame.ch - designH * sClip) / 2) : 0;
 
   return (
     <div className={py.phoneColumn}>
@@ -204,8 +213,8 @@ function ScenarioPhoneFrame({
                       position: "absolute",
                       left: `${clipLeft}px`,
                       top: `${clipTop}px`,
-                      width: scaledW,
-                      height: scaledH,
+                      width: designW * sClip,
+                      height: designH * sClip,
                       overflow: "hidden",
                     }}
                   >
@@ -214,7 +223,7 @@ function ScenarioPhoneFrame({
                       style={{
                         width: designW,
                         height: designH,
-                        transform: `scale(${s}) translateZ(0)`,
+                        transform: `scale(${sClip}) translateZ(0)`,
                         transformOrigin: "top left",
                       }}
                     >
