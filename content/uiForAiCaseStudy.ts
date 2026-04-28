@@ -59,14 +59,15 @@ export const uiForAiResearch = {
   title: ["Memory exists.", "Recovery doesn't."],
   cards: [
     {
-      type: "Academic Research",
-      linkLabel: "Paper ↗",
-      linkHref: "https://dl.acm.org/doi/10.1145/2702123.2702398",
-      name: "GEM-NI",
+      type: "Adjacent System",
+      linkLabel: "Product ↗",
+      linkHref: "https://docs.pieces.app/products/meet-pieces",
+      name: "Pieces",
       description:
-        "A graph-based design tool that supports parallel exploration of alternatives — branching, merging, recalling history, and comparing design states simultaneously. Designers naturally work non-linearly, revisiting and recombining earlier ideas, but most tools force a single forward path.",
+        "A persistent, context-aware workflow engine with three core pillars: a Long-Term Memory Engine that passively captures workflow context across websites, code, and apps; a Copilot grounded in that live context; and a Workstream Activity timeline with periodic roll-ups of past activity. Users jump back into a previous workflow without restating context — the system already knows where they left off.",
       quote:
-        "\"creating alternatives from history is superior because I like the idea of being able to pick something from the actual history, which could contain ideas that were not further developed.\"",
+        "\"You don't have to keep explaining context like you do with other AI tools.\"",
+      visualLabel: "Pieces timeline and summaries reference",
     },
     {
       type: "Adjacent System",
@@ -80,15 +81,14 @@ export const uiForAiResearch = {
       visualLabel: "Rewind AI timeline reference",
     },
     {
-      type: "Adjacent System",
-      linkLabel: "Product ↗",
-      linkHref: "https://docs.pieces.app/products/meet-pieces",
-      name: "Pieces",
+      type: "Academic Research",
+      linkLabel: "Paper ↗",
+      linkHref: "https://dl.acm.org/doi/10.1145/2702123.2702398",
+      name: "GEM-NI",
       description:
-        "A persistent, context-aware workflow engine with three core pillars: a Long-Term Memory Engine that passively captures workflow context across websites, code, and apps; a Copilot grounded in that live context; and a Workstream Activity timeline with periodic roll-ups of past activity. Users jump back into a previous workflow without restating context — the system already knows where they left off.",
+        "A graph-based design tool that supports parallel exploration of alternatives — branching, merging, recalling history, and comparing design states simultaneously. Designers naturally work non-linearly, revisiting and recombining earlier ideas, but most tools force a single forward path.",
       quote:
-        "\"You don't have to keep explaining context like you do with other AI tools.\"",
-      visualLabel: "Pieces timeline and summaries reference",
+        "\"creating alternatives from history is superior because I like the idea of being able to pick something from the actual history, which could contain ideas that were not further developed.\"",
     },
   ],
   synthesis: {
@@ -98,10 +98,66 @@ export const uiForAiResearch = {
   },
 } as const;
 
+export const uiForAiConceptTesting = {
+  eyebrow: "02b · Concept Testing",
+  title: "How we narrowed to what mattered",
+  intro:
+    "We ran two rounds of sketching across the team. The first round helped us understand what kinds of structure felt helpful versus burdensome, and gave us clear signal on what to cut.",
+  ruledOut: [
+    {
+      name: "Momentum",
+      verdict: "Ruled out",
+      reason:
+        "Tabs, clusters, and linked chats created too much visual overhead. Useful ideas were buried inside a structure that felt like a second app rather than something that fits into existing flow.",
+    },
+    {
+      name: "Timethread",
+      verdict: "Ruled out",
+      reason:
+        "Users liked entry points into long chats, but time turned out to be the wrong anchor. Most people do not remember sessions by day, and a calendar view felt limiting as usage and project complexity scaled.",
+    },
+  ],
+  dividerLabel: "Concepts that moved forward",
+  concepts: [
+    {
+      id: "01",
+      name: "Contexts",
+      imageAlt:
+        "Contexts sketch showing AI-detected workflow threads spanning multiple chats",
+      imageKey: "contexts",
+      description:
+        "AI-detected workflow threads spanning multiple chats. Users switch between recent contexts and jump to the last instance without losing their place.",
+    },
+    {
+      id: "02",
+      name: "Re-Entry Panel",
+      imageAlt:
+        "Re-Entry Panel sketch showing AI summary, key topics, and next steps panel",
+      imageKey: "reentry",
+      description:
+        "An always-updated AI recap of the last session, with key topics and suggested next steps, that opens automatically when returning to an older chat.",
+    },
+    {
+      id: "03",
+      name: "Thematic Chat Grouping",
+      imageAlt:
+        "Thematic Chat Grouping sketch showing chats clustered by shared themes with summaries",
+      imageKey: "thematic",
+      description:
+        "AI clusters chats by shared theme with summaries and dates, so users can trace ideas and jump between connected threads.",
+    },
+  ],
+  convergence: {
+    label: "How we converged",
+    text: "Rather than picking one concept, the team used dot-votes and recognized that each direction solved a different slice of the same problem. We moved forward by integrating the strongest elements of all three into a single foundation for lo-fi prototyping and user testing.",
+  },
+} as const;
+
 export const uiForAiToc = [
   { id: "overview", label: "Overview" },
   { id: "problem", label: "Problem" },
   { id: "research", label: "Research" },
+  { id: "concept-testing", label: "Concepts" },
   { id: "solution", label: "Solution" },
   { id: "testing", label: "Testing" },
   { id: "reflection", label: "Reflection" },

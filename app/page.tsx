@@ -7,6 +7,7 @@ import {
   SiteNav,
 } from "@/components/home";
 import { BUMBLE_FLOW_STRIP_VIDEOS } from "@/components/home/bumbleFlowStrip";
+import { TRIPPY_STRIP_VIDEOS } from "@/components/home/trippyStrip";
 import styles from "@/components/home/styles.module.css";
 
 const TRIPPY_DESC = (
@@ -41,6 +42,11 @@ export default function HomePage() {
               href="/trippy-case-study"
             />
           </div>
+          <MediaStrip
+            videos={TRIPPY_STRIP_VIDEOS}
+            variant="trippy"
+            ariaLabel="Trippy prototype recordings"
+          />
           <div className={styles.projectBlock}>
             <ProjectCard
               title="Bumble Flow"

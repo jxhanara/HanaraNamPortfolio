@@ -7,6 +7,7 @@ import { SiteNav } from "@/components/home/SiteNav";
 import {
   uiForAiCaseStudyMeta,
   uiForAiClosingReflection,
+  uiForAiConceptTesting,
   uiForAiHmw,
   uiForAiOverviewLinks,
   uiForAiResearch,
@@ -18,6 +19,9 @@ import cs from "../caseStudy.module.css";
 import u from "./uiForAiCaseStudy.module.css";
 import rewindAiImage from "@/assets/uiforai/rewindai.jpg";
 import piecesAppImage from "@/assets/uiforai/piecesapp.png";
+import contextsConceptImage from "@/assets/uiforai/contexts.JPG";
+import reentryConceptImage from "@/assets/uiforai/reentrypanel.JPG";
+import thematicConceptImage from "@/assets/uiforai/thematicchatgrouping.JPG";
 
 function PhIconRect() {
   return (
@@ -191,6 +195,81 @@ export function UiForAiCaseStudyView() {
                 <div className={u.insightLabel}>{uiForAiResearch.synthesis.label}</div>
                 <div className={u.insightTitle}>{uiForAiResearch.synthesis.title}</div>
                 <p className={u.insightBody}>{uiForAiResearch.synthesis.body}</p>
+              </div>
+            </section>
+
+            <section id="concept-testing" className={cs.section}>
+              <p className={cs.sectionEyebrow}>{uiForAiConceptTesting.eyebrow}</p>
+              <h2 className={cs.h2}>{uiForAiConceptTesting.title}</h2>
+              <p className={cs.body}>{uiForAiConceptTesting.intro}</p>
+
+              <div className={u.conceptTestingRuledOutGrid}>
+                {uiForAiConceptTesting.ruledOut.map((item) => (
+                  <article key={item.name} className={u.conceptTestingRuledOutCard}>
+                    <div className={u.conceptTestingRuledOutTop}>
+                      <p className={u.conceptTestingRuledOutName}>{item.name}</p>
+                      <p className={u.conceptTestingRuledOutVerdict}>{item.verdict}</p>
+                    </div>
+                    <p className={u.conceptTestingRuledOutReason}>{item.reason}</p>
+                  </article>
+                ))}
+              </div>
+
+              <div className={u.conceptTestingDivider}>
+                <p className={u.conceptTestingDividerLabel}>{uiForAiConceptTesting.dividerLabel}</p>
+                <div className={u.conceptTestingDividerLine} />
+              </div>
+
+              <div className={u.conceptTestingGrid}>
+                {uiForAiConceptTesting.concepts.map((concept) => {
+                  const conceptImage =
+                    concept.imageKey === "contexts"
+                      ? contextsConceptImage
+                      : concept.imageKey === "reentry"
+                        ? reentryConceptImage
+                        : thematicConceptImage;
+
+                  return (
+                    <article key={concept.id} className={u.conceptTestingCard}>
+                      <div className={u.conceptTestingImageWrap}>
+                        <Image
+                          src={conceptImage}
+                          alt={concept.imageAlt}
+                          fill
+                          className={u.conceptTestingImage}
+                          sizes="(max-width: 900px) 100vw, 33vw"
+                        />
+                      </div>
+                      <div className={u.conceptTestingCardBody}>
+                        <p className={u.conceptTestingCardTag}>Concept {concept.id}</p>
+                        <p className={u.conceptTestingCardName}>{concept.name}</p>
+                        <p className={u.conceptTestingCardDesc}>{concept.description}</p>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+
+              <div className={u.conceptTestingConverge}>
+                <div className={u.conceptTestingConvergeIcon} aria-hidden>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path
+                      d="M2 7L5 10L12 3"
+                      stroke="#89c5ea"
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p className={u.conceptTestingConvergeLabel}>
+                    {uiForAiConceptTesting.convergence.label}
+                  </p>
+                  <p className={u.conceptTestingConvergeText}>
+                    {uiForAiConceptTesting.convergence.text}
+                  </p>
+                </div>
               </div>
             </section>
 
