@@ -79,7 +79,11 @@
 /* UI for AI / Context Switching — accent #89C5EA */
 .caseStudyPageAccentUiForAi {
   --ui-ai-accent: #89c5ea;
-  --ui-ai-quote-bg: #0c1518;
+  /* Brighter blue-tint surfaces for quote / converge / testing pivot cards */
+  --ui-ai-quote-bg: #152a38;
+  --ui-ai-quote-border: rgba(137, 197, 234, 0.42);
+  --ui-ai-quote-icon-bg: rgba(18, 42, 58, 0.95);
+  --ui-ai-quote-icon-border: rgba(137, 197, 234, 0.35);
   /* Wider reading measure so section titles align with body copy below */
   --ui-for-ai-rag-max: min(56rem, 94%);
 }

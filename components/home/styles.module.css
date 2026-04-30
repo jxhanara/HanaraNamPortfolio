@@ -13,6 +13,11 @@
   width: 100%;
 }
 
+/* Above Leave-a-Mark page-synced layer (z-index 1240) so nav + visitor pill stay clickable while editing. */
+.navOuterLeaveAMark {
+  z-index: 1320;
+}
+
 .navInner {
   display: flex;
   justify-content: center;
@@ -30,7 +35,19 @@
   gap: 24px;
   width: 100%;
   max-width: var(--content-max);
-  padding: 25px var(--space-x) 24px;
+  /* Matches edit mode so entering Leave-a-Mark does not shift the bar vertically when the glow appears. */
+  padding: 42px var(--space-x) 22px;
+}
+
+/* Leave-a-Mark editing: same max-width rail as main; vertical padding inherited from .navContent. */
+.navContentLeaveAMark {
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.navContentLeaveAMark .logo {
+  flex: 0 0 auto;
 }
 
 .logo {
@@ -60,6 +77,75 @@
   align-items: center;
   justify-content: flex-end;
   gap: 24px;
+}
+
+/* Leave-a-Mark editing: same as default nav — tight group on the right, 24px between each link + pill. */
+.navLinksLeaveAMark {
+  flex-wrap: nowrap;
+  flex: 1 1 auto;
+  min-width: 0;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 24px;
+}
+
+.navVisitorPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  max-width: min(220px, 42vw);
+  padding: 7px 14px 7px 9px;
+  margin: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(18, 18, 22, 0.92);
+  color: rgba(230, 230, 235, 0.95);
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.navVisitorPill:hover {
+  background: rgba(28, 28, 34, 0.96);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.navVisitorPillSwatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.08),
+    0 0 12px rgba(140, 175, 255, 0.32),
+    0 4px 16px rgba(0, 0, 0, 0.45);
+}
+
+.navVisitorPillName {
+  flex: 1;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: rgba(210, 210, 218, 0.95);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.navVisitorPillCaret {
+  flex-shrink: 0;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid rgba(175, 175, 185, 0.9);
+  margin-left: 2px;
+  translate: 0 1px;
 }
 
 .navLink {
@@ -637,5 +723,12 @@
   .navLinks {
     width: 100%;
     justify-content: flex-start;
+  }
+
+  .navLinksLeaveAMark {
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: flex-start;
+    row-gap: 12px;
   }
 }

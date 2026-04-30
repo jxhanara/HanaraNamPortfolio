@@ -12,6 +12,7 @@ import {
   uiForAiOverviewLinks,
   uiForAiResearch,
   uiForAiNextProject,
+  uiForAiTesting,
   uiForAiToc,
 } from "@/content/uiForAiCaseStudy";
 import homeStyles from "@/components/home/styles.module.css";
@@ -28,6 +29,21 @@ function PhIconRect() {
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
       <rect x="1" y="1" width="12" height="12" rx="1" stroke="#333" strokeWidth="1.2" />
     </svg>
+  );
+}
+
+function TestingMediaPlaceholder({ label }: { label: string }) {
+  return (
+    <article className={`${u.conceptTestingCard} ${u.testingMediaTight}`}>
+      <div className={u.conceptTestingImageWrap}>
+        <div className={u.testingMediaPlaceholder}>
+          <div className={u.phIcon}>
+            <PhIconRect />
+          </div>
+          <span>{label}</span>
+        </div>
+      </div>
+    </article>
   );
 }
 
@@ -350,60 +366,100 @@ export function UiForAiCaseStudyView() {
             </section>
 
             <section id="testing" className={cs.section}>
-              <p className={cs.sectionEyebrow}>04 · Testing</p>
-              <h2 className={cs.h2}>Two rounds, clearer focus</h2>
-              <p className={cs.body}>
-                We tested three approaches — Re-Entry Panel, AI Topics, and Task Contexts. Task
-                Contexts let users define named tasks and tag chats accordingly. Conceptually
-                interesting, but it introduced too much setup overhead.
-              </p>
+              <p className={cs.sectionEyebrow}>{uiForAiTesting.eyebrow}</p>
+              <h2 className={cs.h2}>
+                {uiForAiTesting.titleLines[0]}
+                <br />
+                {uiForAiTesting.titleLines[1]}
+              </h2>
+              <p className={cs.body}>{uiForAiTesting.intro}</p>
 
-              <div className={u.quoteTrio}>
-                <p className={u.testingQuote}>
-                  Users want automatic context recovery, not manual organization.
-                </p>
-                <p className={u.testingQuote}>
-                  Reducing scope improved clarity and usability.
-                </p>
-                <p className={u.testingQuote}>
-                  Context is most helpful directly in the chat, at the right moment.
-                </p>
-              </div>
-
-              <div className={u.roundRow}>
-                <div>
-                  <div className={u.roundLabel}>Round 1</div>
-                  <div className={u.roundTitle}>Three directions, one clear winner</div>
-                  <p className={u.roundBody}>
-                    Users favored the Re-Entry Panel and AI Topics — both felt immediately useful with
-                    zero setup. Task Contexts added too much cognitive overhead. Key signal: users
-                    prefer AI-assisted reorientation that requires no configuration.
-                  </p>
-                </div>
-                <div className={`${u.imgPlaceholder} ${u.medium} ${u.roundPlaceholderTight}`}>
-                  <div className={u.phIcon}>
-                    <PhIconRect />
+              <div className={u.testingFlow}>
+                <div className={u.testingStep}>
+                  <div className={u.testingSpine}>
+                    <div className={u.testingDot} />
+                    <div className={u.testingLine} />
                   </div>
-                  Round 1 — Task Contexts prototype screens
-                </div>
-              </div>
-
-              <div className={u.roundRow}>
-                <div className={`${u.imgPlaceholder} ${u.medium} ${u.roundPlaceholderTight}`}>
-                  <div className={u.phIcon}>
-                    <PhIconRect />
+                  <div className={u.testingStepContent}>
+                    <div className={u.conceptTag}>{uiForAiTesting.baseline.tag}</div>
+                    <p className={u.roundTitle}>{uiForAiTesting.baseline.title}</p>
+                    <p className={u.roundBody}>{uiForAiTesting.baseline.body}</p>
+                    <div className={u.testingBaselineCard}>
+                      <div className={u.testingBcCell}>
+                        <p className={u.testingBcNum}>{uiForAiTesting.baseline.statValue}</p>
+                        <p className={u.testingBcLabel}>{uiForAiTesting.baseline.statLabel}</p>
+                      </div>
+                      <div className={u.testingBcDivider} aria-hidden />
+                      <div className={`${u.testingBcCell} ${u.testingBcContext}`}>
+                        <p className={u.roundBody}>{uiForAiTesting.baseline.statContext}</p>
+                      </div>
+                      <p className={u.testingBcNote}>{uiForAiTesting.baseline.footnote}</p>
+                    </div>
                   </div>
-                  Round 2 — refined Re-Entry Panel screens
                 </div>
-                <div>
-                  <div className={u.roundLabel}>Round 2</div>
-                  <div className={u.roundTitle}>Next Steps needed a new home</div>
-                  <p className={u.roundBody}>
-                    Users saw Next Steps less as a re-entry tool and more as a prompt for what to do
-                    next. So they needed to live closer to the action — in the chat input area rather
-                    than the side panel. Context-setting and forward momentum became distinct, each
-                    handled in the right place.
-                  </p>
+
+                <div className={u.testingStep}>
+                  <div className={u.testingSpine}>
+                    <div className={u.testingDot} />
+                    <div className={u.testingLine} />
+                  </div>
+                  <div className={u.testingStepContent}>
+                    <div className={u.conceptTag}>{uiForAiTesting.round1.tag}</div>
+                    <p className={u.roundTitle}>{uiForAiTesting.round1.title}</p>
+                    <p className={u.roundBody}>{uiForAiTesting.round1.body}</p>
+                    <div className={u.testingChipRow}>
+                      {uiForAiTesting.round1.chips.map((chip) => (
+                        <span key={chip} className={u.testingChip}>
+                          {chip}
+                        </span>
+                      ))}
+                    </div>
+                    <TestingMediaPlaceholder label={uiForAiTesting.round1.mediaLabel} />
+                    <div className={`${u.conceptTestingConverge} ${u.testingMediaTight}`}>
+                      <div className={u.conceptTestingConvergeIcon} aria-hidden>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                          <path
+                            d="M2 7L5 10L12 3"
+                            stroke="#89c5ea"
+                            strokeWidth="1.4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className={u.conceptTestingConvergeLabel}>
+                          {uiForAiTesting.round1.pivot.label}
+                        </p>
+                        <p className={u.conceptTestingConvergeText}>
+                          {uiForAiTesting.round1.pivot.text}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={u.testingStep}>
+                  <div className={u.testingSpine}>
+                    <div className={u.testingDot} />
+                  </div>
+                  <div className={u.testingStepContent}>
+                    <div className={u.conceptTag}>{uiForAiTesting.round2.tag}</div>
+                    <p className={u.roundTitle}>{uiForAiTesting.round2.title}</p>
+                    <p className={u.roundBody}>{uiForAiTesting.round2.body}</p>
+                    <div className={u.testingStatBar}>
+                      {uiForAiTesting.round2.stats.map((stat) => (
+                        <div key={stat.label} className={u.testingStatCell}>
+                          <p className={u.testingStatNum}>
+                            {stat.number}
+                            <span className={u.testingStatSuffix}>{stat.suffix}</span>
+                          </p>
+                          <p className={u.testingStatLabel}>{stat.label}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <TestingMediaPlaceholder label={uiForAiTesting.round2.mediaLabel} />
+                  </div>
                 </div>
               </div>
             </section>

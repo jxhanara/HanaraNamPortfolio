@@ -102,7 +102,7 @@ export const uiForAiConceptTesting = {
   eyebrow: "02b · Concept Testing",
   title: "How we narrowed to what mattered",
   intro:
-    "We ran two rounds of sketching across the team. The first round helped us understand what kinds of structure felt helpful versus burdensome, and gave us clear signal on what to cut.",
+    "We ran two rounds of concept sketching across the team. The first round helped us understand what kinds of structure felt helpful versus burdensome, and gave us clear direction on what to cut.",
   ruledOut: [
     {
       name: "Momentum",
@@ -150,6 +150,53 @@ export const uiForAiConceptTesting = {
   convergence: {
     label: "How we converged",
     text: "Rather than picking one concept, the team used dot-votes and recognized that each direction solved a different slice of the same problem. We moved forward by integrating the strongest elements of all three into a single foundation for lo-fi prototyping and user testing.",
+  },
+} as const;
+
+export const uiForAiTesting = {
+  eyebrow: "04 · Testing",
+  titleLines: ["From baseline", "to breakthrough"] as const,
+  intro:
+    "We started by measuring the problem directly — then ran two rounds of testing to close the gap.",
+  baseline: {
+    tag: "Baseline",
+    title: "Measuring the problem first",
+    body:
+      "Before building anything, we gave participants a standard AI chat interface with a long scrolling conversation and asked them to find a specific piece of information. We timed how long it took — scrolling up and down, backtracking, and using Cmd+F with multiple failed attempts.",
+    statValue: "~56s",
+    statLabel: "Average re-entry time with standard chat",
+    statContext:
+      "Scrolling, backtracking, repeated Cmd+F searches with no clear anchor point",
+    footnote: "This gave us a concrete number to design against.",
+  },
+  round1: {
+    tag: "Round 1 — Lo-Fi Prototype",
+    title: "Combining concepts, testing structure",
+    body:
+      "After team discussions, we synthesized our three concept sketches — Contexts, the Re-Entry Panel, and Thematic Chat Grouping — into a single lo-fi prototype. We tested this with participants to validate the core structure and identify what needed to change before moving to hi-fi.",
+    chips: [
+      "Re-entry orientation landed well",
+      "Next Steps felt action-oriented, not summary",
+      "Panel placement needed refinement",
+    ] as const,
+    mediaLabel: "Round 1 — lo-fi prototype screens",
+    pivot: {
+      label: "Design pivot from Round 1",
+      text:
+        "Users treated Next Steps as a prompt to act on immediately — not a summary to read. It moved out of the panel and into the chat input area where the action was actually happening.",
+    },
+  },
+  round2: {
+    tag: "Round 2 — Hi-Fi Prototype",
+    title: "Validating with the real thing",
+    body:
+      "With the pivot applied, we rebuilt the prototype in hi-fi and repeated the same task-based timing test against the baseline. Participants were given the same long-chat task — find a specific piece of information — this time with the Re-Entry Panel available.",
+    stats: [
+      { number: "29", suffix: "s", label: "Avg. re-entry time with hi-fi panel" },
+      { number: "~48", suffix: "%", label: "Faster than the 56s baseline" },
+      { number: "16", suffix: "ppl", label: "Participants across both rounds" },
+    ] as const,
+    mediaLabel: "Round 2 — hi-fi prototype screens",
   },
 } as const;
 

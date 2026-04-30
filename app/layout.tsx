@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Cormorant, DM_Sans, Instrument_Serif } from "next/font/google";
+import { Caveat, Cormorant, DM_Sans, Instrument_Serif } from "next/font/google";
+import { LeaveAMarkRoot } from "@/components/leaveAMark/LeaveAMarkRoot";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -27,6 +28,13 @@ const displaySerif = Cormorant({
   display: "swap",
 });
 
+const caveat = Caveat({
+  subsets: ["latin"],
+  variable: "--font-caveat",
+  weight: ["400", "700"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Hanara Nam — Portfolio",
   description:
@@ -41,9 +49,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${instrumentSerif.variable} ${displaySerif.variable}`}
+      className={`${dmSans.variable} ${instrumentSerif.variable} ${displaySerif.variable} ${caveat.variable}`}
     >
-      <body className={dmSans.className}>{children}</body>
+      <body className={dmSans.className}>
+        <LeaveAMarkRoot>{children}</LeaveAMarkRoot>
+      </body>
     </html>
   );
 }
