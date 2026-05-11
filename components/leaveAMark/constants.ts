@@ -10,8 +10,15 @@ export const GRADIENTS = [
 export type GradientId = (typeof GRADIENTS)[number]["id"];
 export type Gradient = (typeof GRADIENTS)[number];
 
-export const STORAGE_KEY = "leaveAMark.v1";
+/** Legacy flat card + annotations blob (migrated once, then removed). */
+export const LEGACY_CARD_STORAGE_KEY = "leaveAMark.v1";
+
+export const ACTIVE_VISITOR_ID_KEY = "leaveAMark.activeVisitorId";
 export const TOOLBAR_POS_KEY = "leaveAMark.toolbarPos";
+
+export function visitorStorageKey(visitorId: string): string {
+  return `hanara-portfolio-visitor-${visitorId}`;
+}
 
 export const NAME_FIRST = [
   "Cedar",

@@ -1,16 +1,23 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { AnnotationItem } from "./AnnotationItem";
 import { Character } from "./Character";
-import type { CharacterPose } from "./Character";
 import { CharacterLauncher } from "./CharacterLauncher";
 import { EdgeGlow, type EdgeGlowMode } from "./EdgeGlow";
 import { gradById, gradCSS, TOOLBAR_POS_KEY } from "./constants";
 import styles from "./LeaveAMark.module.css";
 import type { GradientId } from "./constants";
+import { normalizePagePath } from "./pagePath";
 import { PenCanvas } from "./PenCanvas";
-import { loadCard, saveCard } from "./storage";
+import {
+  loadActiveVisitorCard,
+  loadAnnotationsForPage,
+  saveNewVisitorSession,
+  savePageAnnotations,
+  saveVisitorCardMeta,
+} from "./storage";
 import { Toast } from "./Toast";
 import { Toolbar, type ToolId } from "./Toolbar";
 import { VisitorCard } from "./VisitorCard";
@@ -19,15 +26,29 @@ import type { Stroke } from "./types";
 import type { ToolbarPos } from "./types";
 import type { VisitorCard as VisitorCardT } from "./types";
 import { useLeaveAMarkNavOptional } from "./LeaveAMarkNavContext";
+import { useLeaveAMarkSession } from "./LeaveAMarkSessionContext";
 
-type Phase =
-  | "idle"
-  | "drawingGlow"
-  | "centering"
-  | "cardIn"
-  | "card"
-  | "editing"
-  | "exiting";
+function readToolbarPosFromStorage(): ToolbarPos {
+  try {
+    const tp = JSON.parse(localStorage.getItem(TOOLBAR_POS_KEY) || "null");
+    if (tp && typeof tp.x === "number" && typeof tp.y === "number") {
+      return {
+        x: tp.x,
+        y: tp.y,
+        dock: tp.dock === "left" || tp.dock === "right" ? tp.dock : "none",
+      };
+    }
+  } catch {
+    /* ignore */
+  }
+  const w = 540;
+  const h = 64;
+  return {
+    x: Math.max(12, (window.innerWidth - w) / 2),
+    y: window.innerHeight - h - 36,
+    dock: "none",
+  };
+}
 
 function isPlacementUiTarget(target: EventTarget | null): boolean {
   if (!(target instanceof Element)) return false;
@@ -35,31 +56,54 @@ function isPlacementUiTarget(target: EventTarget | null): boolean {
   return Boolean(
     target.closest("[data-lam-ui]") ||
       target.closest("[data-lam-item]") ||
-      target.closest("a") ||
       target.closest("button"),
   );
 }
 
 export function LeaveAMark() {
+  const {
+    phase,
+    setPhase,
+    characterPos,
+    setCharacterPos,
+    characterPose,
+    setCharacterPose,
+    tool,
+    setTool,
+    showVisitorEditor,
+    setShowVisitorEditor,
+  } = useLeaveAMarkSession();
+
   const [desktop, setDesktop] = useState(false);
   const [hydrated, setHydrated] = useState(false);
-  const [phase, setPhase] = useState<Phase>("idle");
-  const [card, setCard] = useState<VisitorCardT | null>(null);
+  const [card, setCard] = useState<VisitorCardT | null>(() =>
+    typeof window === "undefined" ? null : loadActiveVisitorCard(),
+  );
   const cardRef = useRef<VisitorCardT | null>(null);
   cardRef.current = card;
-  const [characterPos, setCharacterPos] = useState<"corner" | "center">("corner");
-  const [characterPose, setCharacterPose] = useState<CharacterPose>("idle");
-  const [tool, setTool] = useState<string>("pointer");
   const [items, setItems] = useState<AnnItem[]>([]);
   const [strokes, setStrokes] = useState<Stroke[]>([]);
-  const [toolbarPos, setToolbarPos] = useState<ToolbarPos | null>(null);
+  const [toolbarPos, setToolbarPos] = useState<ToolbarPos>(() =>
+    typeof window === "undefined"
+      ? { x: 12, y: 400, dock: "none" }
+      : readToolbarPosFromStorage(),
+  );
   const [toast, setToast] = useState<{ text: string } | null>(null);
-  const [showVisitorEditor, setShowVisitorEditor] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [docHeight, setDocHeight] = useState(0);
 
+  const pathname = usePathname() || "/";
+  const pageKey = useMemo(() => normalizePagePath(pathname), [pathname]);
+  const itemsRef = useRef(items);
+  const strokesRef = useRef(strokes);
+  const prevPageKeyRef = useRef<string | null>(null);
+  const prevCardIdRef = useRef<string | null>(null);
+  const isSwitchingPage = useRef(false);
+  const prevSlotRef = useRef<{ visitorName: string; gradientCSS: string } | null>(null);
+
   const lamNav = useLeaveAMarkNavOptional();
   const gradient = useMemo(() => gradById(card?.color), [card?.color]);
+  const gradientCSS = useMemo(() => gradCSS(gradient), [gradient]);
 
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 768px)");
@@ -70,38 +114,75 @@ export function LeaveAMark() {
   }, []);
 
   useEffect(() => {
-    const c = loadCard();
-    if (c) {
-      setCard(c);
-      setItems(c.annotations?.items ?? []);
-      setStrokes(c.annotations?.strokes ?? []);
-    }
-    let tp: ToolbarPos | null = null;
-    try {
-      tp = JSON.parse(localStorage.getItem(TOOLBAR_POS_KEY) || "null");
-    } catch {
-      tp = null;
-    }
-    if (tp && typeof tp.x === "number" && typeof tp.y === "number") {
-      setToolbarPos({
-        x: tp.x,
-        y: tp.y,
-        dock: tp.dock === "left" || tp.dock === "right" ? tp.dock : "none",
-      });
-    } else {
-      const w = 540;
-      const h = 64;
-      setToolbarPos({
-        x: Math.max(12, (window.innerWidth - w) / 2),
-        y: window.innerHeight - h - 36,
-        dock: "none",
-      });
-    }
+    itemsRef.current = items;
+    strokesRef.current = strokes;
+  }, [items, strokes]);
+
+  useEffect(() => {
     setHydrated(true);
   }, []);
 
+  useLayoutEffect(() => {
+    if (!hydrated) return;
+
+    isSwitchingPage.current = true;
+
+    const cid = cardRef.current?.id ?? null;
+
+    if (!cid) {
+      if (prevCardIdRef.current && prevPageKeyRef.current) {
+        savePageAnnotations(prevCardIdRef.current, prevPageKeyRef.current, {
+          items: itemsRef.current.map(({ _fresh, ...r }) => r),
+          strokes: strokesRef.current.map((s) => {
+            const { _tmp, ...r } = s;
+            return r;
+          }),
+        });
+      }
+      prevCardIdRef.current = null;
+      prevPageKeyRef.current = null;
+      setItems([]);
+      setStrokes([]);
+      isSwitchingPage.current = false;
+      return;
+    }
+
+    const prevCid = prevCardIdRef.current;
+    const prevPk = prevPageKeyRef.current;
+
+    if (prevCid && prevPk) {
+      if (prevCid === cid && prevPk !== pageKey) {
+        savePageAnnotations(prevCid, prevPk, {
+          items: itemsRef.current.map(({ _fresh, ...r }) => r),
+          strokes: strokesRef.current.map((s) => {
+            const { _tmp, ...r } = s;
+            return r;
+          }),
+        });
+      } else if (prevCid !== cid) {
+        savePageAnnotations(prevCid, prevPk, {
+          items: itemsRef.current.map(({ _fresh, ...r }) => r),
+          strokes: strokesRef.current.map((s) => {
+            const { _tmp, ...r } = s;
+            return r;
+          }),
+        });
+      }
+    }
+
+    prevCardIdRef.current = cid;
+    prevPageKeyRef.current = pageKey;
+
+    const bucket = loadAnnotationsForPage(cid, pageKey);
+    setItems(bucket.items);
+    setStrokes(bucket.strokes);
+
+    Promise.resolve().then(() => {
+      isSwitchingPage.current = false;
+    });
+  }, [hydrated, card?.id, pageKey]);
+
   useEffect(() => {
-    if (!toolbarPos) return;
     try {
       localStorage.setItem(TOOLBAR_POS_KEY, JSON.stringify(toolbarPos));
     } catch {
@@ -118,24 +199,26 @@ export function LeaveAMark() {
   useEffect(() => {
     if (!lamNav) return;
     if (phase === "editing" && card && desktop && hydrated) {
-      lamNav.setSlot({
-        visitorName: card.name,
-        gradientCSS: gradCSS(gradient),
-      });
+      const next = { visitorName: card.name, gradientCSS };
+      const prev = prevSlotRef.current;
+      if (prev && prev.visitorName === next.visitorName && prev.gradientCSS === next.gradientCSS) {
+        return;
+      }
+      prevSlotRef.current = next;
+      lamNav.setSlot(next);
     } else {
-      lamNav.setSlot(null);
+      if (prevSlotRef.current !== null) {
+        prevSlotRef.current = null;
+        lamNav.setSlot(null);
+      }
     }
-  }, [lamNav, phase, card, desktop, hydrated, gradient]);
+  }, [lamNav, phase, card, desktop, hydrated, gradientCSS]);
 
   useEffect(() => {
-    if (!card) return;
-    const persistItems = items.map(({ _fresh, ...r }) => r);
-    const persistStrokes = strokes.map((s) => {
-      const { _tmp, ...r } = s;
-      return r;
-    });
-    saveCard({ ...card, annotations: { items: persistItems, strokes: persistStrokes } });
-  }, [items, strokes, card]);
+    if (!card?.id) return;
+    if (isSwitchingPage.current) return;
+    savePageAnnotations(card.id, pageKey, { items, strokes });
+  }, [items, strokes, card?.id, pageKey]);
 
   useEffect(() => {
     if (phase !== "editing") return;
@@ -238,9 +321,8 @@ export function LeaveAMark() {
     const newCard: VisitorCardT = {
       id: "v" + Math.random().toString(36).slice(2, 9),
       ...data,
-      annotations: { items: [], strokes: [] },
     };
-    saveCard(newCard);
+    saveNewVisitorSession(newCard);
     setCard(newCard);
     setItems([]);
     setStrokes([]);
@@ -340,7 +422,7 @@ export function LeaveAMark() {
             onConfirm={(data) => {
               const next = { ...card, ...data };
               setCard(next);
-              saveCard(next);
+              saveVisitorCardMeta(next);
               setShowVisitorEditor(false);
             }}
             onCancel={() => setShowVisitorEditor(false)}
@@ -351,7 +433,7 @@ export function LeaveAMark() {
           <VisitorCard mode="create" initial={null} onConfirm={confirmCard} onCancel={cancelCard} />
         )}
 
-        {phase === "editing" && toolbarPos ? (
+        {phase === "editing" ? (
           <Toolbar
             tool={tool}
             setTool={(t) => setTool(t)}

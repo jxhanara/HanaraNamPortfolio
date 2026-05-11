@@ -28,7 +28,7 @@ type ToolbarProps = {
   canEraseInk: boolean;
   gradient: Gradient;
   position: ToolbarPos;
-  setPosition: Dispatch<SetStateAction<ToolbarPos | null>>;
+  setPosition: Dispatch<SetStateAction<ToolbarPos>>;
 };
 
 export function Toolbar({
@@ -57,10 +57,7 @@ export function Toolbar({
       const el = ref.current;
       if (el) {
         const r = el.getBoundingClientRect();
-        setPosition((prev) => {
-          if (!prev) return prev;
-          return clampToolbarIntoViewport(prev.x, prev.y, r.width, r.height);
-        });
+        setPosition((prev) => clampToolbarIntoViewport(prev.x, prev.y, r.width, r.height));
       }
     }
     prevCollapsed.current = collapsed;
@@ -72,10 +69,7 @@ export function Toolbar({
       const el = ref.current;
       if (!el) return;
       const r = el.getBoundingClientRect();
-      setPosition((prev) => {
-        if (!prev) return prev;
-        return clampToolbarIntoViewport(prev.x, prev.y, r.width, r.height);
-      });
+      setPosition((prev) => clampToolbarIntoViewport(prev.x, prev.y, r.width, r.height));
     };
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
@@ -116,10 +110,7 @@ export function Toolbar({
     const el = ref.current;
     const w = el?.getBoundingClientRect().width ?? 360;
     const h = el?.getBoundingClientRect().height ?? 64;
-    setPosition((prev) => {
-      if (!prev) return prev;
-      return magneticDragPosition(x, y, w, h);
-    });
+    setPosition((prev) => magneticDragPosition(x, y, w, h));
   };
 
   const onPointerUp = () => {

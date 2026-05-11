@@ -21,16 +21,26 @@ export type Stroke = {
   _tmp?: boolean;
 };
 
-export type VisitorCard = {
+/** Visitor identity + card fields (no embedded annotations in v2 storage). */
+export type VisitorCardMeta = {
   id: string;
   name: string;
   color: GradientId;
   no: string;
   createdAt: string;
-  annotations: {
-    items: AnnotationItem[];
-    strokes: Stroke[];
-  };
+};
+
+/** In-app alias; annotations live in storage per page, not on this object. */
+export type VisitorCard = VisitorCardMeta;
+
+export type PageAnnotations = {
+  items: AnnotationItem[];
+  strokes: Stroke[];
+};
+
+export type VisitorStoredDocument = {
+  card: VisitorCardMeta;
+  annotationsByPage: Record<string, PageAnnotations>;
 };
 
 /** `dock`: vertical toolbar when snapped to left/right viewport edge. */
