@@ -10,38 +10,23 @@ import { clampToolbarIntoViewport, magneticDragPosition, snapToolbarPosition } f
 
 const TOOLS = [
   { id: "pointer", label: "Pointer", Icon: ToolbarIcon.pointer },
-  { id: "pen", label: "Pen", Icon: ToolbarIcon.pen },
-  { id: "highlight", label: "Highlight", Icon: ToolbarIcon.highlight },
   { id: "sticky", label: "Sticky", Icon: ToolbarIcon.sticky },
   { id: "text", label: "Text", Icon: ToolbarIcon.text },
   { id: "comment", label: "Comment", Icon: ToolbarIcon.comment },
 ] as const;
 
-export type ToolId = (typeof TOOLS)[number]["id"] | "eraser";
+export type ToolId = (typeof TOOLS)[number]["id"];
 
 type ToolbarProps = {
   tool: string;
   setTool: (t: ToolId) => void;
   onDone: () => void;
-  onUndo: () => void;
-  canUndo: boolean;
-  canEraseInk: boolean;
   gradient: Gradient;
   position: ToolbarPos;
   setPosition: Dispatch<SetStateAction<ToolbarPos>>;
 };
 
-export function Toolbar({
-  tool,
-  setTool,
-  onDone,
-  onUndo,
-  canUndo,
-  canEraseInk,
-  gradient,
-  position,
-  setPosition,
-}: ToolbarProps) {
+export function Toolbar({ tool, setTool, onDone, gradient, position, setPosition }: ToolbarProps) {
   const [collapsed, setCollapsed] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -212,35 +197,6 @@ export function Toolbar({
               <span className={styles.toolLabel}>{t.label}</span>
             </button>
           ))}
-          {(tool === "pen" || tool === "highlight" || tool === "eraser") && (
-            <>
-              <button
-                type="button"
-                className={`${styles.toolBtn} ${styles.undoBtn}`}
-                onClick={onUndo}
-                disabled={!canUndo}
-                title="Undo last stroke"
-              >
-                <span className={styles.toolIcon}>
-                  <ToolbarIcon.undo />
-                </span>
-                <span className={styles.toolLabel}>Undo</span>
-              </button>
-              <button
-                type="button"
-                className={`${styles.toolBtn} ${tool === "eraser" ? styles.toolBtnActive : ""}`}
-                onClick={() => setTool("eraser")}
-                disabled={!canEraseInk}
-                aria-pressed={tool === "eraser"}
-                title="Erase a stroke (tap on ink)"
-              >
-                <span className={styles.toolIcon}>
-                  <ToolbarIcon.eraser />
-                </span>
-                <span className={styles.toolLabel}>Eraser</span>
-              </button>
-            </>
-          )}
           <span className={styles.toolDivider} />
           <button
             type="button"

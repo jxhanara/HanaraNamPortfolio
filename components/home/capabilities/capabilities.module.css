@@ -1,0 +1,197 @@
+/* Capabilities B — tabbed titles + detail rail (home) */
+
+.section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Horizontal padding comes from `.main`; avoid double gutter vs hero / portfolios. */
+  padding: var(--space-section) 0;
+  background: var(--color-bg);
+  color: var(--color-ink, #f3f1ec);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.inner {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+
+.header {
+  padding-bottom: 36px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.title {
+  font-family: var(--font-instrument-serif), serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(48px, 5.6vw, 80px);
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--color-ink, #f3f1ec);
+}
+
+.title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-accent-pink);
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 80px;
+  padding-top: 36px;
+  align-items: start;
+}
+
+.tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tab {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 20px;
+  align-items: start;
+  padding: 18px 0;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  color: var(--color-muted);
+  font-family: inherit;
+  transition: color 0.3s ease, padding-left 0.3s ease;
+}
+
+.tab:hover {
+  padding-left: 10px;
+  color: var(--color-ink, #f3f1ec);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--color-accent-pink);
+  outline-offset: 4px;
+}
+
+.tabActive {
+  color: var(--color-ink, #f3f1ec);
+}
+
+.tabNum {
+  font-family: var(--font-instrument-serif), serif;
+  font-style: italic;
+  font-size: 22px;
+  color: rgba(255, 255, 255, 0.42);
+  transition: color 0.3s ease;
+}
+
+.tabActive .tabNum {
+  color: var(--color-accent-pink);
+}
+
+.tabBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tabTitle {
+  font-family: var(--font-instrument-serif), serif;
+  font-weight: 400;
+  font-size: clamp(40px, 4.6vw, 64px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  transition: font-style 0.3s ease, color 0.3s ease;
+}
+
+.tabActive .tabTitle {
+  font-style: italic;
+  color: var(--color-accent-pink);
+}
+
+.tabSub {
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 13px;
+  color: var(--color-muted);
+  letter-spacing: 0.01em;
+}
+
+.detail {
+  position: sticky;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  /* Match first `.tab` row top padding so the detail title lines up with the tab titles. */
+  padding-top: 18px;
+  animation: capsFadeUp 0.32s ease;
+}
+
+.detailTitle {
+  font-family: var(--font-instrument-serif), serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(36px, 4vw, 52px);
+  line-height: 1.04;
+  margin: 0;
+  color: var(--color-ink, #f3f1ec);
+}
+
+.detailBody p {
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #e8e5dd;
+  margin: 0 0 16px;
+  max-width: 48ch;
+}
+
+.detailBody p:last-child {
+  margin-bottom: 0;
+}
+
+@keyframes capsFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab {
+    transition: none;
+  }
+
+  .detail {
+    animation: none;
+  }
+}
+
+@media (max-width: 800px) {
+  .stage {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .detail {
+    position: static;
+    padding-top: 0;
+  }
+
+  .tab {
+    grid-template-columns: 36px 1fr;
+    padding: 14px 0;
+  }
+}

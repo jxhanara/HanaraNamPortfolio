@@ -46,9 +46,22 @@ export function BumbleValidationSection() {
         ))}
       </div>
 
-      <div className={cs.synthesis}>
-        <p className={cs.synthesisLabel}>Synthesis</p>
-        <p className={cs.synthesisText}>{bumbleValidation.synthesis}</p>
+      <div className={cs.validationSynthesisCallout}>
+        <div className={cs.validationSynthesisIcon} aria-hidden>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path
+              d="M2 7L5 10L12 3"
+              stroke="#ffce08"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+        <div>
+          <p className={cs.validationSynthesisLabel}>Synthesis</p>
+          <p className={cs.validationSynthesisText}>{bumbleValidation.synthesis}</p>
+        </div>
       </div>
     </section>
   );

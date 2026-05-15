@@ -3,7 +3,7 @@ import { MediaStrip } from "@/components/home/MediaStrip";
 import { BUMBLE_FLOW_STRIP_VIDEOS } from "@/components/home/bumbleFlowStrip";
 import { SiteNav } from "@/components/home/SiteNav";
 import homeStyles from "@/components/home/styles.module.css";
-import { CaseStudyFooter } from "../CaseStudyFooter";
+import { SiteFooter } from "@/components/SiteFooter";
 import { CaseStudyTocNav } from "../CaseStudyTocNav";
 import cs from "../caseStudy.module.css";
 import { BumbleChallengeSection } from "./BumbleChallengeSection";
@@ -57,7 +57,7 @@ export function BumbleFlowCaseStudyView() {
           </div>
         </div>
 
-        <CaseStudyFooter />
+        <SiteFooter />
       </div>
     </div>
   );

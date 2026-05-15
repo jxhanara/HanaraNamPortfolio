@@ -1,6 +1,8 @@
 :root {
   --color-bg: #000000;
   --color-text: #ffffff;
+  --color-ink: #f3f1ec;
+  --color-accent-pink: #f3bdd1;
   --color-muted: #99a1ae;
   --color-muted-hero: #aeb3bc;
   --color-border-subtle: rgba(38, 38, 42, 0.5);
@@ -10,6 +12,8 @@
   --radius-card: 24px;
   --space-section: clamp(72px, 10vw, 140px);
   --space-x: clamp(24px, 6vw, 80px);
+  /* Sticky nav clearance for in-page project anchors */
+  --scroll-anchor-offset: 128px;
   /* Trippy case study main column + footer (matches shellMain). Use 100% not 100vw so the rail
      never exceeds the scrollable layout width (100vw includes scrollbar gutter on some UAs). */
   --case-study-rail: min(1180px, 100%);

@@ -14,7 +14,7 @@ import {
   trippyToc,
   trippyValidation,
 } from "@/content/trippyCaseStudy";
-import { CaseStudyFooter } from "./CaseStudyFooter";
+import { SiteFooter } from "@/components/SiteFooter";
 import { CaseStudyTocNav } from "./CaseStudyTocNav";
 import { StrategicReadDiagram } from "./StrategicReadDiagram";
 import { ProblemFrownIcon, SolutionSmileIcon } from "./CaseStudyMoodIcons";
@@ -379,7 +379,7 @@ export function TrippyCaseStudyView() {
           </div>
         </div>
 
-        <CaseStudyFooter />
+        <SiteFooter />
       </div>
     </div>
   );

@@ -29,7 +29,7 @@ function clonePageAnnotations(a: PageAnnotations): PageAnnotations {
 
 function stripTransient(annotations: PageAnnotations): PageAnnotations {
   return {
-    items: annotations.items.map(({ _fresh, ...r }) => r),
+    items: annotations.items.map(({ _fresh, resolveFlying, ...r }) => r),
     strokes: annotations.strokes.map((s) => {
       const { _tmp, ...r } = s;
       return r;
@@ -162,8 +162,13 @@ export function savePageAnnotations(
   visitorId: string,
   pathname: string,
   annotations: PageAnnotations,
+  /** When the LS doc row is missing (e.g. first save race), create it from this card if ids match. */
+  createShellIfMissing?: VisitorCardMeta | null,
 ): void {
-  const doc = readVisitorDocument(visitorId);
+  let doc = readVisitorDocument(visitorId);
+  if (!doc && createShellIfMissing?.id === visitorId) {
+    doc = { card: { ...createShellIfMissing }, annotationsByPage: {} };
+  }
   if (!doc) return;
   const key = normalizePagePath(pathname);
   doc.annotationsByPage[key] = stripTransient(annotations);

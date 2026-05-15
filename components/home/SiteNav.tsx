@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useLeaveAMarkNavOptional } from "@/components/leaveAMark/LeaveAMarkNavContext";
+import { WorkNavLink } from "./WorkNavLink";
 import styles from "./styles.module.css";
 
 const RESUME_URL =
@@ -17,9 +18,7 @@ function NavPrimaryLinks() {
       <Link className={styles.navLink} href="/about">
         About
       </Link>
-      <Link className={styles.navLink} href="/#portfolios">
-        Work
-      </Link>
+      <WorkNavLink className={styles.navLink}>Work</WorkNavLink>
       <a className={styles.navLink} href={RESUME_URL} target="_blank" rel="noreferrer">
         Resume
       </a>

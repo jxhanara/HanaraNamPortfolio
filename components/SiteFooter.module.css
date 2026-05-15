@@ -1,0 +1,147 @@
+.siteFooter {
+  width: 100%;
+  border-top: 1px solid #221f1c;
+  padding: 56px 0 44px;
+  background: var(--color-bg, #000000);
+  color: #f3f1ec;
+}
+
+/* Same border-box rail as `components/home/styles.module.css` `.main`:
+   max-width includes horizontal padding so inner width matches home content. */
+.footWrap {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--space-x);
+  box-sizing: border-box;
+}
+
+.footCta {
+  font-family: var(--font-instrument-serif), serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 80px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: #f3f1ec;
+}
+
+.footCta em {
+  font-style: italic;
+  color: #f3bdd1;
+}
+
+.footGrid {
+  display: grid;
+  grid-template-columns: minmax(280px, 1.6fr) 1fr 1fr;
+  gap: clamp(32px, 6vw, 64px);
+  margin-top: 36px;
+  padding-top: 32px;
+  border-top: 1px solid #221f1c;
+}
+
+.footCol {
+  min-width: 120px;
+}
+
+.footColTitle {
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #99a1ae;
+  margin: 0 0 14px;
+}
+
+.footList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footLink {
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: #f3f1ec;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footLink:hover {
+  color: #f3bdd1;
+}
+
+.footLinkExt {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: #f3f1ec;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footLinkExt:hover {
+  color: #f3bdd1;
+}
+
+.footExtIcon {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.footEmailBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.footEmail {
+  font-family: var(--font-instrument-serif), serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(24px, 2.4vw, 32px);
+  line-height: 1.2;
+  color: #f3f1ec;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0 0 14px;
+  transition: color 0.2s;
+}
+
+.footEmail::after {
+  content: "↗";
+  font-style: normal;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  color: #f3bdd1;
+  font-size: 18px;
+}
+
+.footEmail:hover {
+  color: #f3bdd1;
+}
+
+.footEmailNote {
+  margin: 0;
+  color: #a09b8e;
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 32ch;
+}
+
+@media (max-width: 1000px) {
+  .footGrid {
+    grid-template-columns: 1fr;
+  }
+}

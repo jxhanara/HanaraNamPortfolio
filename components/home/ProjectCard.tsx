@@ -27,7 +27,9 @@ export function ProjectCard({
   const head = (
     <div className={styles.projectHead}>
       <div>
-        <h2 className={styles.projectTitle}>{title}</h2>
+        <h2 id={id} className={styles.projectTitle}>
+          {title}
+        </h2>
         <div className={styles.projectDesc}>{description}</div>
       </div>
       <p className={styles.projectDate}>{dateLabel}</p>
@@ -58,7 +60,6 @@ export function ProjectCard({
     if (external) {
       return (
         <a
-          id={id}
           className={styles.projectCardLink}
           href={href}
           target="_blank"
@@ -70,14 +71,14 @@ export function ProjectCard({
     }
 
     return (
-      <Link id={id} className={styles.projectCardLink} href={href}>
+      <Link className={styles.projectCardLink} href={href}>
         {content}
       </Link>
     );
   }
 
   return (
-    <div id={id} className={styles.projectStack}>
+    <div className={styles.projectStack}>
       {head}
       {thumb}
     </div>

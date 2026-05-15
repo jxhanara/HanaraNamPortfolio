@@ -972,8 +972,11 @@
 
 .sticky {
   position: absolute;
-  width: 200px;
+  width: 272px;
+  min-width: 272px;
+  max-width: 272px;
   min-height: 140px;
+  box-sizing: border-box;
   padding: 16px 14px;
   cursor: default;
   background: linear-gradient(
@@ -1056,9 +1059,26 @@ textarea.stickyText {
 }
 
 .sticky:hover .annDelete,
-.textLabel:hover .annDelete,
-.comment:hover .annDelete {
+.textLabel:hover .annDelete {
   opacity: 1;
+}
+
+.commentBubble .annDelete {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.commentBubble:hover .annDelete,
+.commentBubble:focus-within .annDelete {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .commentBubble .annDelete {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
 .annDelete:hover {
@@ -1173,8 +1193,10 @@ textarea.stickyText {
 .commentBubble {
   position: relative;
   z-index: 1;
-  min-width: 220px;
-  max-width: 280px;
+  width: 320px;
+  min-width: 320px;
+  max-width: 320px;
+  box-sizing: border-box;
   background: rgba(20, 20, 24, 0.94);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1194,12 +1216,35 @@ textarea.stickyText {
   transform: translateX(-6px);
 }
 
-.commentDocked:hover .commentBubble,
 .commentDocked.commentPeekOpen .commentBubble {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
   transform: translateX(0);
+}
+
+.commentDocked .commentPin {
+  cursor: pointer;
+}
+
+.commentPinThinking {
+  animation: commentPinThinkPulse 1.1s ease-in-out infinite;
+}
+
+@keyframes commentPinThinkPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.5),
+      0 0 0 3px rgba(255, 255, 255, 0.12);
+    filter: brightness(1);
+  }
+  50% {
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.55),
+      0 0 0 4px rgba(255, 255, 255, 0.35);
+    filter: brightness(1.12);
+  }
 }
 
 button.commentPin {
@@ -1464,4 +1509,990 @@ button.commentPin {
 
 .settingsSave:hover {
   background: #f0f0f5;
+}
+
+/* ——— AI threads + archive (v2) ——— */
+
+.aiThreadWrap {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  pointer-events: auto;
+}
+
+.aiThreadWrapCompact {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  pointer-events: auto;
+  font-size: 13px;
+}
+
+.aiThreadDots {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.aiThreadDots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(42, 36, 25, 0.45);
+  animation: aiThreadDotPulse 1.1s ease-in-out infinite;
+}
+
+.aiThreadDots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.aiThreadDots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes aiThreadDotPulse {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+}
+
+.aiThreadActions {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.aiThreadBtnSend,
+.aiThreadBtnSecondary {
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  border: 0;
+  cursor: pointer;
+  border-radius: 999px;
+  font-size: 12px;
+  padding: 6px 12px;
+}
+
+.aiThreadBtnResolve,
+.aiThreadBtnFollow {
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 0;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  cursor: pointer;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex: 1 1 0;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.aiThreadBtnResolve {
+  color: #fff;
+  transition:
+    filter 0.15s ease,
+    transform 0.1s ease;
+}
+
+.aiThreadBtnResolve:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.aiThreadBtnFollow {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.95);
+  transition: background 0.15s ease;
+  text-decoration: none;
+}
+
+.aiThreadBtnFollow:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.aiThreadBtnSend {
+  background: rgba(0, 0, 0, 0.18);
+  color: #2a2419;
+}
+
+.aiThreadBtnSecondary {
+  background: transparent;
+  color: rgba(42, 36, 25, 0.6);
+}
+
+.aiThreadFollowBox {
+  margin-top: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.aiThreadFollowTa {
+  width: 100%;
+  min-height: 72px;
+  resize: vertical;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  padding: 8px;
+  font: inherit;
+  font-size: 13px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.aiThreadFollowRow {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.aiThreadResolvedDot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  font-size: 12px;
+  display: grid;
+  place-items: center;
+  color: rgba(42, 36, 25, 0.65);
+}
+
+.aiThreadResolvedWrap {
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+.aiThreadResolvedBody {
+  opacity: 0.65;
+}
+
+.aiThreadAiLineMuted,
+.aiThreadVisLineMuted {
+  margin: 0 0 6px;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.aiThreadCollapseLink {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin-top: 4px;
+  font-size: 11px;
+  color: rgba(42, 36, 25, 0.55);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.aiThreadError {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: #6a211c;
+}
+
+.commentBubble .aiThreadWrap,
+.commentBubble .aiThreadWrapCompact {
+  border-top-color: rgba(255, 255, 255, 0.15);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.commentBubble .aiThreadDots span {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.commentBubble .aiThreadBtnFollow,
+.commentBubble .aiThreadBtnSecondary {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.commentBubble .aiThreadFollowTa {
+  background: rgba(0, 0, 0, 0.25);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.commentBubble .aiThreadResolvedDot {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.2);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.commentBubble .aiThreadAiLineMuted,
+.commentBubble .aiThreadVisLineMuted {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.commentBubble .aiThreadCollapseLink {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* Jump-from-archive: gradient glow only (portaled in JumpSpotlight.tsx) */
+.jumpSpotlightLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 1464;
+  pointer-events: none;
+}
+
+.jumpSpotlightGlow {
+  position: fixed;
+  pointer-events: none;
+  border-radius: 22px;
+  box-sizing: border-box;
+  background:
+    radial-gradient(
+      ellipse 80% 70% at 50% 50%,
+      color-mix(in oklab, var(--from) 42%, transparent) 0%,
+      color-mix(in oklab, var(--to) 22%, transparent) 42%,
+      transparent 72%
+    );
+  filter: blur(10px);
+  opacity: 0.95;
+  animation: jumpGlowPulse 2s ease forwards;
+}
+
+@keyframes jumpGlowPulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+  14% {
+    opacity: 0.95;
+    transform: scale(1);
+  }
+  72% {
+    opacity: 0.9;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+}
+
+/* Portaled to document.body so stacking is not capped by .leaveAMark (z-index 1000) below site nav (1320). */
+.archivePanel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 360px;
+  max-width: 100vw;
+  z-index: 2501;
+  background: #0e0e12;
+  background-image:
+    radial-gradient(circle at 100% 0%, color-mix(in oklab, var(--from) 12%, transparent) 0%, transparent 55%),
+    radial-gradient(circle at 0% 100%, color-mix(in oklab, var(--to) 10%, transparent) 0%, transparent 55%);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+  animation: archivePanelIn 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+}
+
+@keyframes archivePanelIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0.5;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.archiveHeader {
+  padding: 18px 16px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.archiveHeaderRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.archiveHeaderTitles {
+  min-width: 0;
+}
+
+.archiveCloseBtn {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  margin: -4px -4px 0 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.15s ease;
+}
+
+.archiveCloseBtn:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.archiveTitle {
+  margin: 0;
+  font-size: 22px;
+  font-style: italic;
+  font-weight: 500;
+  font-family: var(--font-instrument-serif), Georgia, serif;
+  color: #fff;
+}
+
+.archiveSubtitle {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.archiveTabs {
+  display: flex;
+  gap: 6px;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.archiveTab {
+  flex: 1;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 12px;
+  padding: 8px 6px;
+  cursor: pointer;
+}
+
+.archiveTabActive {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.archiveTabCount {
+  opacity: 0.65;
+  font-variant-numeric: tabular-nums;
+}
+
+.archiveSearchRow {
+  padding: 10px 16px;
+}
+
+.archiveSearch {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font-size: 13px;
+  padding: 10px 12px;
+  outline: none;
+}
+
+.archiveSearch::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.archiveBody {
+  flex: 1;
+  overflow: auto;
+  padding: 8px 0 24px;
+}
+
+.archiveEmpty {
+  margin: 24px 20px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.45);
+  font-style: italic;
+}
+
+.archiveGroup {
+  margin-bottom: 4px;
+}
+
+.archiveGroupHead {
+  width: calc(100% - 24px);
+  margin: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 8px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 13px;
+  text-align: left;
+}
+
+.archiveGroupChevron {
+  opacity: 0.45;
+  width: 14px;
+}
+
+.archiveGroupLabel {
+  flex: 1;
+  font-style: italic;
+  font-family: var(--font-instrument-serif), Georgia, serif;
+}
+
+.archiveGroupMeta {
+  font-size: 11px;
+  opacity: 0.45;
+}
+
+.archiveList {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 4px 12px 0;
+}
+
+.archiveRowItem {
+  margin-bottom: 6px;
+}
+
+.archiveRow {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  text-align: left;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.archiveRow:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.35);
+  outline-offset: 2px;
+}
+
+.archiveRow:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.archiveRowResolved {
+  opacity: 0.55;
+}
+
+.archiveRowDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 3px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  display: grid;
+  place-items: center;
+}
+
+.archiveRowText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.archiveRowLine1 {
+  font-size: 13px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.92);
+  word-break: break-word;
+}
+
+.archiveRowDate {
+  font-size: 10px;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.42);
+  margin-top: 2px;
+}
+
+.archiveRowMeta {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-top: 4px;
+}
+
+.archiveRowReplyBtn {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.archiveRowReplyBtn:hover {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.archiveRowAiPreview {
+  margin: 0 8px 0 28px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.archiveRowAiLine {
+  margin: 0 0 8px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.82);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.archiveRowAiLine:last-child {
+  margin-bottom: 0;
+}
+
+.archiveRowArrow {
+  flex-shrink: 0;
+  opacity: 0.35;
+  margin-top: 2px;
+}
+
+/* top/bottom set inline from LeaveAMark to align with toolbar row */
+.navArchiveFloat {
+  position: fixed;
+  left: 20px;
+  z-index: 1455;
+  pointer-events: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  color: #fff;
+  font: inherit;
+  background: rgba(22, 22, 28, 0.38);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.52);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.navArchiveFloat:not(.navArchiveFloatActive):hover {
+  background: rgba(32, 32, 40, 0.52);
+  border-color: rgba(255, 255, 255, 0.68);
+  transform: translateY(-1px);
+}
+
+.navArchiveFloat:not(.navArchiveFloatActive):active {
+  transform: translateY(0);
+}
+
+.navArchiveFloatActive {
+  background: linear-gradient(135deg, var(--from), var(--to));
+  border: 1px solid color-mix(in oklab, #fff 32%, transparent);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.35) inset,
+    0 6px 20px rgba(0, 0, 0, 0.45),
+    0 0 28px color-mix(in oklab, var(--from) 55%, transparent),
+    0 0 48px color-mix(in oklab, var(--to) 28%, transparent);
+}
+
+.navArchiveFloatActive:hover {
+  filter: brightness(1.06) saturate(1.05);
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.35) inset,
+    0 10px 28px rgba(0, 0, 0, 0.5),
+    0 0 36px color-mix(in oklab, var(--from) 65%, transparent),
+    0 0 56px color-mix(in oklab, var(--to) 38%, transparent);
+}
+
+.navArchiveFloatActive:active {
+  transform: translateY(0);
+  filter: brightness(0.98);
+}
+
+.navArchiveInner {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 18px 10px 14px;
+}
+
+.navArchiveIcon {
+  flex-shrink: 0;
+  opacity: 0.95;
+}
+
+.navArchiveFloatActive .navArchiveIcon {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+}
+
+.navArchiveLabel {
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.navArchiveFloatActive .navArchiveLabel {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+
+.navArchiveDot {
+  position: absolute;
+  top: -2px;
+  right: 2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--from), var(--to));
+  border: 2px solid rgba(12, 12, 16, 0.95);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.75),
+    0 0 12px color-mix(in oklab, var(--from) 70%, transparent);
+  pointer-events: none;
+}
+
+/* Resolved sticky / comment: flies toward the archive rail */
+.annoFlyRoot {
+  position: absolute;
+  z-index: 1285;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+}
+
+.annoFlyRootAnimating {
+  z-index: 2600;
+  pointer-events: none;
+  transition:
+    transform 0.62s cubic-bezier(0.45, 0, 0.2, 1),
+    opacity 0.48s ease 0.06s;
+  transform: translate3d(calc(100vw - 80px), 0, 0);
+  opacity: 0;
+}
+
+.archiveDotsLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 1275;
+  pointer-events: none;
+}
+
+.archiveDot {
+  position: fixed;
+  right: 14px;
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  pointer-events: auto;
+  background: linear-gradient(135deg, var(--from), var(--to));
+  box-shadow: 0 0 14px color-mix(in oklab, var(--from) 70%, transparent);
+  animation: archiveDotPulse 2.2s ease-in-out infinite;
+  transform: translateY(-50%);
+}
+
+@keyframes archiveDotPulse {
+  0%,
+  100% {
+    opacity: 0.65;
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.15);
+  }
+}
+
+/* AI reply block — dark card with gradient left border (see AIThread.tsx) */
+.aiThreadStack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.aiThreadStack .aiThreadReplyBlock {
+  margin-bottom: 0;
+}
+
+.aiThreadFollowQuestion {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.9);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.aiThreadReplyBlock {
+  position: relative;
+  margin: 0 0 10px;
+  padding: 10px 13px 11px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  border-left: 2px solid;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.aiThreadReplyHeader {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.aiThreadSparkle {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 9px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.aiThreadAuthorLabel {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+}
+
+.aiThreadReplyText {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.aiThreadWrapCompact .aiThreadReplyText {
+  font-size: 12px;
+}
+
+/* inside sticky notes — adjust colors for light background */
+.sticky .aiThreadFollowQuestion {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: rgba(20, 18, 12, 0.9);
+}
+
+.sticky .aiThreadReplyBlock {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.sticky .aiThreadAuthorLabel {
+  color: rgba(20, 18, 12, 0.55);
+}
+
+.sticky .aiThreadReplyText {
+  color: rgba(20, 18, 12, 0.9);
+}
+
+.sticky .aiThreadBtnFollow {
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(20, 18, 12, 0.85);
+}
+
+.sticky .aiThreadBtnFollow:hover {
+  background: rgba(0, 0, 0, 0.14);
+}
+
+/* Exit contact capture — floats above toolbar on exit */
+.exitCapture {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 120px;
+  width: min(480px, 92vw);
+  z-index: 1510;
+  pointer-events: auto;
+  background: rgba(14, 14, 18, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  padding: 20px 22px 16px;
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: exitCaptureUp 0.4s cubic-bezier(0.2, 1.1, 0.3, 1) both;
+}
+
+@keyframes exitCaptureUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.exitCaptureTop {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.exitCaptureHeading {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+}
+
+.exitCaptureSub {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+}
+
+.exitCaptureRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.exitCaptureInput {
+  flex: 1;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font-size: 13px;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.exitCaptureInput:focus {
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.exitCaptureInput::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.exitCaptureSendBtn {
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 999px;
+  border: 0;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  transition:
+    filter 0.15s ease,
+    transform 0.1s ease;
+  white-space: nowrap;
+}
+
+.exitCaptureSendBtn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.exitCaptureSkip {
+  background: transparent;
+  border: 0;
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 11px;
+  cursor: pointer;
+  padding: 0;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  text-align: center;
+  transition: color 0.15s ease;
+  align-self: center;
+}
+
+.exitCaptureSkip:hover {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.exitCaptureSent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  padding: 8px 0;
+}
+
+.exitCaptureSparkle {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+.exitCaptureSentText {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
 }

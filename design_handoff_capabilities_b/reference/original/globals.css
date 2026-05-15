@@ -1,0 +1,68 @@
+:root {
+  --color-bg: #000000;
+  --color-text: #ffffff;
+  --color-muted: #99a1ae;
+  --color-muted-hero: #aeb3bc;
+  --color-border-subtle: rgba(38, 38, 42, 0.5);
+  --color-pill-dark: rgba(24, 24, 27, 0.4);
+  --nav-blur: 5px;
+  --content-max: 1400px;
+  --radius-card: 24px;
+  --space-section: clamp(72px, 10vw, 140px);
+  --space-x: clamp(24px, 6vw, 80px);
+  /* Trippy case study main column + footer (matches shellMain). Use 100% not 100vw so the rail
+     never exceeds the scrollable layout width (100vw includes scrollbar gutter on some UAs). */
+  --case-study-rail: min(1180px, 100%);
+  /* Tighter measure (reflection intro + dense card copy) */
+  --case-study-copy-max: min(38rem, 100%);
+  /* ~⅔ of readable rail — section titles + lead paragraphs (not full width) */
+  --case-study-section-copy-max: min(49rem, 90%);
+  /* Hero subtitle under case study title — wide measure (~2 lines for long taglines) */
+  --case-study-hero-subtitle-max: min(70rem, 100%);
+  /* Instrument Serif italic display lines (overview thesis, section h2s, next project title) */
+  --case-study-instrument-italic-size: 40px;
+  /* Bumble: HMW callout + vibe pipeline — warm yellow hues only (no green) */
+  --bumble-vibe-surface-gradient: linear-gradient(
+    118deg,
+    #fffcef 0%,
+    #fff4d8 26%,
+    #ffecb8 52%,
+    #ffe088 78%,
+    #fff6d8 100%
+  );
+}
+
+@media (min-width: 1024px) {
+  :root {
+    /* Reserve horizontal space for the fixed TOC; 100% resolves on shellMain’s containing block. */
+    --case-study-rail: min(1180px, calc(100% - 200px));
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}

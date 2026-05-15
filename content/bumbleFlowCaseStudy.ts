@@ -65,7 +65,7 @@ export const bumbleResearch = {
     "While the brief focused on proximity, the data told a different story — engagement with proximity alerts fell from 18% to 6% in six months, suggesting “nearby” wasn’t enough to motivate users.",
     "To uncover the “why” behind the numbers, I synthesized themes from Reddit and community forums:",
   ],
-  engagementCaption: "Engagement with proximity alerts (0–20% scale for comparison)",
+  engagementCaption: "Engagement with proximity alerts",
   engagementWasLabel: "Six months ago",
   engagementWasValue: "18%",
   engagementWasPct: 18,
@@ -116,7 +116,6 @@ export const bumbleStrategy = {
   eyebrow: "04 · Strategy",
   title: "Design transformation",
   body: "I pivoted from a system that simply found gaps in a calendar to one that aligns shared intent before surfacing availability — ensuring every coordination nudge is grounded in mutual readiness, not just empty time.",
-  pivotEyebrow: "The pivot",
   initialLabel: "From",
   initialHeadline: "Calendar-first automation",
   initialBullets: [
@@ -315,13 +314,19 @@ export const bumblePrototypeInteractive = {
         initial: "A",
         name: "Alex",
         badge: "★ Premium",
-        lines: ["📅 Calendar synced", "☕ Coffee · 🥂 Drinks", "Free: Mon, Thu, Fri"],
+        lines: [
+          "📅 Calendar: synced",
+          "👥 Preferred meeting vibe: ☕ Coffee · 🥂 Drinks",
+        ],
       },
       userB: {
         initial: "L",
         name: "Lindsey",
         badge: "★ Premium",
-        lines: ["📅 Calendar synced", "☕ Coffee · 🥂 Drinks", "Free: Tue, Wed, Sat"],
+        lines: [
+          "📅 Calendar: synced",
+          "👥 Preferred meeting vibe: ☕ Coffee · 🥂 Drinks",
+        ],
       },
       phoneLeft: {
         viewerLabel: "Alex's view",
@@ -346,13 +351,19 @@ export const bumblePrototypeInteractive = {
         initial: "Je",
         name: "Jennifer",
         badge: "★ Premium",
-        lines: ["📅 Calendar synced", "☕ Coffee · 🥂 Drinks", "Free: Mon, Thu, Fri"],
+        lines: [
+          "📅 Calendar: synced",
+          "👥 Preferred meeting vibe: ☕ Coffee · 🥂 Drinks",
+        ],
       },
       userB: {
         initial: "Jo",
         name: "John",
         badge: "Free",
-        lines: ["📅 No calendar", "🍽️ Dinner · ☕ Coffee", "No availability set"],
+        lines: [
+          "📅 Calendar: not synced",
+          "👥 Preferred meeting vibe: 🍽️ Dinner · ☕ Coffee",
+        ],
       },
       phoneLeft: {
         viewerLabel: "Jennifer's view",
@@ -379,13 +390,19 @@ export const bumblePrototypeInteractive = {
         initial: "M",
         name: "Maya",
         badge: "Free",
-        lines: ["📅 No calendar", "☕ Coffee", "No availability set"],
+        lines: [
+          "📅 Calendar: not synced",
+          "👥 Preferred meeting vibe: ☕ Coffee",
+        ],
       },
       userB: {
         initial: "R",
         name: "Ryan",
         badge: "Free",
-        lines: ["📅 No calendar", "🥂 Drinks", "No availability set"],
+        lines: [
+          "📅 Calendar: not synced",
+          "👥 Preferred meeting vibe: 🥂 Drinks",
+        ],
       },
       phoneLeft: {
         viewerLabel: "Maya's view",

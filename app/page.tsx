@@ -3,9 +3,9 @@ import {
   HeroSection,
   MediaStrip,
   ProjectCard,
-  SiteFooter,
   SiteNav,
 } from "@/components/home";
+import { SiteFooter } from "@/components/SiteFooter";
 import { BUMBLE_FLOW_STRIP_VIDEOS } from "@/components/home/bumbleFlowStrip";
 import { TRIPPY_STRIP_VIDEOS } from "@/components/home/trippyStrip";
 import styles from "@/components/home/styles.module.css";
@@ -49,6 +49,7 @@ export default function HomePage() {
           />
           <div className={styles.projectBlock}>
             <ProjectCard
+              id="bumble-flow"
               title="Bumble Flow"
               description={BUMBLE_DESC}
               dateLabel="2026"
@@ -64,6 +65,7 @@ export default function HomePage() {
           />
           <div className={styles.projectBlock}>
             <ProjectCard
+              id="ui-for-ai"
               title="UI for AI"
               description="coming soon..."
               dateLabel="2025 - 2026"

@@ -1,3 +1,4 @@
+/** Reserved — Kiki Lottie for hero; wire back in via HeroSection when needed. */
 "use client";
 
 import Lottie from "lottie-react";

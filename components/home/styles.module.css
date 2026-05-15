@@ -190,35 +190,189 @@
 .heroCopy {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
   width: 100%;
   max-width: var(--content-max);
 }
 
-.heroTop {
-  position: relative;
-  display: block;
-  padding-right: clamp(220px, 28vw, 380px);
-}
-
 .heroGreeting {
-  font-family: var(--font-instrument-serif), serif;
-  font-style: italic;
-  font-size: 22px;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 20px;
   line-height: 1.3;
-  color: var(--color-text);
+  color: #b1ab9d;
   letter-spacing: 0;
   margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35em;
+  cursor: default;
 }
 
-.heroLead {
-  font-size: clamp(22px, 2.4vw, 30px);
-  line-height: 38px;
-  letter-spacing: -1px;
-  font-weight: 600;
+.heroSmiley {
+  display: inline-block;
+  vertical-align: middle;
+  color: currentColor;
+  transition: color 0.3s ease;
+}
+
+.heroSmileyEyeLeft,
+.heroSmileyWink {
+  transition: opacity 0.18s ease;
+}
+
+.heroSmileyWink {
+  opacity: 0;
+}
+
+.heroGreeting:hover .heroSmileyEyeLeft {
+  opacity: 0;
+}
+
+.heroGreeting:hover .heroSmileyWink {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .heroGreeting:hover .heroSmiley {
+    animation: heroSmileyBounce 0.7s ease;
+    color: var(--color-accent-pink);
+  }
+}
+
+@keyframes heroSmileyBounce {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+  40% {
+    transform: scale(1.2) rotate(-8deg);
+  }
+}
+
+.heroHeadline {
+  font-family: var(--font-instrument-serif), serif;
+  font-weight: 400;
+  font-size: clamp(36px, 4.8vw, 72px);
+  line-height: 0.98;
+  letter-spacing: -0.022em;
   color: var(--color-text);
   margin: 0;
   max-width: 100%;
+}
+
+.heroHText {
+  transition: opacity 0.45s ease, color 0.3s ease;
+}
+
+.heroHEm {
+  font-style: italic;
+  color: var(--color-accent-pink);
+  position: relative;
+  transition: opacity 0.45s ease, color 0.3s ease;
+}
+
+.heroEmProducts {
+  cursor: default;
+  display: inline;
+  box-decoration-break: clone;
+}
+
+.heroProductsAnnot {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 6px);
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 10px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(20, 20, 22, 0.92);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  white-space: nowrap;
+  z-index: 4;
+}
+
+/* Invisible bridge so the cursor can reach the pill without losing hover */
+.heroProductsAnnot::after {
+  content: "";
+  position: absolute;
+  left: -8px;
+  right: -8px;
+  top: 100%;
+  height: 14px;
+}
+
+.heroProductsAnnot a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.heroProductsAnnot a:hover {
+  color: var(--color-text);
+}
+
+.heroAnnotDot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--color-accent-pink);
+  flex-shrink: 0;
+}
+
+.heroEmProducts:hover .heroProductsAnnot,
+.heroProductsAnnot:hover {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.heroBelowHeadline {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.heroHeadline:has(.heroEmProducts:hover) .heroHText,
+.heroHeadline:has(.heroEmProducts:hover) .heroEmOutOfWay {
+  opacity: 0.18;
+}
+
+.heroHeadline:has(.heroEmProducts:hover) .heroEmProducts {
+  opacity: 1;
+  color: var(--color-accent-pink);
+}
+
+.heroHeadline:has(.heroEmOutOfWay:hover) .heroHText,
+.heroHeadline:has(.heroEmOutOfWay:hover) .heroEmProducts {
+  opacity: 0.18;
+}
+
+.heroHeadline:has(.heroEmOutOfWay:hover) .heroEmOutOfWay {
+  opacity: 1;
+  color: var(--color-accent-pink);
+}
+
+.heroSub {
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: clamp(15px, 1.25vw, 19px);
+  line-height: 1.5;
+  font-weight: 400;
+  color: #cfcabd;
+  margin: 0;
+  max-width: none;
+  white-space: nowrap;
 }
 
 .heroMetaRow {
@@ -229,53 +383,72 @@
 }
 
 .heroStatusDot {
-  width: 6px;
-  height: 6px;
+  width: 9px;
+  height: 9px;
   border-radius: 999px;
-  background: var(--ui-ai-accent, #89c5ea);
-  opacity: 0.85;
-  box-shadow: 0 0 0 0 rgba(137, 197, 234, 0.45);
-  animation: statusPulse 2.4s ease-in-out infinite;
+  background: #89c5ea;
+  opacity: 0.9;
+  box-shadow: 0 0 0 0 rgba(137, 197, 234, 0.4);
   flex-shrink: 0;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .heroStatusDot {
+    animation: heroStatusPulse 2.4s ease-in-out infinite;
+  }
+}
+
 .heroMeta {
-  font-size: clamp(16px, 1.35vw, 19px);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-style: normal;
+  font-size: 20px;
   line-height: 1.3;
   font-weight: 400;
-  color: var(--color-muted-hero);
+  color: #b1ab9d;
   margin: 0;
   max-width: 100%;
 }
 
-.heroMeta a {
-  text-decoration: underline;
-  text-underline-offset: 3px;
+.heroCmuLink {
+  position: relative;
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(177, 171, 157, 0.65);
+  transition: border-color 0.3s ease;
 }
 
-.heroMeta a:hover {
-  color: var(--color-text);
-}
-
-.heroVisual {
+.heroCmuLink::after {
+  content: attr(data-badge);
   position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translateY(-46%);
-  display: flex;
-  flex: 0 0 auto;
-  width: clamp(220px, 26vw, 360px);
-  height: clamp(150px, 18vw, 230px);
+  left: 0;
+  top: calc(100% + 8px);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
   pointer-events: none;
 }
 
-.heroLottie {
-  display: block;
-  width: 100%;
-  height: 100%;
+.heroCmuLink:hover {
+  color: inherit;
+  border-bottom-color: #b1ab9d;
 }
 
-@keyframes statusPulse {
+.heroCmuLink:hover::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* .heroVisual / .heroLottie — reserved for Kiki animation (see HeroLottie.tsx) */
+
+@keyframes heroStatusPulse {
   0%,
   100% {
     opacity: 0.9;
@@ -338,6 +511,10 @@
   font-weight: 700;
   margin: 0;
   letter-spacing: -0.02em;
+}
+
+.projectTitle[id] {
+  scroll-margin-top: var(--scroll-anchor-offset, 128px);
 }
 
 .projectDesc {
@@ -448,101 +625,6 @@
   object-position: center top;
 }
 
-.about {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: clamp(48px, 8vw, 88px) 0;
-  border-top: 1px solid var(--color-border-subtle);
-}
-
-.aboutInner {
-  width: 100%;
-  max-width: var(--content-max);
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-  padding: 0;
-}
-
-.aboutHeader {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  text-align: center;
-}
-
-.aboutTitle {
-  font-family: var(--font-instrument-serif), serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: clamp(40px, 5vw, 53px);
-  line-height: 1.05;
-  margin: 0;
-  color: var(--color-text);
-}
-
-.aboutSubtitle {
-  margin: 0;
-  font-size: 20px;
-  line-height: 24px;
-  color: var(--color-muted);
-  max-width: 48rem;
-}
-
-.columns {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(24px, 4vw, 45px);
-  width: 100%;
-}
-
-.column {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.columnHeader {
-  position: relative;
-  min-height: 120px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.columnIndex {
-  font-size: 16px;
-  line-height: 22.4px;
-  font-style: italic;
-  color: var(--color-text);
-  margin: 0;
-}
-
-.columnTitle {
-  font-size: 30px;
-  line-height: 39px;
-  font-weight: 700;
-  margin: 0;
-}
-
-.columnBody {
-  display: flex;
-  flex-direction: column;
-  gap: 26px;
-}
-
-.columnBody p {
-  margin: 0;
-  font-size: 20px;
-  line-height: 26px;
-  font-weight: 400;
-  color: var(--color-text);
-}
-
 .footer {
   width: 100%;
   max-width: var(--content-max);
@@ -555,16 +637,27 @@
 
 .footerTitle {
   margin: 0;
-  font-size: 30px;
-  line-height: 36px;
+  font-family: var(--font-instrument-serif), serif;
+  font-style: normal;
   font-weight: 400;
+  font-size: clamp(44px, 6.6vw, 88px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
   text-align: center;
+  color: var(--color-text);
+}
+
+.footerTitle em {
+  font-style: italic;
+  color: #f3bdd1;
 }
 
 .footerLine {
   margin: 0;
-  font-size: 16px;
-  line-height: 24px;
+  font-family: var(--font-instrument-serif), serif;
+  font-style: italic;
+  font-size: clamp(18px, 1.6vw, 22px);
+  line-height: 1.45;
   color: var(--color-muted);
   text-align: center;
 }
@@ -631,31 +724,13 @@
     padding: clamp(44px, 9vw, 72px) 0;
   }
 
-  .heroTop {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: clamp(16px, 3vw, 24px);
-    padding-right: 0;
+  .heroHeadline {
+    font-size: clamp(32px, 5vw, 56px);
   }
 
-  .heroVisual {
-    position: relative;
-    top: auto;
-    right: auto;
-    transform: none;
-    height: clamp(170px, 42vw, 220px);
-    width: clamp(180px, 36vw, 260px);
-    pointer-events: auto;
-  }
-
-  .heroLead {
-    font-size: clamp(20px, 2.8vw, 28px);
-    line-height: 1.35;
-  }
-
-  .columns {
-    grid-template-columns: 1fr;
+  .heroSub {
+    font-size: 17px;
+    white-space: normal;
   }
 
   .mediaStrip {
@@ -675,17 +750,6 @@
     display: block;
   }
 
-  .heroTop {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .heroVisual {
-    width: min(75vw, 260px);
-    height: auto;
-    aspect-ratio: 1.55 / 1;
-  }
-
   .heroCopy {
     gap: 16px;
   }
@@ -694,9 +758,13 @@
     font-size: 20px;
   }
 
-  .heroLead {
+  .heroHeadline {
     letter-spacing: -0.02em;
-    line-height: 1.32;
+    line-height: 1.02;
+  }
+
+  .heroSub {
+    white-space: normal;
   }
 
   .heroMetaRow {
@@ -704,7 +772,7 @@
   }
 
   .heroMeta {
-    font-size: 16px;
+    font-size: 20px;
   }
 
   .projectHead {

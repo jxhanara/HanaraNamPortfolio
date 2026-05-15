@@ -2,6 +2,8 @@ import type { GradientId } from "./constants";
 
 export type AnnotationKind = "sticky" | "text" | "comment";
 
+export type ThreadMessage = { from: "visitor" | "ai"; text: string; at: number };
+
 export type AnnotationItem = {
   id: string;
   kind: AnnotationKind;
@@ -10,6 +12,18 @@ export type AnnotationItem = {
   text: string;
   author: string;
   _fresh?: boolean;
+  thread?: ThreadMessage[];
+  aiState?: "idle" | "thinking" | "done" | "error";
+  status?: "open" | "resolved";
+  collapsed?: boolean;
+  /** YYYY-MM-DD, set when the item is first saved */
+  sessionId?: string;
+  /** True while playing the “fly to archive” exit animation */
+  resolveFlying?: boolean;
+  /** After resolve: hidden from live canvas but still listed in Archive */
+  offCanvas?: boolean;
+  /** Brief pulse when jumping to this item from the archive */
+  _highlightFlash?: boolean;
 };
 
 export type StrokeKind = "pen" | "highlight";

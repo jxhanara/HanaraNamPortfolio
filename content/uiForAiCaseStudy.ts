@@ -89,6 +89,7 @@ export const uiForAiResearch = {
         "A graph-based design tool that supports parallel exploration of alternatives — branching, merging, recalling history, and comparing design states simultaneously. Designers naturally work non-linearly, revisiting and recombining earlier ideas, but most tools force a single forward path.",
       quote:
         "\"creating alternatives from history is superior because I like the idea of being able to pick something from the actual history, which could contain ideas that were not further developed.\"",
+      visualLabel: undefined,
     },
   ],
   synthesis: {

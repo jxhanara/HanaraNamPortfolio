@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { CSSProperties } from "react";
+import type { CSSProperties, TransitionEvent } from "react";
+import { AIThread } from "./AIThread";
+import { todayId } from "./AIThreads";
 import type { Gradient } from "./constants";
 import type { AnnotationItem as Ann } from "./types";
 import styles from "./LeaveAMark.module.css";
@@ -11,14 +13,41 @@ type AnnotationItemProps = {
   onChange: (next: Ann) => void;
   onDelete: (id: string) => void;
   gradient: Gradient;
+  pageContext?: string;
 };
 
-export function AnnotationItem({ item, onChange, onDelete, gradient }: AnnotationItemProps) {
+export function AnnotationItem({ item, onChange, onDelete, gradient, pageContext }: AnnotationItemProps) {
   const [editing, setEditing] = useState(item.text === "" && !!item._fresh);
   const [commentPeekOpen, setCommentPeekOpen] = useState(false);
   const textRef = useRef<HTMLTextAreaElement>(null);
   const drag = useRef<{ dx: number; dy: number } | null>(null);
   const ref = useRef<HTMLDivElement>(null);
+
+  const [flyAnimArmed, setFlyAnimArmed] = useState(false);
+
+  useEffect(() => {
+    if (!item.resolveFlying) {
+      setFlyAnimArmed(false);
+      return;
+    }
+    const id = requestAnimationFrame(() => {
+      requestAnimationFrame(() => setFlyAnimArmed(true));
+    });
+    return () => cancelAnimationFrame(id);
+  }, [item.resolveFlying]);
+
+  const handleResolveFlyEnd = (e: TransitionEvent<HTMLDivElement>) => {
+    if (e.target !== e.currentTarget) return;
+    if (!item.resolveFlying) return;
+    if (e.propertyName !== "transform") return;
+    onChange({
+      ...item,
+      resolveFlying: false,
+      offCanvas: true,
+      status: "resolved",
+      collapsed: true,
+    });
+  };
 
   const commentDocked = item.kind === "comment" && item.text.trim().length > 0 && !item._fresh && !editing;
 
@@ -66,11 +95,22 @@ export function AnnotationItem({ item, onChange, onDelete, gradient }: Annotatio
     }
   };
 
+  useEffect(() => {
+    if (item.kind !== "comment" || !commentDocked || !commentPeekOpen) return;
+    const onDocPointerDown = (e: PointerEvent) => {
+      const t = e.target as Node;
+      if (ref.current?.contains(t)) return;
+      setCommentPeekOpen(false);
+    };
+    document.addEventListener("pointerdown", onDocPointerDown, true);
+    return () => document.removeEventListener("pointerdown", onDocPointerDown, true);
+  }, [item.kind, commentDocked, commentPeekOpen]);
+
   const commentLead = commentDocked ? (
     <>
       <button
         type="button"
-        className={styles.commentPin}
+        className={`${styles.commentPin} ${item.aiState === "thinking" && !commentPeekOpen ? styles.commentPinThinking : ""}`}
         aria-label="Show or hide comment"
         title="Show or hide comment"
         onClick={() => setCommentPeekOpen((p) => !p)}
@@ -100,9 +140,9 @@ export function AnnotationItem({ item, onChange, onDelete, gradient }: Annotatio
     drag.current = null;
   };
 
-  const stickyStyle = {
-    left: item.x,
-    top: item.y,
+  const cardInnerGradientStyle = {
+    left: 0,
+    top: 0,
     "--from": gradient.from,
     "--to": gradient.to,
   } as CSSProperties;
@@ -116,57 +156,90 @@ export function AnnotationItem({ item, onChange, onDelete, gradient }: Annotatio
     onPointerCancel: onPointerUp,
   };
 
+  const flyRootClass = `${styles.annoFlyRoot} ${flyAnimArmed && item.resolveFlying ? styles.annoFlyRootAnimating : ""}`;
+
   const finishStickyOrText = (text: string) => {
     setEditing(false);
     onChange({ ...item, text: text.trim(), _fresh: false });
   };
 
-  const finishComment = (text: string) => {
+  const finishWithThread = (text: string) => {
     setEditing(false);
-    onChange({ ...item, text: text.trim(), _fresh: false });
-    setCommentPeekOpen(false);
+    const trimmed = text.trim();
+    if (!trimmed) {
+      if (item._fresh) {
+        onDelete(item.id);
+        return;
+      }
+      onChange({ ...item, text: trimmed, _fresh: false });
+      if (item.kind === "comment") setCommentPeekOpen(false);
+      return;
+    }
+    onChange({
+      ...item,
+      text: trimmed,
+      _fresh: false,
+      sessionId: item.sessionId || todayId(),
+      thread: item.thread?.length
+        ? item.thread
+        : [{ from: "visitor", text: trimmed, at: Date.now() }],
+      aiState: item.aiState === "done" ? "done" : "thinking",
+      status: item.status || "open",
+    });
+    if (item.kind === "comment") setCommentPeekOpen(true);
   };
 
   if (item.kind === "sticky") {
     return (
       <div
-        ref={ref}
-        data-lam-item
-        className={styles.sticky}
-        style={stickyStyle}
-        {...commonHandlers}
+        className={flyRootClass}
+        style={{ left: item.x, top: item.y }}
+        onTransitionEnd={handleResolveFlyEnd}
       >
-        <button
-          type="button"
-          className={styles.annDelete}
-          onClick={() => onDelete(item.id)}
-          onPointerDown={(e) => e.stopPropagation()}
-          aria-label="Delete"
+        <div
+          ref={ref}
+          data-lam-item
+          data-lam-item-id={item.id}
+          data-lam-jump-highlight={item._highlightFlash ? "true" : undefined}
+          className={styles.sticky}
+          style={cardInnerGradientStyle}
+          {...commonHandlers}
         >
-          ×
-        </button>
-        {editing ? (
-          <textarea
-            ref={textRef}
-            className={styles.stickyText}
-            value={item.text}
-            onChange={(e) => onChange({ ...item, text: e.target.value })}
-            onBlur={(e) => finishStickyOrText((e.target as HTMLTextAreaElement).value)}
+          <button
+            type="button"
+            className={styles.annDelete}
+            onClick={() => onDelete(item.id)}
             onPointerDown={(e) => e.stopPropagation()}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                finishStickyOrText((e.currentTarget as HTMLTextAreaElement).value);
-              }
-            }}
-            placeholder="leave a thought…"
-          />
-        ) : (
-          <div className={styles.stickyText} onClick={() => setEditing(true)}>
-            {item.text || <span style={{ opacity: 0.5 }}>leave a thought…</span>}
-          </div>
-        )}
-        <div className={styles.stickyTape} data-lam-anno-drag aria-hidden title="Drag" />
+            aria-label="Delete"
+          >
+            ×
+          </button>
+          {editing ? (
+            <textarea
+              ref={textRef}
+              className={styles.stickyText}
+              value={item.text}
+              onChange={(e) => onChange({ ...item, text: e.target.value })}
+              onBlur={(e) => finishWithThread((e.target as HTMLTextAreaElement).value)}
+              onPointerDown={(e) => e.stopPropagation()}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  finishWithThread((e.currentTarget as HTMLTextAreaElement).value);
+                }
+              }}
+              placeholder="leave a thought…"
+            />
+          ) : (
+            <div className={styles.stickyText} onClick={() => setEditing(true)}>
+              {item.text || <span style={{ opacity: 0.5 }}>leave a thought…</span>}
+            </div>
+          )}
+          {item.thread && item.thread.length > 0 ? (
+            <AIThread item={item} onChange={onChange} gradient={gradient} compact pageContext={pageContext} />
+          ) : null}
+          <div className={styles.stickyTape} data-lam-anno-drag aria-hidden title="Drag" />
+        </div>
       </div>
     );
   }
@@ -212,47 +285,71 @@ export function AnnotationItem({ item, onChange, onDelete, gradient }: Annotatio
   if (item.kind === "comment") {
     return (
       <div
-        ref={ref}
-        data-lam-item
-        className={`${styles.comment} ${commentDocked ? styles.commentDocked : ""} ${commentPeekOpen ? styles.commentPeekOpen : ""}`}
-        style={stickyStyle}
-        {...commonHandlers}
+        className={flyRootClass}
+        style={{ left: item.x, top: item.y }}
+        onTransitionEnd={handleResolveFlyEnd}
       >
-        <div className={styles.commentLead}>{commentLead}</div>
-        <div className={styles.commentBubble}>
-          <button
-            type="button"
-            className={`${styles.annDelete} ${styles.annDeleteSm}`}
-            onClick={() => onDelete(item.id)}
-            onPointerDown={(e) => e.stopPropagation()}
-            aria-label="Delete"
-          >
-            ×
-          </button>
-          <div className={styles.commentAuthor}>
-            {item.author} <span>·</span> just now
-          </div>
-          {editing ? (
-            <textarea
-              ref={textRef}
-              className={styles.commentInput}
-              value={item.text}
-              onChange={(e) => onChange({ ...item, text: e.target.value })}
-              onBlur={(e) => finishComment((e.target as HTMLTextAreaElement).value)}
-              onPointerDown={(e) => e.stopPropagation()}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  finishComment((e.currentTarget as HTMLTextAreaElement).value);
+        <div
+          ref={ref}
+          data-lam-item
+          data-lam-item-id={item.id}
+          data-lam-jump-highlight={item._highlightFlash ? "true" : undefined}
+          className={`${styles.comment} ${commentDocked ? styles.commentDocked : ""} ${commentPeekOpen ? styles.commentPeekOpen : ""}`}
+          style={cardInnerGradientStyle}
+          {...commonHandlers}
+        >
+          <div className={styles.commentLead}>{commentLead}</div>
+          <div className={styles.commentBubble}>
+            <button
+              type="button"
+              className={`${styles.annDelete} ${styles.annDeleteSm}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (item._fresh && !item.text.trim()) {
+                  onDelete(item.id);
+                  return;
                 }
+                setCommentPeekOpen(false);
               }}
-              placeholder="add a comment…"
-            />
-          ) : (
-            <div className={styles.commentText} onClick={() => setEditing(true)}>
-              {item.text || <span style={{ opacity: 0.5 }}>add a comment…</span>}
+              onPointerDown={(e) => e.stopPropagation()}
+              aria-label={item._fresh && !item.text.trim() ? "Cancel" : "Minimize"}
+            >
+              ×
+            </button>
+            <div className={styles.commentAuthor}>
+              {item.author} <span>·</span> just now
             </div>
-          )}
+            {editing ? (
+              <textarea
+                ref={textRef}
+                className={styles.commentInput}
+                value={item.text}
+                onChange={(e) => onChange({ ...item, text: e.target.value })}
+                onBlur={(e) => finishWithThread((e.target as HTMLTextAreaElement).value)}
+                onPointerDown={(e) => e.stopPropagation()}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    finishWithThread((e.currentTarget as HTMLTextAreaElement).value);
+                  }
+                }}
+                placeholder="add a comment…"
+              />
+            ) : (
+              <div className={styles.commentText} onClick={() => setEditing(true)}>
+                {item.text || <span style={{ opacity: 0.5 }}>add a comment…</span>}
+              </div>
+            )}
+            {item.thread && item.thread.length > 0 ? (
+              <AIThread
+                item={item}
+                onChange={onChange}
+                gradient={gradient}
+                pageContext={pageContext}
+                surfaceOpen={!commentDocked || commentPeekOpen}
+              />
+            ) : null}
+          </div>
         </div>
       </div>
     );

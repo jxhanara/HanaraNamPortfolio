@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CaseStudyFooter } from "../CaseStudyFooter";
+import { SiteFooter } from "@/components/SiteFooter";
 import { CaseStudyTocNav } from "../CaseStudyTocNav";
 import { MediaStrip } from "@/components/home/MediaStrip";
 import { SiteNav } from "@/components/home/SiteNav";
@@ -548,7 +548,7 @@ export function UiForAiCaseStudyView() {
           </div>
         </div>
 
-        <CaseStudyFooter />
+        <SiteFooter />
       </div>
     </div>
   );

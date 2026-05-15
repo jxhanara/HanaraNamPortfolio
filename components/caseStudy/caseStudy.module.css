@@ -441,6 +441,49 @@
   max-width: var(--case-study-section-copy-max);
 }
 
+/* Bumble Validation — synthesis callout (layout like UI for AI; Bumble yellow accent). */
+.validationSynthesisCallout {
+  margin-top: 40px;
+  border: 0.5px solid rgba(255, 206, 8, 0.42);
+  border-radius: 10px;
+  background: rgba(36, 32, 14, 0.92);
+  padding: 22px 24px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: start;
+  box-shadow: inset 0 1px 0 rgba(255, 230, 160, 0.06);
+}
+
+.validationSynthesisIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(48, 42, 16, 0.98);
+  border: 0.5px solid rgba(255, 206, 8, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.validationSynthesisLabel {
+  margin: 0 0 10px;
+  font-size: 10.4px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 236, 176, 0.88);
+}
+
+.validationSynthesisText {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.74);
+  max-width: var(--case-study-section-copy-max);
+}
+
 .problemGrid {
   margin-top: 40px;
   display: grid;

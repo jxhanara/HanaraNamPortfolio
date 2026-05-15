@@ -6,7 +6,6 @@ export function BumbleStrategySection() {
   return (
     <section id="strategy" className={cs.section}>
       <p className={cs.sectionEyebrow}>{bumbleStrategy.eyebrow}</p>
-      <p className={cs.eyebrow}>{bumbleStrategy.pivotEyebrow}</p>
       <h2 className={cs.h2}>{bumbleStrategy.title}</h2>
       <p className={cs.body}>{bumbleStrategy.body}</p>
 

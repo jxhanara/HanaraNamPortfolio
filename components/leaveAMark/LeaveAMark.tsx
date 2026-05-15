@@ -1,14 +1,19 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import type { CSSProperties } from "react";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { AnnotationItem } from "./AnnotationItem";
+import { ArchiveDots } from "./ArchiveDots";
+import { ArchivePanel } from "./ArchivePanel";
 import { Character } from "./Character";
+import { JumpSpotlight } from "./JumpSpotlight";
 import { CharacterLauncher } from "./CharacterLauncher";
 import { EdgeGlow, type EdgeGlowMode } from "./EdgeGlow";
 import { gradById, gradCSS, TOOLBAR_POS_KEY } from "./constants";
 import styles from "./LeaveAMark.module.css";
 import type { GradientId } from "./constants";
+import { syncPageAnnotations, syncVisitor } from "@/lib/syncToSupabase";
 import { normalizePagePath } from "./pagePath";
 import { PenCanvas } from "./PenCanvas";
 import {
@@ -18,8 +23,10 @@ import {
   savePageAnnotations,
   saveVisitorCardMeta,
 } from "./storage";
+import { todayId } from "./AIThreads";
 import { Toast } from "./Toast";
-import { Toolbar, type ToolId } from "./Toolbar";
+import { ExitContactCapture } from "./ExitContactCapture";
+import { Toolbar } from "./Toolbar";
 import { VisitorCard } from "./VisitorCard";
 import type { AnnotationItem as AnnItem } from "./types";
 import type { Stroke } from "./types";
@@ -27,6 +34,10 @@ import type { ToolbarPos } from "./types";
 import type { VisitorCard as VisitorCardT } from "./types";
 import { useLeaveAMarkNavOptional } from "./LeaveAMarkNavContext";
 import { useLeaveAMarkSession } from "./LeaveAMarkSessionContext";
+
+const ARCHIVE_PANEL_WIDTH_PX = 360;
+const TOOLBAR_HORIZONTAL_HEIGHT_PX = 54;
+const ARCHIVE_FLOAT_BTN_HEIGHT_PX = 44;
 
 function readToolbarPosFromStorage(): ToolbarPos {
   try {
@@ -60,6 +71,17 @@ function isPlacementUiTarget(target: EventTarget | null): boolean {
   );
 }
 
+function itemsForStorage(items: AnnItem[]): AnnItem[] {
+  return items.map(({ _fresh, resolveFlying, _highlightFlash, ...r }) => r);
+}
+
+function strokesForStorage(strokes: Stroke[]): Omit<Stroke, "_tmp">[] {
+  return strokes.map((s) => {
+    const { _tmp, ...r } = s;
+    return r;
+  });
+}
+
 export function LeaveAMark() {
   const {
     phase,
@@ -76,9 +98,7 @@ export function LeaveAMark() {
 
   const [desktop, setDesktop] = useState(false);
   const [hydrated, setHydrated] = useState(false);
-  const [card, setCard] = useState<VisitorCardT | null>(() =>
-    typeof window === "undefined" ? null : loadActiveVisitorCard(),
-  );
+  const [card, setCard] = useState<VisitorCardT | null>(null);
   const cardRef = useRef<VisitorCardT | null>(null);
   cardRef.current = card;
   const [items, setItems] = useState<AnnItem[]>([]);
@@ -89,11 +109,15 @@ export function LeaveAMark() {
       : readToolbarPosFromStorage(),
   );
   const [toast, setToast] = useState<{ text: string } | null>(null);
+  const [archiveOpen, setArchiveOpen] = useState(false);
+  const [showExitCapture, setShowExitCapture] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [docHeight, setDocHeight] = useState(0);
 
   const pathname = usePathname() || "/";
   const pageKey = useMemo(() => normalizePagePath(pathname), [pathname]);
+  const pageKeyRef = useRef(pageKey);
+  pageKeyRef.current = pageKey;
   const itemsRef = useRef(items);
   const strokesRef = useRef(strokes);
   const prevPageKeyRef = useRef<string | null>(null);
@@ -104,6 +128,57 @@ export function LeaveAMark() {
   const lamNav = useLeaveAMarkNavOptional();
   const gradient = useMemo(() => gradById(card?.color), [card?.color]);
   const gradientCSS = useMemo(() => gradCSS(gradient), [gradient]);
+
+  const visibleItems = useMemo(() => {
+    const tid = todayId();
+    return items.filter((it) => {
+      if (it._highlightFlash) return true;
+      if (it.offCanvas) return false;
+      if (it.sessionId && it.sessionId !== tid) return false;
+      if (
+        (it.kind === "sticky" || it.kind === "comment") &&
+        it.status === "resolved" &&
+        !it.resolveFlying
+      ) {
+        return false;
+      }
+      return true;
+    });
+  }, [items]);
+
+  const archivedItems = useMemo(() => {
+    const tid = todayId();
+    return items.filter((it) => it.sessionId && it.sessionId !== tid);
+  }, [items]);
+
+  const jumpHighlightItem = useMemo(() => items.find((it) => it._highlightFlash) ?? null, [items]);
+
+  const archiveListItems = useMemo(() => {
+    const tid = todayId();
+    return items.filter((it) => {
+      if (it.kind === "text") return false;
+      if (it.sessionId && it.sessionId !== tid) return true;
+      if ((it.kind === "sticky" || it.kind === "comment") && it.offCanvas) return true;
+      if (
+        (it.kind === "sticky" || it.kind === "comment") &&
+        it.status === "resolved" &&
+        !it.resolveFlying
+      ) {
+        return true;
+      }
+      return false;
+    });
+  }, [items]);
+
+  const archiveBtnOffset = useMemo(() => {
+    const dock = toolbarPos.dock ?? "none";
+    if (dock === "left" || dock === "right") {
+      return { bottom: 28 as const };
+    }
+    return {
+      top: toolbarPos.y + (TOOLBAR_HORIZONTAL_HEIGHT_PX - ARCHIVE_FLOAT_BTN_HEIGHT_PX) / 2,
+    };
+  }, [toolbarPos]);
 
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 768px)");
@@ -120,23 +195,41 @@ export function LeaveAMark() {
 
   useEffect(() => {
     setHydrated(true);
+    const existingCard = loadActiveVisitorCard();
+    if (existingCard) {
+      syncVisitor(existingCard);
+    }
   }, []);
+
+  useEffect(() => {
+    if (!card?.id || !pageKey || phase !== "editing") return;
+    const id = window.setTimeout(() => {
+      syncPageAnnotations(card.id, pageKey, itemsRef.current);
+    }, 2000);
+    return () => window.clearTimeout(id);
+  }, [items, card?.id, pageKey, phase]);
 
   useLayoutEffect(() => {
     if (!hydrated) return;
 
     isSwitchingPage.current = true;
 
-    const cid = cardRef.current?.id ?? null;
+    let effectiveCard = cardRef.current;
+    if (!effectiveCard?.id) {
+      const restored = loadActiveVisitorCard();
+      if (restored) {
+        effectiveCard = restored;
+        setCard(restored);
+      }
+    }
+
+    const cid = effectiveCard?.id ?? null;
 
     if (!cid) {
       if (prevCardIdRef.current && prevPageKeyRef.current) {
         savePageAnnotations(prevCardIdRef.current, prevPageKeyRef.current, {
-          items: itemsRef.current.map(({ _fresh, ...r }) => r),
-          strokes: strokesRef.current.map((s) => {
-            const { _tmp, ...r } = s;
-            return r;
-          }),
+          items: itemsForStorage(itemsRef.current),
+          strokes: strokesForStorage(strokesRef.current),
         });
       }
       prevCardIdRef.current = null;
@@ -150,23 +243,30 @@ export function LeaveAMark() {
     const prevCid = prevCardIdRef.current;
     const prevPk = prevPageKeyRef.current;
 
+    const shellForVisitor = (vid: string): VisitorCardT | null =>
+      effectiveCard?.id === vid ? effectiveCard : null;
+
     if (prevCid && prevPk) {
       if (prevCid === cid && prevPk !== pageKey) {
-        savePageAnnotations(prevCid, prevPk, {
-          items: itemsRef.current.map(({ _fresh, ...r }) => r),
-          strokes: strokesRef.current.map((s) => {
-            const { _tmp, ...r } = s;
-            return r;
-          }),
-        });
+        savePageAnnotations(
+          prevCid,
+          prevPk,
+          {
+            items: itemsForStorage(itemsRef.current),
+            strokes: strokesForStorage(strokesRef.current),
+          },
+          shellForVisitor(prevCid),
+        );
       } else if (prevCid !== cid) {
-        savePageAnnotations(prevCid, prevPk, {
-          items: itemsRef.current.map(({ _fresh, ...r }) => r),
-          strokes: strokesRef.current.map((s) => {
-            const { _tmp, ...r } = s;
-            return r;
-          }),
-        });
+        savePageAnnotations(
+          prevCid,
+          prevPk,
+          {
+            items: itemsForStorage(itemsRef.current),
+            strokes: strokesForStorage(strokesRef.current),
+          },
+          shellForVisitor(prevCid),
+        );
       }
     }
 
@@ -176,11 +276,22 @@ export function LeaveAMark() {
     const bucket = loadAnnotationsForPage(cid, pageKey);
     setItems(bucket.items);
     setStrokes(bucket.strokes);
-
-    Promise.resolve().then(() => {
-      isSwitchingPage.current = false;
-    });
+    isSwitchingPage.current = false;
   }, [hydrated, card?.id, pageKey]);
+
+  const flushAnnotationsToDisk = useCallback(() => {
+    const cid = cardRef.current?.id;
+    if (!cid) return;
+    savePageAnnotations(
+      cid,
+      pageKeyRef.current,
+      {
+        items: itemsForStorage(itemsRef.current),
+        strokes: strokesForStorage(strokesRef.current),
+      },
+      cardRef.current,
+    );
+  }, []);
 
   useEffect(() => {
     try {
@@ -189,6 +300,35 @@ export function LeaveAMark() {
       /* ignore */
     }
   }, [toolbarPos]);
+
+  useLayoutEffect(() => {
+    if (!archiveOpen) {
+      document.documentElement.style.paddingRight = "";
+      return;
+    }
+    document.documentElement.style.paddingRight = `${ARCHIVE_PANEL_WIDTH_PX}px`;
+    return () => {
+      document.documentElement.style.paddingRight = "";
+    };
+  }, [archiveOpen]);
+
+  useEffect(() => {
+    if (phase !== "editing") {
+      setArchiveOpen(false);
+      setShowExitCapture(false);
+    }
+  }, [phase]);
+
+  useEffect(() => {
+    if (archiveListItems.length === 0) setArchiveOpen(false);
+  }, [archiveListItems.length]);
+
+  useEffect(() => {
+    if (phase !== "editing") return;
+    if (tool === "pen" || tool === "highlight" || tool === "eraser") {
+      setTool("pointer");
+    }
+  }, [phase, tool, setTool]);
 
   useEffect(() => {
     if (!lamNav) return;
@@ -217,8 +357,31 @@ export function LeaveAMark() {
   useEffect(() => {
     if (!card?.id) return;
     if (isSwitchingPage.current) return;
-    savePageAnnotations(card.id, pageKey, { items, strokes });
-  }, [items, strokes, card?.id, pageKey]);
+    savePageAnnotations(
+      card.id,
+      pageKey,
+      {
+        items: itemsForStorage(items),
+        strokes: strokesForStorage(strokes),
+      },
+      card,
+    );
+  }, [items, strokes, card, pageKey]);
+
+  useEffect(() => {
+    const onPageHide = () => flushAnnotationsToDisk();
+    window.addEventListener("pagehide", onPageHide);
+    return () => window.removeEventListener("pagehide", onPageHide);
+  }, [flushAnnotationsToDisk]);
+
+  const prevPhaseRef = useRef(phase);
+  useEffect(() => {
+    const prev = prevPhaseRef.current;
+    prevPhaseRef.current = phase;
+    if (prev === "editing" && phase !== "editing") {
+      flushAnnotationsToDisk();
+    }
+  }, [phase, flushAnnotationsToDisk]);
 
   useEffect(() => {
     if (phase !== "editing") return;
@@ -258,6 +421,15 @@ export function LeaveAMark() {
   }, [phase]);
 
   const finishExit = useCallback(() => {
+    flushAnnotationsToDisk();
+    if (card?.id && pageKey) {
+      syncPageAnnotations(card.id, pageKey, itemsRef.current);
+    }
+    setShowExitCapture(true);
+  }, [card?.id, pageKey, flushAnnotationsToDisk]);
+
+  const doExit = useCallback(() => {
+    setShowExitCapture(false);
     setPhase("exiting");
     setCharacterPose("wave");
     window.setTimeout(() => {
@@ -267,13 +439,21 @@ export function LeaveAMark() {
       setToast({ text: `See you next time, ${card?.name || "friend"} ✦` });
       window.setTimeout(() => setToast(null), 3000);
     }, 1500);
-  }, [card?.name]);
+  }, [card?.name, setCharacterPose, setPhase, setTool, setToast]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
       if (showVisitorEditor) {
         setShowVisitorEditor(false);
+        return;
+      }
+      if (archiveOpen) {
+        setArchiveOpen(false);
+        return;
+      }
+      if (phase === "editing" && showExitCapture) {
+        doExit();
         return;
       }
       if (phase === "editing") finishExit();
@@ -285,7 +465,7 @@ export function LeaveAMark() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [phase, finishExit, showVisitorEditor]);
+  }, [phase, finishExit, doExit, showVisitorEditor, archiveOpen, showExitCapture]);
 
   useEffect(() => {
     if (phase !== "editing") return;
@@ -304,9 +484,12 @@ export function LeaveAMark() {
         text: "",
         _fresh: true,
         author: card?.name || "you",
+        sessionId: todayId(),
       };
-      setItems((it) => [...it, newItem]);
-      setTool("pointer");
+      setItems((it) => {
+        const pruned = it.filter((x) => !(x._fresh && !x.text.trim()));
+        return [...pruned, newItem];
+      });
     };
     window.addEventListener("pointerdown", onDown, true);
     return () => window.removeEventListener("pointerdown", onDown, true);
@@ -329,6 +512,7 @@ export function LeaveAMark() {
     setPhase("editing");
     setCharacterPos("corner");
     setCharacterPose("active");
+    syncVisitor(newCard);
   };
 
   const cancelCard = () => {
@@ -356,30 +540,47 @@ export function LeaveAMark() {
   return (
     <div className={styles.leaveAMark}>
       {phase === "editing" ? (
-        <div className={styles.pageSyncedLayer} aria-hidden={false}>
-          <div
-            className={styles.syncInner}
-            style={{
-              height: docHeight,
-              transform: `translateY(-${scrollY}px)`,
-            }}
-          >
-            <PenCanvas tool={tool} gradient={gradient} strokes={strokes} setStrokes={setStrokes} />
-            <div className={styles.annotationLayer}>
-              {items.map((it) => (
-                <AnnotationItem
-                  key={it.id}
-                  item={it}
-                  gradient={gradient}
-                  onChange={(next) =>
-                    setItems((arr) => arr.map((x) => (x.id === next.id ? { ...next, _fresh: false } : x)))
-                  }
-                  onDelete={(id) => setItems((arr) => arr.filter((x) => x.id !== id))}
-                />
-              ))}
+        <>
+          <div className={styles.pageSyncedLayer} aria-hidden={false}>
+            <div
+              className={styles.syncInner}
+              style={{
+                height: docHeight,
+                transform: `translateY(-${scrollY}px)`,
+              }}
+            >
+              <PenCanvas tool={tool} gradient={gradient} strokes={strokes} setStrokes={setStrokes} />
+              <div className={styles.annotationLayer}>
+                {visibleItems.map((it) => (
+                  <AnnotationItem
+                    key={it.id}
+                    item={it}
+                    gradient={gradient}
+                    pageContext={`Portfolio page: ${pageKey}`}
+                    onChange={(next) =>
+                      setItems((arr) => arr.map((x) => (x.id === next.id ? { ...next, _fresh: false } : x)))
+                    }
+                    onDelete={(id) => setItems((arr) => arr.filter((x) => x.id !== id))}
+                  />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+          {archivedItems.length > 0 ? (
+            <ArchiveDots
+              items={items}
+              gradient={gradient}
+              scrollY={scrollY}
+              onDotClick={(it) => {
+                setArchiveOpen(true);
+                window.scrollTo({ top: it.y - 200, behavior: "smooth" });
+              }}
+            />
+          ) : null}
+          {jumpHighlightItem ? (
+            <JumpSpotlight itemId={jumpHighlightItem.id} gradient={gradient} />
+          ) : null}
+        </>
       ) : null}
 
       <EdgeGlow gradient={gradient} mode={edgeMode} />
@@ -433,18 +634,88 @@ export function LeaveAMark() {
           <VisitorCard mode="create" initial={null} onConfirm={confirmCard} onCancel={cancelCard} />
         )}
 
+        {phase === "editing" && showExitCapture && card ? (
+          <ExitContactCapture
+            visitorId={card.id}
+            visitorName={card.name}
+            gradient={gradient}
+            onDone={doExit}
+          />
+        ) : null}
         {phase === "editing" ? (
           <Toolbar
             tool={tool}
             setTool={(t) => setTool(t)}
             onDone={finishExit}
-            onUndo={() => setStrokes((s) => s.slice(0, -1))}
-            canUndo={strokes.length > 0}
-            canEraseInk={strokes.some((s) => s.kind === "pen" || s.kind === "highlight")}
             gradient={gradient}
             position={toolbarPos}
             setPosition={setToolbarPos}
           />
+        ) : null}
+
+        {phase === "editing" && archiveListItems.length > 0 ? (
+          <>
+            <ArchivePanel
+              open={archiveOpen}
+              onClose={() => setArchiveOpen(false)}
+              items={archiveListItems}
+              gradient={gradient}
+              onScrollTo={(it) => {
+                window.setTimeout(() => {
+                  window.scrollTo({
+                    top: Math.max(0, it.y - window.innerHeight / 2),
+                    behavior: "smooth",
+                  });
+                  setItems((prev) =>
+                    prev.map((x) => (x.id === it.id ? { ...x, _highlightFlash: true } : x)),
+                  );
+                  window.setTimeout(() => {
+                    setItems((prev) =>
+                      prev.map((x) => (x.id === it.id ? { ...x, _highlightFlash: false } : x)),
+                    );
+                  }, 2000);
+                }, 180);
+              }}
+            />
+            <button
+              data-lam-ui
+              type="button"
+              className={`${styles.navArchiveFloat} ${archiveOpen ? styles.navArchiveFloatActive : ""}`}
+              aria-pressed={archiveOpen}
+              onClick={() => setArchiveOpen((o) => !o)}
+              style={
+                {
+                  left: 20,
+                  ...("top" in archiveBtnOffset
+                    ? { top: archiveBtnOffset.top, bottom: "auto" }
+                    : { bottom: archiveBtnOffset.bottom, top: "auto" }),
+                  "--from": gradient.from,
+                  "--to": gradient.to,
+                } as unknown as CSSProperties
+              }
+            >
+              <span className={styles.navArchiveInner}>
+                <svg
+                  className={styles.navArchiveIcon}
+                  width={18}
+                  height={18}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.65}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  <path d="M21 8v13H3V8" />
+                  <path d="M1 3h22v5H1V3z" />
+                  <path d="M10 12h4" />
+                </svg>
+                <span className={styles.navArchiveLabel}>Archive</span>
+              </span>
+              {archiveListItems.length > 0 ? <span className={styles.navArchiveDot} aria-hidden /> : null}
+            </button>
+          </>
         ) : null}
 
         {phase === "editing" && ["sticky", "text", "comment"].includes(tool) ? (

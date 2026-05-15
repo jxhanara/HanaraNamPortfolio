@@ -122,16 +122,27 @@
   color: rgba(255, 255, 255, 0.68);
 }
 
-/* Shared small header (THE VIBE CODING PIPELINE / THE DIFFERENT USE CASE SCENARIOS). */
-.prototypeMicroEyebrow {
+/* Segment labels — pill shape aligned with UI for AI Testing; Bumble yellow accent. */
+.prototypeSegmentPill {
+  display: inline-block;
+  width: fit-content;
+  max-width: 100%;
   margin: 0 0 14px;
   font-family: var(--font-dm-sans), system-ui, sans-serif;
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  line-height: 1.5;
-  color: rgba(200, 200, 205, 0.88);
+  line-height: 1.35;
+  color: #ffce08;
+  background: rgba(42, 38, 14, 0.95);
+  border: 0.5px solid rgba(255, 206, 8, 0.45);
+  border-radius: 999px;
+  padding: 6px 16px;
+}
+
+.pipelineSection .prototypeSegmentPill {
+  margin-bottom: 12px;
 }
 
 .tabArea {

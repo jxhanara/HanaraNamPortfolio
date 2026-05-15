@@ -307,7 +307,7 @@ export function BumblePrototypePyramidSection() {
       <div className={py.prototypeStructureRule} aria-hidden />
 
       <div className={py.scenarioRoot}>
-        <p className={py.prototypeMicroEyebrow}>{bumblePrototypeInteractive.scenariosEyebrow}</p>
+        <p className={py.prototypeSegmentPill}>{bumblePrototypeInteractive.scenariosEyebrow}</p>
 
         <div className={py.tabArea}>
           <div className={py.prototypeTabList} role="tablist" aria-label="Prototype scenarios">
@@ -407,7 +407,7 @@ export function BumblePrototypePyramidSection() {
         </article>
 
         <div className={py.pipelineSection}>
-          <p className={py.prototypeMicroEyebrow}>{vc.eyebrow}</p>
+          <p className={py.prototypeSegmentPill}>{vc.eyebrow}</p>
           <div className={py.pipelineIntro}>
             {vc.intro.map((para, i) => (
               <p key={i} className={py.pipelineIntroBody}>
