@@ -1,6 +1,10 @@
 import Image from "next/image";
 import { bumbleResearch } from "@/content/bumbleFlowCaseStudy";
 import styles from "./bumbleBridgeShift.module.css";
+import {
+  caseStudyRailImageSizes,
+  caseStudyResponsiveImageStyle,
+} from "../caseStudyMedia";
 
 const d = bumbleResearch.bridgeDesignShift;
 const r = bumbleResearch;
@@ -30,7 +34,8 @@ export function BumbleBridgeShiftVisual() {
             alt={d.newBeforeAfterAlt}
             width={d.newBeforeAfterWidth}
             height={d.newBeforeAfterHeight}
-            sizes="(max-width: 720px) 100vw, min(1120px, 96vw)"
+            sizes={caseStudyRailImageSizes}
+            style={caseStudyResponsiveImageStyle}
             priority={false}
           />
         </div>

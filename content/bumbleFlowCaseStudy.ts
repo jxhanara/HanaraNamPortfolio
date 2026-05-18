@@ -423,6 +423,132 @@ export const bumblePrototypeInteractive = {
 export type BumblePrototypeScenarioId =
   (typeof bumblePrototypeInteractive.prototypeScenarios)[number]["id"];
 
+/**
+ * Premium × Premium scroll-driven walkthrough (Kevin × Lindsey).
+ *
+ * Each step seeks the two screen recordings to the exact moment that backs the
+ * narrative on the right. Lindsey's phone only appears once they're matched
+ * (step 5), so her video time is `null` for the solo Kevin steps.
+ *
+ * Video files live under `/public/assets/bumbleflow/` (already in the repo):
+ *   - BumbleFlow_Kevin.mov   (Kevin's POV — full ~2:30 recording)
+ *   - BumbleFlow_Lindsey.mov (Lindsey's POV — chat onward)
+ *
+ * Time stamps reflect Kevin's recording timeline. Lindsey's offsets are
+ * approximate — tweak `lindseyTime` directly here as the recording firms up.
+ */
+/** Prototype section shell: tabs + walkthrough (Premium × Premium) + vibe coding pipeline. */
+export const bumblePrototypeSection = {
+  eyebrow: "06 · Prototype",
+  title: "A step by step walkthrough",
+  tabs: [
+    { id: "premium-premium" as const, tabLabel: "Premium × Premium" },
+    { id: "premium-premium-partial" as const, tabLabel: "Premium × Free" },
+    { id: "free-free" as const, tabLabel: "Free × Free" },
+  ],
+  premiumPremium: {
+    title: "Full coordination, minimal friction",
+    description:
+      "Both users have synced calendars and set meeting vibes, so the system surfaces real overlap and suggests times directly in chat. Kevin's view is on the left, Lindsey's on the right — scroll to advance the timeline.",
+  },
+} as const;
+
+export type BumblePrototypeTabId = (typeof bumblePrototypeSection.tabs)[number]["id"];
+
+export const bumblePrototypeDualPhone = {
+  /** Single-file relative paths under /public — must exist on disk. */
+  kevinVideoSrc: "/assets/bumbleflow/BumbleFlow_Kevin.mov",
+  lindseyVideoSrc: "/assets/bumbleflow/BumbleFlow_Lindsey_New.mov",
+  kevinPosterLabel: "Kevin",
+  lindseyPosterLabel: "Lindsey",
+  scrollHint: "Scroll to continue",
+  /**
+   * Chat-suggestion sync (step 5).
+   *   - Kevin's video freezes at `kevinPauseAtTime` so it doesn't show the
+   *     "Lindsey sent a new suggestion" message before she actually sends.
+   *   - Once Lindsey's video reaches `lindseyResumeKevinAt` (her tap-Send
+   *     moment), Kevin resumes. If `kevinResumeAtTime` is set, Kevin seeks
+   *     to that frame on resume so his "Lindsey sent" message lines up with
+   *     Lindsey's own "You sent" bubble at the same wall-clock instant.
+   * Fine-tune by scrubbing each recording to the exact frame.
+   */
+  kevinPauseAtTime: 112,
+  lindseyResumeKevinAt: 19,
+  kevinResumeAtTime: 118 as number | null,
+  /**
+   * Each step exposes:
+   *   - `kevinTime` — where to seek Kevin's recording when this step becomes active
+   *   - `lindseyShowAtKevinTime` — Lindsey's phone fades in once Kevin's video
+   *     reaches this absolute time (in seconds). `null` keeps her hidden.
+   *     Lindsey's own recording is only ~20s long and begins with the
+   *     "received suggestion" state, so we defer her appearance until Kevin
+   *     has actually sent the suggestion (~110s into Kevin's recording).
+   *   When Lindsey first appears she starts at t=0 and plays through naturally
+   *   (no per-step seek — her short recording stays in sync that way).
+   */
+  steps: [
+    {
+      id: "free-preview",
+      label: "Step 1 · Free mode",
+      title: "Limited preview — see what Premium unlocks",
+      body:
+        "Kevin starts on Free. He can browse and tap into profiles, but availability and meeting-vibe context are gated — the system signals what unlocks at Premium without forcing the upgrade.",
+      kevinTime: 0,
+      lindseyShowAtKevinTime: null as number | null,
+    },
+    {
+      id: "premium-unlock",
+      label: "Step 2 · Premium unlocked",
+      title: "Full profile context — and a place to declare intent",
+      body:
+        "After upgrading, Kevin sees the full profile: photos, availability days, and meeting vibe. If he's not ready to connect a calendar, he can manually mark the days he's free and the meeting vibe he prefers — no sync required.",
+      kevinTime: 20,
+      lindseyShowAtKevinTime: null as number | null,
+    },
+    {
+      id: "calendar-connect",
+      label: "Step 3 · Calendar opt-in",
+      title: "Connect Google Calendar when you're ready",
+      body:
+        "Once he feels comfortable, Kevin connects his Google Calendar. Sync is opt-in and revocable — privacy stays with the user, not the system.",
+      kevinTime: 39,
+      lindseyShowAtKevinTime: null as number | null,
+    },
+    {
+      id: "curate-availability",
+      label: "Step 4 · Curated availability",
+      title: "Add, remove, and star times that fit",
+      body:
+        "Kevin can add or remove time blocks beyond what his calendar imported, and star the ones he's generally free. Starred slots feed the recommender — so even when two calendars don't perfectly overlap, the system still suggests times that work for both.",
+      kevinTime: 45,
+      lindseyShowAtKevinTime: null as number | null,
+    },
+    {
+      id: "chat-coordinate",
+      label: "Step 5 · Chat & coordinate",
+      title: "Overlap surfaced in chat — propose, accept, or counter",
+      body:
+        "Once matched, both phones drop into the chat. The system surfaces the times Kevin and Lindsey overlap today, with the option to expand the full week in calendar or list view. One side suggests; the other accepts or counters with a new time.",
+      kevinTime: 77,
+      // Lindsey enters the moment Kevin sends his first suggestion (matches kevinPauseAtTime).
+      lindseyShowAtKevinTime: 112 as number | null,
+    },
+    {
+      id: "plan-confirmed",
+      label: "Step 6 · Plan confirmed",
+      title: "A venue, a calendar invite, a real plan",
+      body:
+        "When a time is confirmed, the system recommends a venue based on both vibes and the time of day. The meetup drops into Bumble Flow's calendar automatically — and Kevin can mirror it back to Google Calendar if he wants.",
+      kevinTime: 124,
+      // Lindsey's recording ends with the new suggestion sent; she stays hidden in step 6.
+      lindseyShowAtKevinTime: null as number | null,
+    },
+  ],
+} as const;
+
+export type BumblePrototypeDualPhoneStepId =
+  (typeof bumblePrototypeDualPhone.steps)[number]["id"];
+
 export const bumbleCoreComponents = {
   eyebrow: "07 · Decisions",
   title: "Design system",
@@ -483,6 +609,8 @@ export const bumbleNextProject = {
     "An intelligent travel planning app — AI-powered itineraries, vibe-based discovery, and local community in one place.",
   href: "/trippy-case-study",
   imageSrc: "/images/trippyportfoliothumbnail.png",
+  imageWidth: 3607,
+  imageHeight: 2481,
   imageAlt: "Trippy portfolio preview",
   metaLeft: "Lead product design · Mobile",
   metaYear: "2024 – 2026",

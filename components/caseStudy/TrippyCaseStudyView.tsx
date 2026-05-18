@@ -23,6 +23,10 @@ import { SiteNav } from "@/components/home/SiteNav";
 import { TRIPPY_STRIP_VIDEOS } from "@/components/home/trippyStrip";
 import homeStyles from "@/components/home/styles.module.css";
 import cs from "./caseStudy.module.css";
+import {
+  caseStudyRailImageSizes,
+  caseStudyResponsiveImageStyle,
+} from "./caseStudyMedia";
 
 const PROBLEM_ICON_COLOR: Record<
   (typeof trippyProblem.cards)[number]["accent"],
@@ -49,6 +53,7 @@ export function TrippyCaseStudyView() {
                 videos={TRIPPY_STRIP_VIDEOS}
                 variant="trippy"
                 ariaLabel="Trippy product recordings"
+                cellClassName={cs.heroMediaCell}
               />
             </div>
           </div>
@@ -128,9 +133,11 @@ export function TrippyCaseStudyView() {
                         <Image
                           src={c.imageSrc}
                           alt={c.imageAlt}
-                          fill
+                          width={c.imageWidth}
+                          height={c.imageHeight}
+                          className={cs.caseStudyRaster}
                           sizes="(max-width: 900px) 100vw, 360px"
-                          style={{ objectFit: "contain" }}
+                          style={caseStudyResponsiveImageStyle}
                         />
                       </div>
                     </div>
@@ -227,9 +234,11 @@ export function TrippyCaseStudyView() {
                 <Image
                   src={trippyValidation.userQuotesImageSrc}
                   alt={trippyValidation.userQuotesImageAlt}
-                  fill
+                  width={trippyValidation.userQuotesImageWidth}
+                  height={trippyValidation.userQuotesImageHeight}
+                  className={cs.caseStudyRaster}
                   sizes="(max-width: 900px) 100vw, 520px"
-                  style={{ objectFit: "contain" }}
+                  style={caseStudyResponsiveImageStyle}
                 />
               </div>
             </div>
@@ -277,7 +286,7 @@ export function TrippyCaseStudyView() {
             </div>
 
             {trippySolution.modules.map((mod) => (
-              <article key={mod.n} className={`${cs.module} ${cs.solutionModuleClamp}`}>
+              <article key={mod.n} className={cs.module}>
                 <div className={cs.moduleHeader}>
                   <span className={cs.moduleNum} aria-hidden>
                     {mod.n}
@@ -287,14 +296,15 @@ export function TrippyCaseStudyView() {
                     <p className={cs.moduleBody}>{mod.body}</p>
                   </div>
                 </div>
-                <div className={cs.moduleMediaFull}>
+                <div className={cs.validationConceptWrapFull}>
                   <Image
                     src={mod.imageSrc}
                     alt={mod.imageAlt}
                     width={mod.imageWidth}
                     height={mod.imageHeight}
-                    className={cs.moduleImageUncropped}
-                    sizes="(max-width: 900px) 100vw, min(1100px, 95vw)"
+                    className={cs.validationConceptImg}
+                    sizes={caseStudyRailImageSizes}
+                    style={caseStudyResponsiveImageStyle}
                   />
                 </div>
               </article>
@@ -310,9 +320,11 @@ export function TrippyCaseStudyView() {
                 <Image
                   src={trippyCoreComponents.imageSrc}
                   alt={trippyCoreComponents.imageAlt}
-                  fill
-                  className={cs.designSystemImageFill}
-                  sizes="(max-width: 900px) 100vw, min(1100px, 95vw)"
+                  width={trippyCoreComponents.imageWidth}
+                  height={trippyCoreComponents.imageHeight}
+                  className={cs.moduleImageUncropped}
+                  sizes={caseStudyRailImageSizes}
+                  style={caseStudyResponsiveImageStyle}
                 />
               </div>
             </div>
@@ -360,10 +372,10 @@ export function TrippyCaseStudyView() {
                 <Image
                   src={trippyNextProject.imageSrc}
                   alt={trippyNextProject.imageAlt}
-                  fill
+                  width={trippyNextProject.imageWidth}
+                  height={trippyNextProject.imageHeight}
                   className={cs.nextProjectImage}
                   sizes="(max-width: 900px) 100vw, 800px"
-                  style={{ objectFit: "cover" }}
                 />
               </div>
               <div className={cs.nextProjectMeta}>

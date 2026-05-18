@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { bumbleNextProject } from "@/content/bumbleFlowCaseStudy";
 import cs from "../caseStudy.module.css";
-
 export function BumbleNextProjectSection() {
   const p = bumbleNextProject;
   return (
@@ -21,10 +20,10 @@ export function BumbleNextProjectSection() {
           <Image
             src={p.imageSrc}
             alt={p.imageAlt}
-            fill
+            width={p.imageWidth}
+            height={p.imageHeight}
             className={cs.nextProjectImage}
             sizes="(max-width: 900px) 100vw, 800px"
-            style={{ objectFit: "cover" }}
           />
         </div>
         <div className={cs.nextProjectMeta}>

@@ -36,7 +36,7 @@
   width: 100%;
   max-width: var(--content-max);
   /* Matches edit mode so entering Leave-a-Mark does not shift the bar vertically when the glow appears. */
-  padding: 42px var(--space-x) 22px;
+  padding: 22px var(--space-x) 16px;
 }
 
 /* Leave-a-Mark editing: same max-width rail as main; vertical padding inherited from .navContent. */
@@ -55,7 +55,6 @@
   display: flex;
   align-items: center;
   min-width: 0;
-  padding-top: 3px;
 }
 
 .logoLink {
@@ -66,7 +65,7 @@
 
 .logoImage {
   display: block;
-  height: 49px;
+  height: 40px;
   width: auto;
   object-fit: contain;
 }
@@ -168,6 +167,7 @@
   display: flex;
   flex-direction: column;
   gap: 0;
+  --home-section-gap: clamp(36px, 4vw, 56px);
 }
 
 .hero {
@@ -175,7 +175,8 @@
   width: 100%;
   min-height: clamp(460px, 64vh, 640px);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  padding-top: var(--home-section-gap);
 }
 
 /* Same 1037px rail as case-study blocks so hero copy lines up with TRIPPY, etc. */
@@ -366,7 +367,7 @@
 
 .heroSub {
   font-family: var(--font-dm-sans), system-ui, sans-serif;
-  font-size: clamp(15px, 1.25vw, 19px);
+  font-size: 20px;
   line-height: 1.5;
   font-weight: 400;
   color: #cfcabd;
@@ -466,6 +467,7 @@
   align-items: center;
   width: 100%;
   gap: 64px;
+  margin-top: var(--home-section-gap);
 }
 
 .projectBlock {
@@ -714,6 +716,42 @@
   height: 20px;
 }
 
+/*
+ * ~14" laptops (shorter viewport): title + description + thumbnail should fit in
+ * one screen when scrolled to a project; phone strips can sit below the fold.
+ * Full width always; max-height caps vertical size (image still fills via cover).
+ */
+@media (max-height: 1000px) and (min-width: 1025px) {
+  .main {
+    --home-section-gap: clamp(28px, 3.5vw, 44px);
+  }
+
+  .hero {
+    min-height: clamp(340px, 50vh, 500px);
+  }
+
+  .heroInner {
+    padding: clamp(36px, 5vw, 72px) 0;
+  }
+
+  .portfolios {
+    gap: 48px;
+  }
+
+  .projectBlock,
+  .projectCardLink,
+  .projectStack {
+    gap: 20px;
+  }
+
+  .thumbWrap {
+    width: 100%;
+    height: calc(100vh - 19rem);
+    max-height: calc(100vh - 19rem);
+    aspect-ratio: auto;
+  }
+}
+
 @media (max-width: 1024px) {
   .hero {
     min-height: clamp(420px, 58vh, 560px);
@@ -729,7 +767,6 @@
   }
 
   .heroSub {
-    font-size: 17px;
     white-space: normal;
   }
 

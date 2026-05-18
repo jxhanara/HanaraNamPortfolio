@@ -11,7 +11,7 @@ export function HeroSection() {
       <div className={styles.heroInner}>
         <div className={styles.heroCopy}>
           <p id="hero-heading" className={styles.heroGreeting}>
-            hey there <HeroSmiley /> i&apos;m hanara
+            Hey there <HeroSmiley /> I&apos;m Hanara
           </p>
 
           <h1 className={styles.heroHeadline}>

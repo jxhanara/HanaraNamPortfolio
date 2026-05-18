@@ -102,7 +102,7 @@
 
 .pipelineSection {
   width: 100%;
-  margin: clamp(32px, 4.5vw, 48px) 0 0;
+  margin: clamp(48px, 6vw, 72px) 0 0;
   padding-top: clamp(28px, 4vw, 40px);
   border-top: 1px solid var(--color-border-subtle);
 }

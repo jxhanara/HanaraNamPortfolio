@@ -9,16 +9,26 @@ export type MediaStripProps = {
   ariaLabel?: string;
   /** Tunes overscan / focal point for letterboxed phone captures. */
   variant?: MediaStripVariant;
+  className?: string;
+  cellClassName?: string;
 };
 
-export function MediaStrip({ videos, ariaLabel, variant }: MediaStripProps) {
+export function MediaStrip({
+  videos,
+  ariaLabel,
+  variant,
+  className,
+  cellClassName,
+}: MediaStripProps) {
   if (videos?.length) {
-    const stripClass =
-      variant === "bumble"
-        ? `${styles.mediaStrip} ${styles.mediaStripBumble}`
-        : variant === "trippy"
-          ? `${styles.mediaStrip} ${styles.mediaStripTrippy}`
-          : styles.mediaStrip;
+    const stripClass = [
+      styles.mediaStrip,
+      variant === "bumble" && styles.mediaStripBumble,
+      variant === "trippy" && styles.mediaStripTrippy,
+      className,
+    ]
+      .filter(Boolean)
+      .join(" ");
 
     return (
       <div
@@ -29,7 +39,7 @@ export function MediaStrip({ videos, ariaLabel, variant }: MediaStripProps) {
         {videos.map((src) => (
           <div
             key={src}
-            className={`${styles.mediaCell} ${styles.mediaCellVideo}`}
+            className={`${styles.mediaCell} ${styles.mediaCellVideo} ${cellClassName ?? ""}`.trim()}
           >
             <div className={styles.mediaVideoScale}>
               <video
@@ -49,10 +59,10 @@ export function MediaStrip({ videos, ariaLabel, variant }: MediaStripProps) {
   }
 
   return (
-    <div className={styles.mediaStrip} aria-hidden>
-      <div className={styles.mediaCell} />
-      <div className={styles.mediaCell} />
-      <div className={styles.mediaCell} />
+    <div className={[styles.mediaStrip, className].filter(Boolean).join(" ")} aria-hidden>
+      <div className={`${styles.mediaCell} ${cellClassName ?? ""}`.trim()} />
+      <div className={`${styles.mediaCell} ${cellClassName ?? ""}`.trim()} />
+      <div className={`${styles.mediaCell} ${cellClassName ?? ""}`.trim()} />
     </div>
   );
 }

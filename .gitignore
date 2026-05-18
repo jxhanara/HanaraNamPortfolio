@@ -4,3 +4,7 @@ out
 .DS_Store
 *.log
 .env*.local
+tsconfig.tsbuildinfo
+
+# Source screen recordings — served copies live under public/assets/
+assets/bumbleflow/*.mov

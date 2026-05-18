@@ -1,6 +1,10 @@
 import Image from "next/image";
 import { bumbleCoreComponents } from "@/content/bumbleFlowCaseStudy";
 import cs from "../caseStudy.module.css";
+import {
+  caseStudyRailImageSizes,
+  caseStudyResponsiveImageStyle,
+} from "../caseStudyMedia";
 
 export function BumbleCoreComponentsSection() {
   return (
@@ -14,7 +18,8 @@ export function BumbleCoreComponentsSection() {
           className={cs.validationConceptImg}
           src={bumbleCoreComponents.image.src}
           alt={bumbleCoreComponents.image.alt}
-          sizes="(max-width: 900px) 100vw, min(1100px, 92vw)"
+          sizes={caseStudyRailImageSizes}
+          style={caseStudyResponsiveImageStyle}
         />
       </div>
     </section>

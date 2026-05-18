@@ -1,0 +1,36 @@
+.rail {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+}
+
+.tabPanel {
+  margin-top: clamp(20px, 3vw, 28px);
+  width: 100%;
+  min-width: 0;
+}
+
+.tabTitle {
+  margin: 0 0 12px;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: clamp(18px, 2.2vw, 22px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: #fff;
+  max-width: var(--case-study-section-copy-max);
+}
+
+.tabDescription {
+  margin: 0 0 clamp(40px, 5vw, 56px);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.62;
+  color: rgba(255, 255, 255, 0.68);
+  max-width: var(--case-study-section-copy-max);
+}
+
+.tabEmpty {
+  min-height: 120px;
+}

@@ -11,24 +11,49 @@
   min-width: 0;
 }
 
+/* Viewport-width fluid images; height follows intrinsic aspect ratio */
+.caseStudyRaster {
+  display: block;
+  width: 100% !important;
+  max-width: 100%;
+  height: auto !important;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Same rail as .shellMain / .caseStudyFooterInner — one viewport below sticky nav (no overview peek) */
 .heroOuter {
+  box-sizing: border-box;
   width: 100%;
-  max-width: var(--content-max);
-  padding: clamp(28px, 5vw, 48px) var(--space-x) clamp(40px, 7vw, 80px);
+  max-width: var(--case-study-rail);
+  min-width: 0;
+  margin-left: auto;
+  margin-right: auto;
+  padding: clamp(12px, 1.5vh, 20px) var(--space-x);
+  min-height: var(--case-study-hero-viewport-h);
+  height: var(--case-study-hero-viewport-h);
+  max-height: var(--case-study-hero-viewport-h);
+  display: flex;
+  flex-direction: column;
 }
 
 .heroCard {
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   border-radius: var(--radius-card);
   overflow: hidden;
   border: 1px solid var(--color-border-subtle);
   background: #0a0a0c;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .heroTop {
-  padding: clamp(28px, 4vw, 44px) clamp(20px, 4vw, 40px) 0;
+  flex-shrink: 0;
+  padding: clamp(20px, 3vh, 36px) clamp(20px, 4vw, 40px) 0;
 }
 
 .heroTitle {
@@ -36,16 +61,16 @@
   font-family: var(--font-instrument-serif), serif;
   font-style: italic;
   font-weight: 400;
-  font-size: clamp(40px, 6vw, 72px);
+  font-size: clamp(32px, 5vw, 60px);
   letter-spacing: -0.03em;
   line-height: 1.05;
   color: var(--color-text);
 }
 
 .heroSubtitle {
-  margin: 16px 0 0;
+  margin: clamp(10px, 1.5vh, 16px) 0 0;
   max-width: var(--case-study-hero-subtitle-max);
-  font-size: clamp(17px, 2.1vw, 23px);
+  font-size: clamp(15px, 1.8vw, 21px);
   line-height: 1.45;
   font-weight: 400;
   color: var(--color-muted-hero);
@@ -164,10 +189,61 @@
 }
 
 .heroMedia {
-  margin-top: clamp(24px, 4vw, 36px);
-  padding: 0 clamp(14px, 3vw, 28px) clamp(24px, 4vw, 36px);
+  margin-top: clamp(12px, 1.5vh, 20px);
+  padding: 0 clamp(14px, 3vw, 28px) clamp(12px, 1.5vh, 20px);
   display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
   justify-content: center;
+  align-items: stretch;
+}
+
+/* MediaStrip root — fill remaining hero height (keeps 3-col grid from MediaStrip) */
+.heroMedia > div {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  align-self: stretch;
+  grid-template-rows: 1fr;
+  align-items: stretch;
+}
+
+/* Hero phones: grow with available space (no short strip cap) */
+.heroMediaCell {
+  aspect-ratio: auto;
+  height: 100%;
+  min-height: clamp(160px, 22dvh, 280px);
+  max-height: none;
+}
+
+@media (max-height: 900px) {
+  .heroOuter {
+    padding-top: clamp(16px, 2.5vh, 28px);
+    padding-bottom: clamp(20px, 3.5vh, 36px);
+  }
+
+  .heroTop {
+    padding-top: clamp(16px, 2.5vh, 24px);
+  }
+
+  .heroTitle {
+    font-size: clamp(28px, 4.5vw, 48px);
+  }
+
+  .heroSubtitle {
+    font-size: clamp(14px, 1.6vw, 18px);
+    margin-top: clamp(8px, 1.2vh, 12px);
+  }
+
+  .heroMedia {
+    margin-top: clamp(12px, 2vh, 20px);
+    padding-bottom: clamp(12px, 2vh, 20px);
+  }
+
+  .heroMediaCell {
+    min-height: clamp(120px, 18dvh, 200px);
+  }
 }
 
 /* Wide centered rail (reference-style) + fixed TOC in viewport margin */
@@ -287,7 +363,7 @@
 
 /* Tighter close before the “Next project” block */
 .sectionBeforeNext {
-  padding-bottom: clamp(28px, 5vw, 56px);
+  padding-bottom: clamp(16px, 2.5vw, 28px);
 }
 
 .eyebrow {
@@ -624,14 +700,12 @@
 }
 
 .competitorMediaInner {
-  position: relative;
   width: 100%;
   border-radius: 16px;
   overflow: hidden;
-  aspect-ratio: 16 / 11;
   background: #0a0a0a;
+  line-height: 0;
 }
-
 
 .ratingList {
   list-style: none;
@@ -810,27 +884,19 @@
 
 /* Full rail width like solution annotation frames; image uses contain (no crop) inside */
 .designSystemVisualRoot {
-  --ds-media-max-h: min(calc(88vh - 11.5rem), calc(100vh - 20rem), 640px);
+  --ds-media-max-h: var(--case-study-module-media-max-h);
   margin-top: clamp(28px, 4vw, 40px);
 }
 
 .designSystemVisualRoot .moduleMediaFull {
-  position: relative;
   box-sizing: border-box;
   flex: none;
   margin-top: 0;
   width: 100%;
   max-width: 100%;
   margin-inline: 0;
-  height: var(--ds-media-max-h);
-  max-height: var(--ds-media-max-h);
   padding: 8px;
   overflow: hidden;
-}
-
-.designSystemImageFill {
-  object-fit: contain;
-  object-position: center;
 }
 
 .strategyColTitle {
@@ -927,22 +993,15 @@
 }
 
 .validationQuotesFigure {
-  position: relative;
   flex: 1 1 0;
   min-width: 0;
-  min-height: 220px;
+  width: 100%;
   padding: 0;
   border-radius: 0;
   overflow: visible;
   background: transparent;
   border: none;
-}
-
-@media (min-width: 900px) {
-  .validationQuotesFigure {
-    min-height: 260px;
-    aspect-ratio: 4 / 3;
-  }
+  line-height: 0;
 }
 
 .statValue {
@@ -1132,9 +1191,9 @@
   position: relative;
   border-radius: 12px;
   overflow: hidden;
-  aspect-ratio: 16 / 10;
   background: #0a0a0a;
-  min-height: 200px;
+  height: clamp(160px, 28dvh, 360px);
+  max-height: var(--case-study-module-media-max-h);
 }
 
 /* Full annotation art — scales down to fit viewport with header */
@@ -1144,27 +1203,28 @@
   background: #141414;
   padding: 8px;
   border: 1px solid var(--color-border-subtle);
-  flex: 1 1 0;
-  min-height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   overflow: hidden;
 }
 
 .module.solutionModuleClamp .moduleMediaFull {
   margin-top: 8px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
 }
 
 .moduleImageUncropped {
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
+  composes: caseStudyRaster;
   border-radius: 10px;
   vertical-align: top;
-  object-fit: contain;
+}
+
+.validationConceptImg {
+  composes: caseStudyRaster;
+  border-radius: inherit;
 }
 
 .reflectionSplit {
@@ -1246,15 +1306,15 @@
   color: rgba(255, 255, 255, 0.72);
 }
 
-/* Next project (post–reflection) */
+/* Next project (post–reflection) — compact band + capped preview so block fits one viewport */
 .nextProject {
-  margin-top: clamp(12px, 2.5vw, 28px);
-  padding-top: clamp(20px, 3.5vw, 40px);
+  margin-top: clamp(8px, 1.5vw, 16px);
+  padding-top: clamp(12px, 2vw, 20px);
   border-top: 1px solid var(--color-border-subtle);
 }
 
 .nextProjectEyebrow {
-  margin: 0 0 16px;
+  margin: 0 0 8px;
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.14em;
@@ -1275,29 +1335,29 @@
   background: rgba(24, 24, 27, 0.55);
   overflow: hidden;
   transition: border-color 0.2s ease, background 0.2s ease;
+  max-height: min(78vh, 560px);
 }
 
-/* Title + description vertically centered in the top band (meta row uses the same vertical rhythm). */
 .nextProjectLead {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: stretch;
   flex: 0 0 auto;
-  min-height: clamp(148px, 24vw, 252px);
+  min-height: 0;
   padding-inline: clamp(20px, 3vw, 28px);
-  padding-block: clamp(16px, 2.5vw, 22px);
+  padding-block: clamp(14px, 2vw, 18px);
 }
 
 .nextProjectLead .nextProjectEyebrow {
-  margin: 0 0 10px;
+  margin: 0 0 6px;
   padding: 0;
   max-width: var(--case-study-section-copy-max);
 }
 
 .nextProjectLead .nextProjectTitle {
   margin: 0;
-  padding: 0 0 8px;
+  padding: 0 0 6px;
   max-width: var(--case-study-section-copy-max);
 }
 
@@ -1327,7 +1387,7 @@
 
 .nextProjectDesc {
   margin: 0;
-  padding: 0 clamp(20px, 3vw, 28px) clamp(16px, 2.5vw, 22px);
+  padding: 0 clamp(20px, 3vw, 28px) clamp(14px, 2vw, 18px);
   font-size: 15px;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.68);
@@ -1335,15 +1395,25 @@
 }
 
 .nextProjectMedia {
-  position: relative;
   width: 100%;
-  flex-shrink: 0;
-  aspect-ratio: 1037 / 580;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: clamp(140px, 26dvh, 240px);
+  max-height: clamp(140px, 26dvh, 240px);
   background: #0a0a0c;
+  line-height: 0;
+  overflow: hidden;
+  position: relative;
 }
 
 .nextProjectImage {
+  composes: caseStudyRaster;
+  border-radius: 0;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none;
   object-fit: cover;
+  object-position: center center;
 }
 
 .nextProjectMeta {
@@ -1352,8 +1422,8 @@
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
-  gap: 12px 24px;
-  padding: clamp(16px, 2.5vw, 22px) clamp(20px, 3vw, 28px);
+  gap: 8px 20px;
+  padding: clamp(12px, 1.5vw, 16px) clamp(20px, 3vw, 28px);
   font-size: 13px;
   line-height: 1.45;
   color: var(--color-muted);
@@ -1646,12 +1716,6 @@
   border: 1px solid var(--color-border-subtle);
   background: rgba(10, 10, 12, 0.5);
   line-height: 0;
-}
-
-.validationConceptImg {
-  width: 100%;
-  height: auto;
-  display: block;
 }
 
 .issueTestCard {

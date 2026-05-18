@@ -637,10 +637,10 @@
   color: rgba(255, 255, 255, 0.45);
 }
 
-/* Toolbar */
+/* Toolbar — portaled to document.body (see Toolbar.tsx) so it stacks above edge glow (1380). */
 .toolbar {
   position: fixed;
-  z-index: 1500;
+  z-index: 1460;
   display: flex;
   align-items: center;
   gap: 4px;

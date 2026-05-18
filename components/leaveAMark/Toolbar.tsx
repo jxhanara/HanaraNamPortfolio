@@ -1,7 +1,8 @@
 "use client";
 
 import type { CSSProperties, Dispatch, SetStateAction } from "react";
-import { useId, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import type { Gradient } from "./constants";
 import styles from "./LeaveAMark.module.css";
 import type { ToolbarDock, ToolbarPos } from "./types";
@@ -27,6 +28,7 @@ type ToolbarProps = {
 };
 
 export function Toolbar({ tool, setTool, onDone, gradient, position, setPosition }: ToolbarProps) {
+  const [mounted, setMounted] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -36,6 +38,20 @@ export function Toolbar({ tool, setTool, onDone, gradient, position, setPosition
   const starGradId = `lam-star-${useId().replace(/:/g, "")}`;
 
   const dock: ToolbarDock = position.dock ?? "none";
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!mounted) return;
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const w = r.width || (collapsed ? 56 : 420);
+    const h = r.height || (collapsed ? 56 : 64);
+    setPosition((prev) => clampToolbarIntoViewport(prev.x, prev.y, w, h));
+  }, [mounted, collapsed, setPosition]);
 
   useLayoutEffect(() => {
     if (prevCollapsed.current && !collapsed) {
@@ -120,7 +136,7 @@ export function Toolbar({ tool, setTool, onDone, gradient, position, setPosition
   const dockClass =
     dock === "left" ? styles.toolbarDockLeft : dock === "right" ? styles.toolbarDockRight : "";
 
-  return (
+  const bar = (
     <div
       data-lam-ui
       className={`${styles.toolbar} ${dockClass} ${collapsed ? styles.toolbarCollapsed : ""}`}
@@ -221,4 +237,7 @@ export function Toolbar({ tool, setTool, onDone, gradient, position, setPosition
       )}
     </div>
   );
+
+  if (!mounted) return null;
+  return createPortal(bar, document.body);
 }

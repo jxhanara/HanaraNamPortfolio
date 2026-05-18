@@ -1,6 +1,10 @@
 import Image from "next/image";
 import { bumbleValidation } from "@/content/bumbleFlowCaseStudy";
 import cs from "../caseStudy.module.css";
+import {
+  caseStudyRailImageSizes,
+  caseStudyResponsiveImageStyle,
+} from "../caseStudyMedia";
 
 const INITIAL_CONCEPT_SRC = "/assets/bumbleflow/BumbleFlow_InitialConcept.png";
 
@@ -20,7 +24,8 @@ export function BumbleValidationSection() {
           alt={bumbleValidation.initialConceptAlt}
           width={bumbleValidation.initialConceptWidth}
           height={bumbleValidation.initialConceptHeight}
-          sizes="(max-width: 900px) 100vw, min(1100px, 92vw)"
+          sizes={caseStudyRailImageSizes}
+          style={caseStudyResponsiveImageStyle}
           priority={false}
         />
       </div>

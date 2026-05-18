@@ -2,6 +2,10 @@ import Image from "next/image";
 import { bumbleSolution } from "@/content/bumbleFlowCaseStudy";
 import { SolutionSmileIcon } from "../CaseStudyMoodIcons";
 import cs from "../caseStudy.module.css";
+import {
+  caseStudyRailImageSizes,
+  caseStudyResponsiveImageStyle,
+} from "../caseStudyMedia";
 
 const ACCENT: Record<(typeof bumbleSolution.pillars)[number]["accent"], string> = {
   green: "#5ee3a8",
@@ -46,7 +50,8 @@ export function BumbleSolutionSection() {
                 className={cs.validationConceptImg}
                 src={mod.image.src}
                 alt={mod.image.alt}
-                sizes="(max-width: 900px) 100vw, min(1100px, 92vw)"
+                sizes={caseStudyRailImageSizes}
+                style={caseStudyResponsiveImageStyle}
               />
             </div>
           ) : null}

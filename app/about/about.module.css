@@ -1,6 +1,6 @@
 /* Scoped tokens for the About page — does not leak to other pages. */
 .aboutRoot {
-  --about-bg: #0a0a0a;
+  --about-bg: var(--color-bg, #000000);
   --about-ink: #f3f1ec;
   --about-muted: #8a857c;
   --about-line: #221f1c;
@@ -8,10 +8,7 @@
   --about-pad: var(--space-x);
   --about-max: var(--content-max);
 
-  background:
-    radial-gradient(900px 600px at 88% -10%, rgba(243, 189, 209, 0.045), transparent 60%),
-    radial-gradient(800px 500px at -10% 30%, rgba(243, 189, 209, 0.02), transparent 60%),
-    var(--about-bg);
+  background: var(--about-bg);
   color: var(--about-ink);
   font-family: var(--font-dm-sans), system-ui, sans-serif;
   font-weight: 400;
@@ -65,10 +62,12 @@
 
 /* ───────── hero ───────── */
 .hero {
-  min-height: 78vh;
-  padding-top: 64px;
-  padding-bottom: 48px;
+  min-height: min(78vh, var(--viewport-section-max-h));
+  max-height: var(--viewport-section-max-h);
+  padding-top: clamp(40px, 6vh, 64px);
+  padding-bottom: clamp(28px, 4vh, 48px);
   position: relative;
+  box-sizing: border-box;
 }
 
 .heroTop {
@@ -855,6 +854,16 @@
 .dLink:hover {
   color: var(--about-accent);
   border-color: var(--about-accent);
+}
+
+@media (max-height: 900px) {
+  .originImages {
+    min-height: clamp(240px, 36dvh, 480px);
+  }
+
+  .lovesFeatured {
+    min-height: clamp(280px, 38dvh, 540px);
+  }
 }
 
 /* ───────── responsive ───────── */

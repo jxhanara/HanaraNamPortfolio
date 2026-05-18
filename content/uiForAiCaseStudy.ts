@@ -218,6 +218,8 @@ export const uiForAiNextProject = {
     "An intelligent travel planning app — AI-powered itinerary planning and local discovery.",
   href: "/trippy-case-study",
   imageSrc: "/images/trippyportfoliothumbnail.png",
+  imageWidth: 3607,
+  imageHeight: 2481,
   imageAlt: "Trippy portfolio preview",
   metaLeft: "Product design · Mobile",
   metaYear: "2024 – 2025",

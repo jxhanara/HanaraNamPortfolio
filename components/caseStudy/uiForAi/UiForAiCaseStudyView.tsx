@@ -17,6 +17,10 @@ import {
 } from "@/content/uiForAiCaseStudy";
 import homeStyles from "@/components/home/styles.module.css";
 import cs from "../caseStudy.module.css";
+import {
+  caseStudyRailImageSizes,
+  caseStudyResponsiveImageStyle,
+} from "../caseStudyMedia";
 import u from "./uiForAiCaseStudy.module.css";
 import rewindAiImage from "@/assets/uiforai/rewindai.jpg";
 import piecesAppImage from "@/assets/uiforai/piecesapp.png";
@@ -59,7 +63,10 @@ export function UiForAiCaseStudyView() {
               <p className={cs.heroSubtitle}>{uiForAiCaseStudyMeta.subtitle}</p>
             </div>
             <div className={cs.heroMedia}>
-              <MediaStrip ariaLabel="Prototype recording placeholder" />
+              <MediaStrip
+                ariaLabel="Prototype recording placeholder"
+                cellClassName={cs.heroMediaCell}
+              />
             </div>
           </div>
         </div>
@@ -188,9 +195,9 @@ export function UiForAiCaseStudyView() {
                         <Image
                           src={card.name === "Rewind AI" ? rewindAiImage : piecesAppImage}
                           alt={card.visualLabel}
-                          fill
                           className={u.researchImage}
-                          sizes="(max-width: 900px) 100vw, 860px"
+                          sizes={caseStudyRailImageSizes}
+                          style={caseStudyResponsiveImageStyle}
                         />
                       </div>
                     ) : null}
@@ -251,9 +258,9 @@ export function UiForAiCaseStudyView() {
                         <Image
                           src={conceptImage}
                           alt={concept.imageAlt}
-                          fill
                           className={u.conceptTestingImage}
                           sizes="(max-width: 900px) 100vw, 33vw"
+                          style={caseStudyResponsiveImageStyle}
                         />
                       </div>
                       <div className={u.conceptTestingCardBody}>
@@ -529,10 +536,10 @@ export function UiForAiCaseStudyView() {
                   <Image
                     src={uiForAiNextProject.imageSrc}
                     alt={uiForAiNextProject.imageAlt}
-                    fill
+                    width={uiForAiNextProject.imageWidth}
+                    height={uiForAiNextProject.imageHeight}
                     className={cs.nextProjectImage}
                     sizes="(max-width: 900px) 100vw, 800px"
-                    style={{ objectFit: "cover" }}
                   />
                 </div>
                 <div className={cs.nextProjectMeta}>

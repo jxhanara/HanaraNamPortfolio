@@ -10,7 +10,7 @@ import { BumbleChallengeSection } from "./BumbleChallengeSection";
 import { BumbleCoreComponentsSection } from "./BumbleCoreComponentsSection";
 import { BumbleNextProjectSection } from "./BumbleNextProjectSection";
 import { BumbleOverviewSection } from "./BumbleOverviewSection";
-import { BumblePrototypePyramidSection } from "./BumblePrototypePyramidSection";
+import { BumblePrototypeSection } from "./BumblePrototypeSection";
 import { BumbleReflectionSection } from "./BumbleReflectionSection";
 import { BumbleResearchSection } from "./BumbleResearchSection";
 import { BumbleSolutionSection } from "./BumbleSolutionSection";
@@ -33,6 +33,7 @@ export function BumbleFlowCaseStudyView() {
                 videos={BUMBLE_FLOW_STRIP_VIDEOS}
                 variant="bumble"
                 ariaLabel="Bumble Flow prototype recordings"
+                cellClassName={cs.heroMediaCell}
               />
             </div>
           </div>
@@ -46,7 +47,7 @@ export function BumbleFlowCaseStudyView() {
             <BumbleValidationSection />
             <BumbleStrategySection />
             <BumbleSolutionSection />
-            <BumblePrototypePyramidSection />
+            <BumblePrototypeSection />
             <BumbleCoreComponentsSection />
             <BumbleReflectionSection />
             <BumbleNextProjectSection />
