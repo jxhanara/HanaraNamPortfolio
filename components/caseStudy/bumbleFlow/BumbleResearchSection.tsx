@@ -1,44 +1,34 @@
 import { bumbleResearch } from "@/content/bumbleFlowCaseStudy";
 import { BumbleBridgeShiftVisual } from "./BumbleBridgeShiftVisual";
 import { BumbleEngagementDropVisual } from "./BumbleEngagementDropVisual";
-import { ProblemFrownIcon } from "../CaseStudyMoodIcons";
 import cs from "../caseStudy.module.css";
-
-const ACCENT: Record<(typeof bumbleResearch.themeCards)[number]["accent"], string> = {
-  green: "#5ee3a8",
-  orange: "#f4a261",
-  blue: "#6eb5ff",
-};
+import rs from "./bumbleResearch.module.css";
 
 export function BumbleResearchSection() {
   return (
     <section id="research" className={cs.section}>
       <p className={cs.sectionEyebrow}>{bumbleResearch.eyebrow}</p>
-      <h2 className={cs.h2}>{bumbleResearch.title}</h2>
-      {bumbleResearch.lead[0] ? (
-        <p className={cs.body}>{bumbleResearch.lead[0]}</p>
-      ) : null}
-      <BumbleEngagementDropVisual />
-      {bumbleResearch.lead.slice(1).map((p, i) => (
-        <p
-          key={p.slice(0, 32)}
-          className={cs.body}
-          style={i === 0 ? { marginTop: "clamp(24px, 3vw, 36px)" } : undefined}
-        >
+      <h2 className={rs.researchTitle}>{bumbleResearch.title}</h2>
+      {bumbleResearch.lead.map((p) => (
+        <p key={p.slice(0, 32)} className={cs.body}>
           {p}
         </p>
       ))}
-      <div className={cs.problemGrid}>
+
+      <BumbleEngagementDropVisual />
+
+      <div className={rs.whyBlock}>
+        <p className={rs.whyEyebrow}>{bumbleResearch.whyEyebrow}</p>
+        <p className={rs.whyBody}>{bumbleResearch.whyBody}</p>
+      </div>
+
+      <div className={rs.themeGrid}>
         {bumbleResearch.themeCards.map((c) => (
-          <div key={c.kicker} className={cs.problemCard}>
-            <p className={cs.problemCardKicker}>{c.kicker}</p>
-            <p className={cs.problemCardBody}>{c.body}</p>
-            <div className={cs.problemCardFooter}>
-              <span className={cs.problemCardIcon}>
-                <ProblemFrownIcon color={ACCENT[c.accent]} />
-              </span>
-            </div>
-          </div>
+          <article key={c.pill} className={rs.themeCard}>
+            <span className={rs.themePill}>{c.pill}</span>
+            <h3 className={rs.themeTitle}>{c.title}</h3>
+            <p className={rs.themeBody}>{c.body}</p>
+          </article>
         ))}
       </div>
 

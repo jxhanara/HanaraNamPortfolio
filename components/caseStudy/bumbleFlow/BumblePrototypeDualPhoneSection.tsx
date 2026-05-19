@@ -24,7 +24,9 @@ import dp from "./bumblePrototypeDualPhone.module.css";
  * Sync behavior:
  *   - Step changes seek Kevin to the step's `kevinTime` and play.
  *   - When Kevin's video plays through a step boundary the page smooth-scrolls
- *     to that step's slice (so the right-side text follows).
+ *     to that step's slice (so the right-side text follows) — only while the
+ *     walkthrough pin is in the viewport, so reading other sections is never
+ *     hijacked by background autoplay.
  *   - During step 5, Kevin's video pauses at `kevinPauseAtTime` and is forced
  *     to resume only once Lindsey's video reaches `lindseyResumeKevinAt` —
  *     Kevin then seeks to `kevinResumeAtTime` so his "Lindsey sent" message
@@ -78,6 +80,10 @@ export function PrototypeDualPhoneWalkthrough() {
 
   const kevinVideoRef = useRef<HTMLVideoElement | null>(null);
   const lindseyVideoRef = useRef<HTMLVideoElement | null>(null);
+
+  // True while the walkthrough pin intersects the viewport — gates autoplay,
+  // step advancement, and programmatic scroll so other sections stay readable.
+  const walkthroughInViewRef = useRef(false);
 
   useEffect(() => {
     stepRef.current = stepIndex;
@@ -164,7 +170,7 @@ export function PrototypeDualPhoneWalkthrough() {
     kevinPausedForLindseyRef.current = false;
 
     // Seek + play Kevin unless the change came FROM his timeupdate.
-    if (source !== "video") {
+    if (source !== "video" && walkthroughInViewRef.current) {
       seekAndPlay(kevinVideoRef.current, step.kevinTime);
     }
 
@@ -177,16 +183,57 @@ export function PrototypeDualPhoneWalkthrough() {
       setLindseyVisible(lindseyShouldShow);
     }
 
-    if (source === "click" || source === "video") {
+    if ((source === "click" || source === "video") && walkthroughInViewRef.current) {
       scrollToStep(stepIndex);
     }
   }, [stepIndex, steps, scrollToStep]);
+
+  // —— Effect: pause videos off-screen; resume when the walkthrough is visible ——
+  useEffect(() => {
+    const pin = pinRef.current;
+    if (!pin) return;
+
+    const syncPlaybackForView = (inView: boolean) => {
+      const kevin = kevinVideoRef.current;
+      const lindsey = lindseyVideoRef.current;
+      if (inView) {
+        const step = steps[stepRef.current];
+        seekAndPlay(kevin, step.kevinTime);
+        if (lindseyVisibleRef.current && lindsey) {
+          const p = lindsey.play();
+          if (p && typeof p.catch === "function") {
+            p.catch(() => {
+              /* ignore */
+            });
+          }
+        }
+      } else {
+        kevin?.pause();
+        lindsey?.pause();
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const inView = entry.isIntersecting && entry.intersectionRatio > 0.02;
+          if (inView === walkthroughInViewRef.current) continue;
+          walkthroughInViewRef.current = inView;
+          syncPlaybackForView(inView);
+        }
+      },
+      { threshold: [0, 0.02, 0.05, 0.1, 0.2] },
+    );
+
+    observer.observe(pin);
+    return () => observer.disconnect();
+  }, [steps]);
 
   // —— Effect: Lindsey play / pause based on visibility ——
   useEffect(() => {
     const lindsey = lindseyVideoRef.current;
     if (!lindsey) return;
-    if (lindseyVisible) {
+    if (lindseyVisible && walkthroughInViewRef.current) {
       if (lindseyDoneRef.current) return; // safety — shouldn't be visible if done
       try {
         lindsey.currentTime = 0;
@@ -279,6 +326,8 @@ export function PrototypeDualPhoneWalkthrough() {
     if (!kevin) return;
 
     const onTimeUpdate = () => {
+      if (!walkthroughInViewRef.current) return;
+
       const t = kevin.currentTime;
       const step = steps[stepRef.current];
 
@@ -351,6 +400,7 @@ export function PrototypeDualPhoneWalkthrough() {
     if (!lindsey) return;
 
     const onLindseyTime = () => {
+      if (!walkthroughInViewRef.current) return;
       if (!kevinPausedForLindseyRef.current) return;
       if (lindsey.currentTime >= bumblePrototypeDualPhone.lindseyResumeKevinAt) {
         kevinPausedForLindseyRef.current = false;

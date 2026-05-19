@@ -1,10 +1,11 @@
 import styles from "./styles.module.css";
+import { MediaStripVideoCell, type MediaStripVideoSource } from "./MediaStripVideoCell";
 
 export type MediaStripVariant = "bumble" | "trippy";
 
 export type MediaStripProps = {
   /** When set, renders autoplaying muted loop videos instead of placeholder cells. */
-  videos?: readonly string[];
+  videos?: readonly MediaStripVideoSource[];
   /** Accessible name for the strip when videos are shown. */
   ariaLabel?: string;
   /** Tunes overscan / focal point for letterboxed phone captures. */
@@ -12,6 +13,11 @@ export type MediaStripProps = {
   className?: string;
   cellClassName?: string;
 };
+
+function videoKey(spec: MediaStripVideoSource): string {
+  if (typeof spec === "string") return spec;
+  return `${spec.src}:${spec.start ?? 0}:${spec.end ?? "end"}`;
+}
 
 export function MediaStrip({
   videos,
@@ -36,23 +42,12 @@ export function MediaStrip({
         role="region"
         aria-label={ariaLabel ?? "Project screen recordings"}
       >
-        {videos.map((src) => (
-          <div
-            key={src}
+        {videos.map((spec) => (
+          <MediaStripVideoCell
+            key={videoKey(spec)}
+            spec={spec}
             className={`${styles.mediaCell} ${styles.mediaCellVideo} ${cellClassName ?? ""}`.trim()}
-          >
-            <div className={styles.mediaVideoScale}>
-              <video
-                className={styles.mediaVideo}
-                src={src}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-              />
-            </div>
-          </div>
+          />
         ))}
       </div>
     );

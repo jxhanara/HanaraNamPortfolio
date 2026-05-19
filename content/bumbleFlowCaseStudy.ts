@@ -38,8 +38,7 @@ export const bumbleChallenge = {
   eyebrow: "01 · Challenge",
   title: "The original design brief",
   lead: [
-    "The core focus was purely transactional: use location services to drive subscriptions across mobile, desktop, and watch.",
-    "The mandate paired a clear business goal with a proximity-led hypothesis — before validating whether “nearby” actually motivated real-world meetups.",
+    "The original mandate paired a clear business goal with a proximity-led hypothesis. It assumed nearby would motivate real-world meetups, before anyone checked if that was true.",
   ],
   mandateLabel: "The original mandate",
   mandateBlocks: [
@@ -60,10 +59,10 @@ export const bumbleChallenge = {
 
 export const bumbleResearch = {
   eyebrow: "02 · Research",
-  title: "Proximity without intent: “nearby matches” don’t lead to dates",
+  title:
+    "Proximity without intent is not a date. It is a notification users learned to ignore.",
   lead: [
     "While the brief focused on proximity, the data told a different story — engagement with proximity alerts fell from 18% to 6% in six months, suggesting “nearby” wasn’t enough to motivate users.",
-    "To uncover the “why” behind the numbers, I synthesized themes from Reddit and community forums:",
   ],
   engagementCaption: "Engagement with proximity alerts",
   engagementWasLabel: "Six months ago",
@@ -75,33 +74,36 @@ export const bumbleResearch = {
   /** Upper bound for the chart axis (comparison scale). */
   engagementScaleMax: 20,
   engagementDeltaLabel: "−12 pts",
-  engagementDeltaSub: "Engagement vs six months prior",
+  engagementDeltaEyebrow: "Net change",
+  engagementDeltaBody:
+    "in six months. Whatever nearby promised, it stopped delivering.",
+  whyEyebrow: "The why behind the drop",
+  whyBody:
+    "To understand the gap, I synthesized themes from public dating subreddits and community forums. Three patterns kept showing up.",
   themeCards: [
     {
-      kicker: "Misleading proximity",
-      body: 'Users are shown people who are “nearby” but not actually available or local, leading to wasted time and frustration.',
-      accent: "orange" as const,
+      pill: "Frustration",
+      title: "Misleading proximity",
+      body: "People shown as nearby are often not actually local or available. The map lies a little. Time wasted compounds into churn.",
     },
     {
-      kicker: 'The “awkward” gap',
-      body: 'Users liked each other but stalled when it came to the manual “labor” of scheduling.',
-      accent: "green" as const,
+      pill: "Drop-off",
+      title: "The awkward gap",
+      body: "Users like each other, then stall on the manual work of scheduling. The interesting part of dating is delegated to the user.",
     },
     {
-      kicker: "Distance of readiness",
-      body: "Being 0.5km away doesn’t mean a user is mentally ready to go on a date.",
-      accent: "blue" as const,
+      pill: "Mental model",
+      title: "Distance of readiness",
+      body: "Half a kilometer apart is geography. It says nothing about whether someone has the energy, time, or interest to meet.",
     },
   ],
   bridgeEyebrow: "Strategic read",
-  bridgeTitle: "Bridging business goals with user needs through real-world coordination",
+  bridgeHeadlineLead: "I moved location out of the UI and into ",
+  bridgeHeadlineAccent: "system logic",
   bridgeBody:
-    "By solving coordination friction, I could offer a tangible reason to upgrade that proximity alerts lacked. I moved location out of the UI and into system logic — treating proximity as one signal among many, not the headline.",
-  /** Design-shift block: strategic read + `NewBeforeAfterPicture.png` in `BumbleBridgeShiftVisual`. */
+    "Proximity becomes one signal among many, not the headline. The headline becomes coordination, the part of dating people actually struggle with.",
+  /** Strategic read + `NewBeforeAfterPicture.png` in `BumbleBridgeShiftVisual`. */
   bridgeDesignShift: {
-    tag: "Design shift",
-    headlineLead: "I moved location out of the UI and into ",
-    headlineAccent: "system logic",
     /** `public/assets/bumbleflow/NewBeforeAfterPicture.png` — keep in sync with source in `assets/bumbleflow/`. */
     newBeforeAfterWidth: 1535,
     newBeforeAfterHeight: 631,

@@ -19,7 +19,7 @@ export const trippyCaseStudyMeta = {
   specRows: [
     { label: "My role", value: "Lead Product Designer · Product strategy · End-to-end UX/UI · Design system · User research · Beta testing" },
     { label: "Team", value: "C-level executives · Technical team · Marketing team" },
-    { label: "Timeframe", value: "2024 – 2026 (ongoing)" },
+    { label: "Timeframe", value: "2024 – 2026" },
     { label: "Tools", value: "Figma · GitHub · Notion" },
   ],
 } as const;

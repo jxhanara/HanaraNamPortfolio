@@ -33,22 +33,6 @@ export default function HomePage() {
         <div id="portfolios" className={styles.portfolios}>
           <div className={styles.projectBlock}>
             <ProjectCard
-              id="trippy"
-              title="TRIPPY"
-              description={TRIPPY_DESC}
-              dateLabel="2024 - 2025"
-              imageSrc="/images/trippyportfoliothumbnail.png"
-              imageAlt="Trippy portfolio preview"
-              href="/trippy-case-study"
-            />
-          </div>
-          <MediaStrip
-            videos={TRIPPY_STRIP_VIDEOS}
-            variant="trippy"
-            ariaLabel="Trippy prototype recordings"
-          />
-          <div className={styles.projectBlock}>
-            <ProjectCard
               id="bumble-flow"
               title="Bumble Flow"
               description={BUMBLE_DESC}
@@ -62,6 +46,22 @@ export default function HomePage() {
             videos={BUMBLE_FLOW_STRIP_VIDEOS}
             variant="bumble"
             ariaLabel="Bumble Flow prototype recordings"
+          />
+          <div className={styles.projectBlock}>
+            <ProjectCard
+              id="trippy"
+              title="TRIPPY"
+              description={TRIPPY_DESC}
+              dateLabel="2024 – 2026"
+              imageSrc="/images/trippyportfoliothumbnail.png"
+              imageAlt="Trippy portfolio preview"
+              href="/trippy-case-study"
+            />
+          </div>
+          <MediaStrip
+            videos={TRIPPY_STRIP_VIDEOS}
+            variant="trippy"
+            ariaLabel="Trippy prototype recordings"
           />
           <div className={styles.projectBlock}>
             <ProjectCard

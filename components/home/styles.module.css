@@ -612,19 +612,53 @@
   display: block;
 }
 
-/*
- * Bumble + Trippy: same fill as each other — cover + light overscan + top anchor
- * (matches phone size in the strip; flex-start on .mediaVideoScale keeps tops aligned).
- */
-.mediaStripBumble .mediaVideoScale,
+/* Trippy: fit full phone frame inside the cell (no top/bottom crop), matching Bumble. */
 .mediaStripTrippy .mediaVideoScale {
-  inset: -3%;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-.mediaStripBumble .mediaVideo,
+.mediaStripTrippy .mediaCellVideo {
+  overflow: hidden;
+}
+
 .mediaStripTrippy .mediaVideo {
-  object-fit: cover;
-  object-position: center top;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  background: #000;
+}
+
+/* Bumble: fit full phone frame inside the cell (no top/bottom crop). */
+.mediaStripBumble .mediaVideoScale {
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.mediaStripBumble .mediaVideo {
+  object-fit: contain;
+  object-position: center center;
+  background: #000;
+}
+
+.mediaStripBumble .mediaCellVideo {
+  overflow: hidden;
+}
+
+.mediaStripBumble .mediaVideo {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center center;
 }
 
 .footer {

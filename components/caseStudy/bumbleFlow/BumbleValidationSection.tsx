@@ -1,10 +1,7 @@
 import Image from "next/image";
 import { bumbleValidation } from "@/content/bumbleFlowCaseStudy";
 import cs from "../caseStudy.module.css";
-import {
-  caseStudyRailImageSizes,
-  caseStudyResponsiveImageStyle,
-} from "../caseStudyMedia";
+import { caseStudyRailImageSizes } from "../caseStudyMedia";
 
 const INITIAL_CONCEPT_SRC = "/assets/bumbleflow/BumbleFlow_InitialConcept.png";
 
@@ -17,38 +14,64 @@ export function BumbleValidationSection() {
 
       <p className={`${cs.body} ${cs.validationIssuesIntro}`}>{bumbleValidation.issuesIntro}</p>
 
-      <div className={cs.validationConceptWrap}>
-        <Image
-          className={cs.validationConceptImg}
-          src={INITIAL_CONCEPT_SRC}
-          alt={bumbleValidation.initialConceptAlt}
-          width={bumbleValidation.initialConceptWidth}
-          height={bumbleValidation.initialConceptHeight}
-          sizes={caseStudyRailImageSizes}
-          style={caseStudyResponsiveImageStyle}
-          priority={false}
-        />
-      </div>
-
-      <div className={cs.issueTestStack}>
-        {bumbleValidation.issueModules.map((m) => (
-          <article key={m.n} className={cs.issueTestCard}>
-            <div className={cs.issueTestCardTop}>
-              <span className={cs.issueTestCardNum} aria-hidden>
-                {m.n}
-              </span>
-              <div>
-                <h3 className={cs.issueTestCardTitle}>{m.title}</h3>
-              </div>
+      <div className={cs.validationThreeCol}>
+        <div className={cs.validationPhoneRow}>
+          {[0, 1, 2].map((index) => (
+            <div key={index} className={cs.validationPhoneCol}>
+              <Image
+                className={`${cs.validationConceptImg} ${cs.validationPhoneSlice}`}
+                src={INITIAL_CONCEPT_SRC}
+                alt={index === 0 ? bumbleValidation.initialConceptAlt : ""}
+                width={bumbleValidation.initialConceptWidth}
+                height={bumbleValidation.initialConceptHeight}
+                sizes={caseStudyRailImageSizes}
+                style={{
+                  transform:
+                    index === 0
+                      ? "translateX(0)"
+                      : index === 1
+                        ? "translateX(-33.333%)"
+                        : "translateX(-66.666%)",
+                }}
+                aria-hidden
+              />
             </div>
-            <ul className={cs.issueTestCardBullets}>
-              {m.bullets.map((b) => (
-                <li key={b}>{b}</li>
-              ))}
-            </ul>
-            <blockquote className={cs.issueTestCardQuote}>“{m.quote}”</blockquote>
-          </article>
-        ))}
+          ))}
+        </div>
+
+        <div className={cs.issueTestStack}>
+          {bumbleValidation.issueModules.map((m) => (
+            <article
+              key={m.n}
+              className={cs.issueTestFlip}
+              tabIndex={0}
+              aria-label={`${m.title}. Hover or focus to read user quote.`}
+            >
+              <div className={cs.issueTestFlipInner}>
+                <div className={cs.issueTestFlipFaceFront}>
+                  <div className={cs.issueTestCardTop}>
+                    <span className={cs.issueTestCardNum} aria-hidden>
+                      {m.n}
+                    </span>
+                    <div>
+                      <h3 className={cs.issueTestCardTitle}>{m.title}</h3>
+                    </div>
+                  </div>
+                  <ul className={cs.issueTestCardBullets}>
+                    {m.bullets.map((b) => (
+                      <li key={b}>{b}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className={cs.issueTestFlipFaceBack}>
+                  <p className={cs.issueTestFlipQuoteEyebrow}>User quote</p>
+                  <blockquote className={cs.issueTestFlipQuote}>“{m.quote}”</blockquote>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
 
       <div className={cs.validationSynthesisCallout}>

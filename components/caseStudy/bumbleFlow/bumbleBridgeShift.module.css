@@ -32,21 +32,6 @@
   text-align: left;
 }
 
-.introTag {
-  display: inline-flex;
-  align-items: center;
-  margin: 0 0 14px;
-  padding: 5px 12px;
-  border-radius: 999px;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #ffce08;
-  border: 1px solid rgba(255, 206, 8, 0.45);
-  background: rgba(255, 206, 8, 0.06);
-}
-
 .introEyebrow {
   margin: 0 0 10px;
   font-size: 10px;
@@ -70,32 +55,14 @@
 
 .introStrategicBody {
   margin: 14px 0 0;
-  max-width: 42rem;
-  font-size: 14px;
+  max-width: var(--case-study-section-copy-max);
+  font-size: 15.2px;
   line-height: 1.62;
-  color: rgba(255, 255, 255, 0.72);
-}
-
-.introDivider {
-  margin: clamp(18px, 2.5vw, 22px) 0 0;
-  height: 1px;
-  max-width: 3rem;
-  background: rgba(255, 255, 255, 0.14);
-}
-
-.introHeadline {
-  margin: clamp(12px, 1.8vw, 16px) 0 0;
-  max-width: 42rem;
-  font-size: clamp(12px, 1.45vw, 14px);
-  font-weight: 500;
-  line-height: 1.45;
-  letter-spacing: -0.01em;
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(255, 255, 255, 0.74);
 }
 
 .introHeadlineAccent {
   color: #ffce08;
-  font-weight: 500;
 }
 
 .newBeforeAfterWrap {

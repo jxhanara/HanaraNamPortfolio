@@ -1771,19 +1771,140 @@
   color: rgba(255, 255, 255, 0.78);
 }
 
-/* Bumble validation — three issue cards in one row; quote accent matches brand yellow */
+/* Bumble validation — phones + flip cards share one 3-col rail grid */
+.validationThreeCol {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin-top: clamp(16px, 2.5vw, 22px);
+}
+
+.validationPhoneRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(14px, 2vw, 18px);
+  width: 100%;
+}
+
+.validationPhoneCol {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--color-border-subtle);
+  background: rgba(10, 10, 12, 0.5);
+  line-height: 0;
+  aspect-ratio: 512 / 1024;
+  min-width: 0;
+}
+
+.validationPhoneSlice {
+  width: 300% !important;
+  max-width: none !important;
+  height: auto !important;
+  display: block;
+}
+
+/* Bumble validation — three issue cards in one row; quote on card back (flip) */
 .caseStudyPageAccentBumble .issueTestStack {
-  margin-top: clamp(18px, 2.2vw, 26px);
+  margin-top: clamp(14px, 2vw, 18px);
   display: grid;
   grid-template-columns: 1fr;
   gap: clamp(14px, 2vw, 18px);
 }
 
 @media (min-width: 1024px) {
+  .caseStudyPageAccentBumble .validationPhoneRow,
   .caseStudyPageAccentBumble .issueTestStack {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     align-items: stretch;
   }
+}
+
+.caseStudyPageAccentBumble .issueTestFlip {
+  perspective: 1400px;
+  min-width: 0;
+  min-height: clamp(240px, 32vw, 300px);
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+.caseStudyPageAccentBumble .issueTestFlip:focus-visible {
+  outline: 2px solid #ffce08;
+  outline-offset: 4px;
+  border-radius: 18px;
+}
+
+.caseStudyPageAccentBumble .issueTestFlipInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  transform-style: preserve-3d;
+  transition: transform 0.65s cubic-bezier(0.4, 0.15, 0.2, 1);
+}
+
+.caseStudyPageAccentBumble .issueTestFlip:hover .issueTestFlipInner,
+.caseStudyPageAccentBumble .issueTestFlip:focus-within .issueTestFlipInner {
+  transform: rotateY(-180deg);
+}
+
+.caseStudyPageAccentBumble .issueTestFlipFaceFront,
+.caseStudyPageAccentBumble .issueTestFlipFaceBack {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 16px;
+  box-sizing: border-box;
+}
+
+.caseStudyPageAccentBumble .issueTestFlipFaceFront {
+  border: 1px solid var(--color-border-subtle);
+  padding: clamp(20px, 3vw, 28px);
+  background: rgba(18, 18, 20, 0.75);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.caseStudyPageAccentBumble .issueTestFlipFaceBack {
+  transform: rotateY(-180deg);
+  padding: clamp(24px, 3.2vw, 32px) clamp(22px, 3vw, 28px);
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 206, 8, 0.55);
+  box-shadow: inset 0 0 0 1px rgba(255, 206, 8, 0.12);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: clamp(28px, 4.5vw, 44px);
+}
+
+.caseStudyPageAccentBumble .issueTestFlipQuoteEyebrow {
+  margin: 0;
+  font-size: 10.4px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.45;
+  color: #ffce08;
+}
+
+.caseStudyPageAccentBumble .issueTestFlipQuote {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: var(--font-instrument-serif), serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(16px, 2.35vw, 22px);
+  line-height: 1.38;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .caseStudyPageAccentBumble .issueTestCard {
@@ -1792,4 +1913,39 @@
 
 .caseStudyPageAccentBumble .issueTestCardQuote {
   border-left-color: rgba(255, 206, 8, 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caseStudyPageAccentBumble .issueTestFlipInner {
+    transition: none;
+  }
+
+  .caseStudyPageAccentBumble .issueTestFlip:hover .issueTestFlipInner,
+  .caseStudyPageAccentBumble .issueTestFlip:focus-within .issueTestFlipInner {
+    transform: none;
+  }
+
+  .caseStudyPageAccentBumble .issueTestFlipFaceBack {
+    position: relative;
+    transform: none;
+    margin-top: 12px;
+    gap: 20px;
+  }
+
+  .caseStudyPageAccentBumble .issueTestFlipFaceFront {
+    position: relative;
+  }
+
+  .caseStudyPageAccentBumble .issueTestFlip {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .caseStudyPageAccentBumble .issueTestFlipInner {
+    display: flex;
+    flex-direction: column;
+    transform: none !important;
+    min-height: 0;
+  }
 }

@@ -3,6 +3,7 @@
 import { useState, useEffect, type KeyboardEvent } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { SiteNav } from "@/components/home";
+import homeStyles from "@/components/home/styles.module.css";
 import { SiteFooter } from "@/components/SiteFooter";
 import portraitImage from "@/assets/aboutme/HanaraBW.jpeg";
 import halmoniImage from "@/assets/aboutme/Grandma&Me.JPG";
@@ -166,7 +167,7 @@ export default function AboutPage() {
   return (
     <div className={styles.aboutRoot}>
       <SiteNav />
-
+      <div className={homeStyles.marketingScale}>
       {/* HERO */}
       <section className={`${styles.section} ${styles.hero}`}>
         <div className={styles.wrap}>
@@ -599,6 +600,7 @@ export default function AboutPage() {
       </section>
 
       <SiteFooter />
+      </div>
     </div>
   );
 }
