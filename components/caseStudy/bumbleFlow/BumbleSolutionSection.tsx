@@ -15,7 +15,7 @@ const ACCENT: Record<(typeof bumbleSolution.pillars)[number]["accent"], string> 
 
 export function BumbleSolutionSection() {
   return (
-    <section id="solution" className={cs.section}>
+    <section id="system" className={cs.section}>
       <p className={cs.sectionEyebrow}>{bumbleSolution.eyebrow}</p>
       <p className={cs.display}>{bumbleSolution.displayLine[0]}</p>
       <p className={cs.body}>{bumbleSolution.intro}</p>

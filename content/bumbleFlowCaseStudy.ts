@@ -11,8 +11,26 @@ import bumbleSetUpTimeAnnotations from "@/assets/bumbleflow/BumbleFlow_SetUpTime
 export const bumbleCaseStudyMeta = {
   title: "Bumble Flow",
   subtitle:
-    "Redesigning dating from passive matching to active coordination — helping users turn matches into real plans through shared intent and availability.",
-  caseStudyEyebrow: "Case study",
+    "Redesigning dating from passive matching to active coordination — turning matches into real plans through shared intent and availability.",
+  heroMeta: [
+    {
+      label: "Role",
+      value: "Lead Product Designer · Design Engineer",
+    },
+    {
+      label: "Platform",
+      value: "iOS, Android, Desktop, Watch",
+    },
+    {
+      label: "Timeline",
+      value: "4 weeks",
+    },
+    {
+      label: "Tools",
+      value: "Codex CLI (vibe coding) · Next.js · React · Figma",
+    },
+  ],
+  overviewEyebrow: "00 · OVERVIEW",
   displayThesis: [
     "Designing for readiness,",
     "not just proximity.",
@@ -21,21 +39,10 @@ export const bumbleCaseStudyMeta = {
     "This project began with a speculative brief from the Bumble Customer Acquisition Team. The initial mandate was transactional: leverage precise location data and timely notifications to convert non-paying users into subscribers.",
     "I reframed the opportunity around coordination — moving location out of the UI and into system logic — so premium value is tied to mutual readiness and lower-friction scheduling, not “nearby” alone.",
   ],
-  specRows: [
-    {
-      label: "My role",
-      value: "Lead Product Designer · Design Engineer",
-    },
-    { label: "Timeframe", value: "4 weeks" },
-    {
-      label: "Tools",
-      value: "Codex CLI (vibe coding) · Next.js · React · Figma",
-    },
-  ],
 } as const;
 
 export const bumbleChallenge = {
-  eyebrow: "01 · Challenge",
+  eyebrow: "01 · CHALLENGE",
   title: "The original design brief",
   lead: [
     "The original mandate paired a clear business goal with a proximity-led hypothesis. It assumed nearby would motivate real-world meetups, before anyone checked if that was true.",
@@ -58,7 +65,7 @@ export const bumbleChallenge = {
 } as const;
 
 export const bumbleResearch = {
-  eyebrow: "02 · Research",
+  eyebrow: "03 · Research",
   title:
     "Proximity without intent is not a date. It is a notification users learned to ignore.",
   lead: [
@@ -115,55 +122,58 @@ export const bumbleResearch = {
 } as const;
 
 export const bumbleStrategy = {
-  eyebrow: "04 · Strategy",
+  eyebrow: "05 · Strategy",
   title: "Design transformation",
-  body: "I pivoted from a system that simply found gaps in a calendar to one that aligns shared intent before surfacing availability — ensuring every coordination nudge is grounded in mutual readiness, not just empty time.",
-  initialLabel: "From",
-  initialHeadline: "Calendar-first automation",
-  initialBullets: [
+  summary:
+    "I pivoted from a system that found gaps in a calendar to one that aligns shared intent before surfacing availability.",
+  fromLabel: "FROM — CALENDAR-FIRST AUTOMATION",
+  toLabel: "TO — INTENT-FIRST COORDINATION",
+  rows: [
     {
-      title: "Calendar gaps",
-      body: "Assumes an empty slot equals social readiness.",
+      from: {
+        title: "Calendar gaps",
+        body: "Assumes an empty slot equals social readiness.",
+      },
+      to: {
+        title: "Intent-based",
+        body: "Users explicitly opt in to specific time windows.",
+      },
     },
     {
-      title: "All-or-nothing",
-      body: "Requires full calendar sync to unlock value.",
+      from: {
+        title: "All-or-nothing",
+        body: "Requires full calendar sync to unlock value.",
+      },
+      to: {
+        title: "Flexible entry",
+        body: "Manual input or privacy-first sync — your choice.",
+      },
     },
     {
-      title: "Exposed",
-      body: "“Available now” markers remove the ability to decline discreetly.",
+      from: {
+        title: "Exposed",
+        body: "“Available now” markers remove the ability to decline discreetly.",
+      },
+      to: {
+        title: "Protected",
+        body: "Matches suggested without broadcasting real-time status.",
+      },
     },
     {
-      title: "Feature-locked",
-      body: "Value is hidden behind a high-friction data request.",
+      from: {
+        title: "Feature-locked",
+        body: "Value hidden behind a high-friction data request.",
+      },
+      to: {
+        title: "Incentivized",
+        body: "“Suggested Windows” for all; Premium automates them.",
+      },
     },
   ],
-  workedLabel: "To",
-  workedHeadline: "Intent-first coordination",
-  workedBullets: [
-    {
-      title: "Intent-based",
-      body: 'Users explicitly “opt in” to specific time windows.',
-    },
-    {
-      title: "Flexible entry",
-      body: 'Options for manual input or “privacy-first” sync.',
-    },
-    {
-      title: "Protected",
-      body: "System suggests matches without broadcasting real-time status.",
-    },
-    {
-      title: "Incentivized",
-      body: 'Shows “Suggested Windows” to all; Premium automates them.',
-    },
-  ],
-  outcomeLine:
-    "Same subscription goal — reframed around coordination users actually want, with clearer premium reasons than proximity pings alone.",
 } as const;
 
 export const bumbleValidation = {
-  eyebrow: "03 · Validation",
+  eyebrow: "04 · Validation",
   displayLine: "Fully automated scheduling felt invasive and reduced user control",
   body: "My initial concept fully automated same-day scheduling through calendar syncing. Testing showed that efficiency came at the cost of control — users felt overexposed, and real-time availability made interactions feel monitored rather than natural.",
   issuesIntro: "From testing, three key issues emerged:",
@@ -208,7 +218,7 @@ export const bumbleValidation = {
 } as const;
 
 export const bumbleSolution = {
-  eyebrow: "05 · Solution",
+  eyebrow: "06 · SYSTEM",
   displayLine: ['Moving from “who is nearby” to “who is ready”'],
   intro:
     "Bumble Flow transforms matching from a passive browsing experience into an active coordination engine. By prioritizing shared intent and real-time availability, the system removes the “scheduling labor” that often causes matches to stall, creating a clear, low-friction path from conversation to a confirmed plan.",
@@ -264,7 +274,7 @@ const BUMBLE_FLOW_PROTOTYPE_URL = "https://hanaranam.github.io/BumbleFlowCMU/" a
 
 /** Prototype section: structured intro, methods, pipeline, then tabbed scenarios (profiles + phones). */
 export const bumblePrototypeInteractive = {
-  eyebrow: "06 · Prototype",
+  eyebrow: "02 · SOLUTION",
   title: "From Figma to code, and back again",
   /** Short lead under the section title (method cards carry the detail). */
   introLead: [
@@ -441,7 +451,7 @@ export type BumblePrototypeScenarioId =
  */
 /** Prototype section shell: tabs + walkthrough (Premium × Premium) + vibe coding pipeline. */
 export const bumblePrototypeSection = {
-  eyebrow: "06 · Prototype",
+  eyebrow: "02 · SOLUTION",
   title: "A step by step walkthrough",
   tabs: [
     { id: "premium-premium" as const, tabLabel: "Premium × Premium" },
@@ -563,31 +573,25 @@ export const bumbleCoreComponents = {
 
 export const bumbleReflection = {
   eyebrow: "08 · Reflection",
-  title:
-    "Reframing the Issue: Designing for Coordination, Systems Thinking, and Real-World Outcomes",
+  title: "Reframing the Problem Through Coordination and Systems Thinking",
   intro: [
     "This project pushed me to balance user empathy with business goals more intentionally. By reframing the problem from proximity to coordination, I addressed real user pain — like the awkward gap in scheduling — while creating a clearer path for premium value.",
   ],
   takeaways: [
     {
       n: "01",
-      title: "Reframe to unlock value",
-      body: "Shifting from proximity to coordination uncovered a more meaningful problem. Focusing on scheduling friction improved the experience and created a clear path for premium features.",
+      title: "Reframe the problem, design the system",
+      body: "Shifting from proximity to coordination uncovered scheduling friction and required clear differentiation across Premium, Free, and mismatched availability states.",
     },
     {
       n: "02",
-      title: "Design systems, not screens",
-      body: "Designing for Premium and Free users, along with mismatched availability, required systems thinking. Each state needed to feel intentional, cohesive, and clearly distinct.",
-    },
-    {
-      n: "03",
       title: "Privacy is part of the UX",
       body: "Availability is sensitive. Interactions were designed to feel safe and controlled, without exposing or broadcasting personal data.",
     },
     {
-      n: "04",
+      n: "03",
       title: "AI is a collaborator, not a shortcut",
-      body: "I moved from one-shot prompting to a structured, iterative workflow with AI. I used Figma as the source of truth and guided outputs with clear instructions, screenshots, and checkpoints, similar to working with a teammate.",
+      body: "I used an iterative AI workflow with Figma as the source of truth, guiding outputs through clear instructions, screenshots, and checkpoints like collaborating with a teammate.",
     },
   ],
 } as const;
@@ -595,11 +599,11 @@ export const bumbleReflection = {
 export const bumbleToc = [
   { id: "overview", label: "Overview" },
   { id: "challenge", label: "Challenge" },
+  { id: "solution", label: "Solution" },
   { id: "research", label: "Research" },
   { id: "validation", label: "Validation" },
   { id: "strategy", label: "Strategy" },
-  { id: "solution", label: "Solution" },
-  { id: "prototype", label: "Prototype" },
+  { id: "system", label: "System" },
   { id: "decisions", label: "Decisions" },
   { id: "reflection", label: "Reflection" },
 ] as const;

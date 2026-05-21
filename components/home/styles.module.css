@@ -4,6 +4,27 @@
   align-items: center;
   min-height: 100vh;
   background: var(--color-bg);
+  --site-rail-max: var(--content-max);
+}
+
+/* Home + About: nav rail matches zoomed content column (0.9×). */
+.page:has(.marketingScale) {
+  --site-rail-max: calc(var(--content-max) * 0.9);
+  --site-rail-pad-x: calc(var(--space-x) * 0.9);
+}
+
+.page[data-site-rail="case-study"] {
+  --site-rail-max: var(--case-study-rail);
+}
+
+/* Home + About content only (~90% browser zoom at 100%); nav stays full size. */
+.marketingScale {
+  zoom: 0.9;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 auto;
 }
 
 .navOuter {
@@ -31,12 +52,14 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 24px;
+  box-sizing: border-box;
   width: 100%;
-  max-width: var(--content-max);
+  max-width: var(--site-rail-max, var(--content-max));
+  margin-inline: auto;
   /* Matches edit mode so entering Leave-a-Mark does not shift the bar vertically when the glow appears. */
-  padding: 22px var(--space-x) 16px;
+  padding: 22px var(--site-rail-pad-x, var(--space-x)) 16px;
 }
 
 /* Leave-a-Mark editing: same max-width rail as main; vertical padding inherited from .navContent. */
@@ -51,7 +74,7 @@
 }
 
 .logo {
-  flex: 1 1 auto;
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   min-width: 0;

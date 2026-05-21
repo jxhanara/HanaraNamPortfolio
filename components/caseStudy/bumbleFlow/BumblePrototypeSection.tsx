@@ -16,7 +16,7 @@ export function BumblePrototypeSection() {
   const pp = bumblePrototypeSection.premiumPremium;
 
   return (
-    <section id="prototype" className={cs.section}>
+    <section id="solution" className={cs.section}>
       <div className={ps.rail}>
         <p className={cs.sectionEyebrow}>{bumblePrototypeSection.eyebrow}</p>
         <h2 className={cs.h2}>{bumblePrototypeSection.title}</h2>

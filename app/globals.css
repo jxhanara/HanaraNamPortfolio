@@ -69,11 +69,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Home + About: match ~90% browser zoom at 100% (see MarketingBodyScale.tsx). */
-body.marketing-scale {
-  zoom: 0.9;
-}
-
 a {
   color: inherit;
 }

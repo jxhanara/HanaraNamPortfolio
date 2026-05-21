@@ -49,24 +49,24 @@ export function BumbleValidationSection() {
             >
               <div className={cs.issueTestFlipInner}>
                 <div className={cs.issueTestFlipFaceFront}>
-                  <div className={cs.issueTestCardTop}>
+                  <div className={cs.issueTestCardStack}>
                     <span className={cs.issueTestCardNum} aria-hidden>
                       {m.n}
                     </span>
-                    <div>
-                      <h3 className={cs.issueTestCardTitle}>{m.title}</h3>
-                    </div>
+                    <h3 className={cs.issueTestCardTitle}>{m.title}</h3>
+                    <ul className={cs.issueTestCardBullets}>
+                      {m.bullets.map((b) => (
+                        <li key={b}>{b}</li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className={cs.issueTestCardBullets}>
-                    {m.bullets.map((b) => (
-                      <li key={b}>{b}</li>
-                    ))}
-                  </ul>
                 </div>
 
                 <div className={cs.issueTestFlipFaceBack}>
-                  <p className={cs.issueTestFlipQuoteEyebrow}>User quote</p>
-                  <blockquote className={cs.issueTestFlipQuote}>“{m.quote}”</blockquote>
+                  <div className={cs.issueTestFlipBackContent}>
+                    <p className={cs.issueTestFlipQuoteEyebrow}>User quote</p>
+                    <blockquote className={cs.issueTestFlipQuote}>“{m.quote}”</blockquote>
+                  </div>
                 </div>
               </div>
             </article>

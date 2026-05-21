@@ -53,7 +53,7 @@ function TestingMediaPlaceholder({ label }: { label: string }) {
 
 export function UiForAiCaseStudyView() {
   return (
-    <div className={homeStyles.page}>
+    <div className={homeStyles.page} data-site-rail="case-study">
       <SiteNav />
       <div id="top" className={`${cs.caseStudyPage} ${cs.caseStudyPageAccentUiForAi}`}>
         <div className={cs.heroOuter}>

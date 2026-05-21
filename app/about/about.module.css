@@ -7,6 +7,7 @@
   --about-accent: #f3bdd1;
   --about-pad: var(--space-x);
   --about-max: var(--content-max);
+  --site-rail-max: var(--content-max);
 
   background: var(--about-bg);
   color: var(--about-ink);
@@ -15,6 +16,11 @@
   min-height: 100vh;
   position: relative;
   overflow-x: clip;
+}
+
+.aboutRoot:has(.marketingScale) {
+  --site-rail-max: calc(var(--content-max) * 0.9);
+  --site-rail-pad-x: calc(var(--space-x) * 0.9);
 }
 
 .aboutRoot a {

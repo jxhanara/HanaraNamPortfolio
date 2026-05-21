@@ -8,7 +8,7 @@ export function BumbleResearchSection() {
   return (
     <section id="research" className={cs.section}>
       <p className={cs.sectionEyebrow}>{bumbleResearch.eyebrow}</p>
-      <h2 className={rs.researchTitle}>{bumbleResearch.title}</h2>
+      <h2 className={cs.h2}>{bumbleResearch.title}</h2>
       {bumbleResearch.lead.map((p) => (
         <p key={p.slice(0, 32)} className={cs.body}>
           {p}

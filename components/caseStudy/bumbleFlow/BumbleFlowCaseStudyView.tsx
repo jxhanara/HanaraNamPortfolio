@@ -1,11 +1,10 @@
-import { bumbleCaseStudyMeta, bumbleToc } from "@/content/bumbleFlowCaseStudy";
-import { MediaStrip } from "@/components/home/MediaStrip";
-import { BUMBLE_FLOW_STRIP_VIDEOS } from "@/components/home/bumbleFlowStrip";
+import { bumbleToc } from "@/content/bumbleFlowCaseStudy";
 import { SiteNav } from "@/components/home/SiteNav";
 import homeStyles from "@/components/home/styles.module.css";
 import { SiteFooter } from "@/components/SiteFooter";
 import { CaseStudyTocNav } from "../CaseStudyTocNav";
 import cs from "../caseStudy.module.css";
+import { BumbleCaseStudyHero } from "./BumbleCaseStudyHero";
 import { BumbleChallengeSection } from "./BumbleChallengeSection";
 import { BumbleCoreComponentsSection } from "./BumbleCoreComponentsSection";
 import { BumbleNextProjectSection } from "./BumbleNextProjectSection";
@@ -19,35 +18,19 @@ import { BumbleValidationSection } from "./BumbleValidationSection";
 
 export function BumbleFlowCaseStudyView() {
   return (
-    <div className={homeStyles.page}>
+    <div className={homeStyles.page} data-site-rail="case-study">
       <SiteNav />
       <div id="top" className={`${cs.caseStudyPage} ${cs.caseStudyPageAccentBumble}`}>
-        <div className={cs.heroOuter}>
-          <div className={cs.heroCard}>
-            <div className={cs.heroTop}>
-              <h1 className={cs.heroTitle}>{bumbleCaseStudyMeta.title}</h1>
-              <p className={cs.heroSubtitle}>{bumbleCaseStudyMeta.subtitle}</p>
-            </div>
-            <div className={cs.heroMedia}>
-              <MediaStrip
-                videos={BUMBLE_FLOW_STRIP_VIDEOS}
-                variant="bumble"
-                ariaLabel="Bumble Flow prototype recordings"
-                cellClassName={cs.heroMediaCell}
-              />
-            </div>
-          </div>
-        </div>
-
         <div className={cs.shellTrack}>
           <div className={cs.shellMain}>
+            <BumbleCaseStudyHero />
             <BumbleOverviewSection />
             <BumbleChallengeSection />
+            <BumblePrototypeSection />
             <BumbleResearchSection />
             <BumbleValidationSection />
             <BumbleStrategySection />
             <BumbleSolutionSection />
-            <BumblePrototypeSection />
             <BumbleCoreComponentsSection />
             <BumbleReflectionSection />
             <BumbleNextProjectSection />

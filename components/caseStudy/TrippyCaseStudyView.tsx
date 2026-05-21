@@ -39,7 +39,7 @@ const PROBLEM_ICON_COLOR: Record<
 
 export function TrippyCaseStudyView() {
   return (
-    <div className={homeStyles.page}>
+    <div className={homeStyles.page} data-site-rail="case-study">
       <SiteNav />
       <div id="top" className={cs.caseStudyPage}>
         <div className={cs.heroOuter}>

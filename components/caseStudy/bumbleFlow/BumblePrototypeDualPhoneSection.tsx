@@ -170,7 +170,11 @@ export function PrototypeDualPhoneWalkthrough() {
     kevinPausedForLindseyRef.current = false;
 
     // Seek + play Kevin unless the change came FROM his timeupdate.
-    if (source !== "video" && walkthroughInViewRef.current) {
+    // We do NOT gate on `walkthroughInViewRef` — the IntersectionObserver
+    // pauses Kevin when out of view, so seeking is harmless here. Gating it
+    // caused Kevin to fail to seek when stepping rapidly before the observer
+    // had reported inView=true.
+    if (source !== "video") {
       seekAndPlay(kevinVideoRef.current, step.kevinTime);
     }
 
@@ -189,23 +193,30 @@ export function PrototypeDualPhoneWalkthrough() {
   }, [stepIndex, steps, scrollToStep]);
 
   // —— Effect: pause videos off-screen; resume when the walkthrough is visible ——
+  // Important: we only PAUSE/RESUME here — we do NOT re-seek. Re-seeking on every
+  // re-entry would reset Kevin back to the step's kevinTime and prevent him from
+  // ever reaching kevinPauseAtTime (which is what triggers Lindsey to appear).
   useEffect(() => {
     const pin = pinRef.current;
     if (!pin) return;
+
+    const resume = (video: HTMLVideoElement | null) => {
+      if (!video) return;
+      const p = video.play();
+      if (p && typeof p.catch === "function") {
+        p.catch(() => {
+          /* autoplay restriction — muted attribute should keep this happy */
+        });
+      }
+    };
 
     const syncPlaybackForView = (inView: boolean) => {
       const kevin = kevinVideoRef.current;
       const lindsey = lindseyVideoRef.current;
       if (inView) {
-        const step = steps[stepRef.current];
-        seekAndPlay(kevin, step.kevinTime);
-        if (lindseyVisibleRef.current && lindsey) {
-          const p = lindsey.play();
-          if (p && typeof p.catch === "function") {
-            p.catch(() => {
-              /* ignore */
-            });
-          }
+        resume(kevin);
+        if (lindseyVisibleRef.current && !lindseyDoneRef.current) {
+          resume(lindsey);
         }
       } else {
         kevin?.pause();
@@ -227,13 +238,17 @@ export function PrototypeDualPhoneWalkthrough() {
 
     observer.observe(pin);
     return () => observer.disconnect();
-  }, [steps]);
+  }, []);
 
   // —— Effect: Lindsey play / pause based on visibility ——
+  // Decoupled from `walkthroughInViewRef` — the IntersectionObserver effect
+  // pauses her when out of view and resumes when back. Gating play on
+  // `walkthroughInViewRef` here caused her to silently fail to start if the ref
+  // hadn't flipped to true yet when she was set visible.
   useEffect(() => {
     const lindsey = lindseyVideoRef.current;
     if (!lindsey) return;
-    if (lindseyVisible && walkthroughInViewRef.current) {
+    if (lindseyVisible) {
       if (lindseyDoneRef.current) return; // safety — shouldn't be visible if done
       try {
         lindsey.currentTime = 0;
@@ -326,8 +341,6 @@ export function PrototypeDualPhoneWalkthrough() {
     if (!kevin) return;
 
     const onTimeUpdate = () => {
-      if (!walkthroughInViewRef.current) return;
-
       const t = kevin.currentTime;
       const step = steps[stepRef.current];
 
@@ -400,7 +413,6 @@ export function PrototypeDualPhoneWalkthrough() {
     if (!lindsey) return;
 
     const onLindseyTime = () => {
-      if (!walkthroughInViewRef.current) return;
       if (!kevinPausedForLindseyRef.current) return;
       if (lindsey.currentTime >= bumblePrototypeDualPhone.lindseyResumeKevinAt) {
         kevinPausedForLindseyRef.current = false;
