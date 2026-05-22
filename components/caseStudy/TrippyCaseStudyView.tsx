@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CaseStudyStrategyPivotArrow } from "./CaseStudyStrategyPivotArrow";
 import {
   trippyCaseStudyMeta,
   trippyCoreComponents,
@@ -10,7 +9,6 @@ import {
   trippyResearchCompetitors,
   trippyResearchInsights,
   trippySolution,
-  trippyStrategy,
   trippyToc,
   trippyValidation,
 } from "@/content/trippyCaseStudy";
@@ -18,9 +16,9 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { CaseStudyTocNav } from "./CaseStudyTocNav";
 import { StrategicReadDiagram } from "./StrategicReadDiagram";
 import { ProblemFrownIcon, SolutionSmileIcon } from "./CaseStudyMoodIcons";
-import { MediaStrip } from "@/components/home/MediaStrip";
 import { SiteNav } from "@/components/home/SiteNav";
-import { TRIPPY_STRIP_VIDEOS } from "@/components/home/trippyStrip";
+import { TrippyCaseStudyHero } from "./TrippyCaseStudyHero";
+import { TrippyStrategySection } from "./TrippyStrategySection";
 import homeStyles from "@/components/home/styles.module.css";
 import cs from "./caseStudy.module.css";
 import {
@@ -42,27 +40,11 @@ export function TrippyCaseStudyView() {
     <div className={homeStyles.page} data-site-rail="case-study">
       <SiteNav />
       <div id="top" className={cs.caseStudyPage}>
-        <div className={cs.heroOuter}>
-          <div className={cs.heroCard}>
-            <div className={cs.heroTop}>
-              <h1 className={cs.heroTitle}>{trippyCaseStudyMeta.title}</h1>
-              <p className={cs.heroSubtitle}>{trippyCaseStudyMeta.subtitle}</p>
-            </div>
-            <div className={cs.heroMedia}>
-              <MediaStrip
-                videos={TRIPPY_STRIP_VIDEOS}
-                variant="trippy"
-                ariaLabel="Trippy product recordings"
-                cellClassName={cs.heroMediaCell}
-              />
-            </div>
-          </div>
-        </div>
-
         <div className={cs.shellTrack}>
           <div className={cs.shellMain}>
+          <TrippyCaseStudyHero />
           <section id="overview" className={cs.section}>
-            <p className={cs.eyebrow}>{trippyCaseStudyMeta.caseStudyEyebrow}</p>
+            <p className={cs.sectionEyebrow}>{trippyCaseStudyMeta.overviewEyebrow}</p>
             <p className={cs.display}>
               {trippyCaseStudyMeta.displayThesis[0]}
               <br />
@@ -73,14 +55,6 @@ export function TrippyCaseStudyView() {
                 <p key={p.slice(0, 24)} className={cs.body}>
                   {p}
                 </p>
-              ))}
-            </div>
-            <div className={cs.specCard}>
-              {trippyCaseStudyMeta.specRows.map((row) => (
-                <div key={row.label} className={cs.specBlock}>
-                  <p className={cs.specLabel}>{row.label}</p>
-                  <p className={cs.specValue}>{row.value}</p>
-                </div>
               ))}
             </div>
           </section>
@@ -180,41 +154,7 @@ export function TrippyCaseStudyView() {
             </div>
           </section>
 
-          <section id="strategy" className={cs.section}>
-            <p className={cs.sectionEyebrow}>{trippyStrategy.eyebrow}</p>
-            <h2 className={cs.h2}>{trippyStrategy.title}</h2>
-            <p className={cs.body}>{trippyStrategy.body}</p>
-
-            <div className={cs.strategySplit}>
-              <div className={cs.strategyCol} data-pivot="from">
-                <p className={cs.strategyColTitle}>{trippyStrategy.initialLabel}</p>
-                <p className={cs.strategyHeadline}>{trippyStrategy.initialHeadline}</p>
-                <ul className={cs.miniBullets}>
-                  {trippyStrategy.initialBullets.map((b) => (
-                    <li key={b.title}>
-                      <p className={cs.miniBulletTitle}>{b.title}</p>
-                      <p className={cs.miniBulletBody}>{b.body}</p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <CaseStudyStrategyPivotArrow />
-              <div className={cs.strategyCol} data-pivot="to">
-                <p className={cs.strategyColTitle}>{trippyStrategy.workedLabel}</p>
-                <p className={cs.strategyHeadline}>{trippyStrategy.workedHeadline}</p>
-                <ul className={cs.miniBullets}>
-                  {trippyStrategy.workedBullets.map((b) => (
-                    <li key={b.title}>
-                      <p className={cs.miniBulletTitle}>{b.title}</p>
-                      <p className={cs.miniBulletBody}>{b.body}</p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <div className={cs.outcomeBanner}>{trippyStrategy.outcomeLine}</div>
-          </section>
+          <TrippyStrategySection />
 
           <section id="validation" className={cs.section}>
             <p className={cs.sectionEyebrow}>{trippyValidation.eyebrow}</p>

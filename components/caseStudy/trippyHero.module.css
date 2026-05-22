@@ -1,0 +1,142 @@
+/* Trippy case study hero — title, tagline, metadata rail, phone strip
+   Structure mirrors Bumble Flow hero so the two case studies share design + scale. */
+
+.hero {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding-top: clamp(32px, 5vw, 56px);
+  padding-bottom: clamp(40px, 6vw, 72px);
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: clamp(28px, 4vw, 40px);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-instrument-serif), serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(56px, 8.5vw, 104px);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.tagline {
+  margin: clamp(16px, 2.2vw, 22px) 0 0;
+  max-width: min(54rem, 100%);
+  font-size: clamp(15px, 1.6vw, 17px);
+  line-height: 1.5;
+  color: rgba(243, 241, 236, 0.55);
+  text-wrap: pretty;
+}
+
+.metaRail {
+  width: 100%;
+  margin-top: clamp(24px, 3.2vw, 32px);
+  padding: clamp(20px, 2.5vw, 28px) 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.meta {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  width: 100%;
+  margin: 0;
+}
+
+.metaItem {
+  margin: 0;
+  min-width: 0;
+  padding: 0 clamp(18px, 2.5vw, 28px);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.metaItem:first-child {
+  padding-left: 0;
+  border-left: none;
+}
+
+.metaItem:last-child {
+  padding-right: 0;
+}
+
+.metaLabel {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  line-height: 1.45;
+  color: rgba(243, 241, 236, 0.28);
+}
+
+.metaValue {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--color-text);
+}
+
+.phones {
+  width: 100%;
+  min-width: 0;
+}
+
+.phonesStrip {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+@media (max-width: 900px) {
+  .meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 24px;
+  }
+
+  .metaItem {
+    padding: 0 clamp(14px, 3vw, 20px);
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .metaItem:nth-child(odd) {
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .metaItem:nth-child(1),
+  .metaItem:nth-child(2) {
+    padding-top: 0;
+  }
+
+  .metaItem:nth-child(3),
+  .metaItem:nth-child(4) {
+    padding-top: 4px;
+  }
+}
+
+@media (max-width: 520px) {
+  .meta {
+    grid-template-columns: 1fr;
+    row-gap: 20px;
+  }
+
+  .metaItem,
+  .metaItem:nth-child(odd) {
+    padding: 0;
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 20px;
+  }
+
+  .metaItem:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+}

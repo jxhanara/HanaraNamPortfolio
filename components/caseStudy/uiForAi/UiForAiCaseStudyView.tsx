@@ -2,8 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiteFooter } from "@/components/SiteFooter";
 import { CaseStudyTocNav } from "../CaseStudyTocNav";
-import { MediaStrip } from "@/components/home/MediaStrip";
 import { SiteNav } from "@/components/home/SiteNav";
+import { UiForAiCaseStudyHero } from "./UiForAiCaseStudyHero";
 import {
   uiForAiCaseStudyMeta,
   uiForAiClosingReflection,
@@ -56,26 +56,13 @@ export function UiForAiCaseStudyView() {
     <div className={homeStyles.page} data-site-rail="case-study">
       <SiteNav />
       <div id="top" className={`${cs.caseStudyPage} ${cs.caseStudyPageAccentUiForAi}`}>
-        <div className={cs.heroOuter}>
-          <div className={cs.heroCard}>
-            <div className={cs.heroTop}>
-              <h1 className={cs.heroTitle}>{uiForAiCaseStudyMeta.title}</h1>
-              <p className={cs.heroSubtitle}>{uiForAiCaseStudyMeta.subtitle}</p>
-            </div>
-            <div className={cs.heroMedia}>
-              <MediaStrip
-                ariaLabel="Prototype recording placeholder"
-                cellClassName={cs.heroMediaCell}
-              />
-            </div>
-          </div>
-        </div>
-
         <div className={cs.shellTrack}>
           <div className={cs.shellMain}>
+            <UiForAiCaseStudyHero />
+
             <section id="overview" className={cs.section}>
-              <p className={cs.eyebrow}>{uiForAiCaseStudyMeta.caseStudyEyebrow}</p>
-              <p className={u.overviewLede}>
+              <p className={cs.sectionEyebrow}>{uiForAiCaseStudyMeta.overviewEyebrow}</p>
+              <p className={cs.display}>
                 {uiForAiCaseStudyMeta.displayThesis[0]}
                 <br />
                 {uiForAiCaseStudyMeta.displayThesis[1]}
@@ -85,14 +72,6 @@ export function UiForAiCaseStudyView() {
                   <p key={p.slice(0, 28)} className={cs.body}>
                     {p}
                   </p>
-                ))}
-              </div>
-              <div className={cs.specCard}>
-                {uiForAiCaseStudyMeta.specRows.map((row) => (
-                  <div key={row.label} className={cs.specBlock}>
-                    <p className={cs.specLabel}>{row.label}</p>
-                    <p className={cs.specValue}>{row.value}</p>
-                  </div>
                 ))}
               </div>
               <div className={u.seriesCallout}>

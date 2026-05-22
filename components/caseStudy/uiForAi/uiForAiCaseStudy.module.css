@@ -1,17 +1,5 @@
 /* Context Switching — components shared with full-width case study rail (accent vars on .caseStudyPageAccentUiForAi) */
 
-.overviewLede {
-  margin: 0 0 24px;
-  font-family: var(--font-dm-sans), system-ui, sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: clamp(22px, 2.35vw, 28px);
-  line-height: 1.35;
-  letter-spacing: -0.02em;
-  color: rgba(255, 255, 255, 0.94);
-  max-width: var(--ui-for-ai-rag-max, min(56rem, 94%));
-}
-
 .cardGrid {
   margin-top: 40px;
   display: grid;

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useLeaveAMarkNavOptional } from "@/components/leaveAMark/LeaveAMarkNavContext";
 import { WorkNavLink } from "./WorkNavLink";
 import styles from "./styles.module.css";
@@ -26,10 +27,71 @@ function NavPrimaryLinks() {
   );
 }
 
+type MobileMenuItem = {
+  key: string;
+  render: (onNavigate: () => void) => React.ReactNode;
+};
+
+const MOBILE_MENU_ITEMS: MobileMenuItem[] = [
+  {
+    key: "home",
+    render: (onNavigate) => (
+      <Link href="/" className={styles.mobileMenuLink} onClick={onNavigate}>
+        home
+      </Link>
+    ),
+  },
+  {
+    key: "about",
+    render: (onNavigate) => (
+      <Link href="/about" className={styles.mobileMenuLink} onClick={onNavigate}>
+        about
+      </Link>
+    ),
+  },
+  {
+    key: "work",
+    render: (onNavigate) => (
+      <WorkNavLink className={styles.mobileMenuLink} onClick={onNavigate}>
+        work
+      </WorkNavLink>
+    ),
+  },
+  {
+    key: "resume",
+    render: (onNavigate) => (
+      <a
+        href={RESUME_URL}
+        target="_blank"
+        rel="noreferrer"
+        className={styles.mobileMenuLink}
+        onClick={onNavigate}
+      >
+        resume
+      </a>
+    ),
+  },
+];
+
 export function SiteNav() {
   const lamNav = useLeaveAMarkNavOptional();
   const lamSlot = lamNav?.slot ?? null;
   const editing = lamSlot !== null;
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileMenuOpen(false);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKey);
+    };
+  }, [mobileMenuOpen]);
 
   return (
     <header className={`${styles.navOuter} ${editing ? styles.navOuterLeaveAMark : ""}`}>
@@ -70,7 +132,42 @@ export function SiteNav() {
               </button>
             ) : null}
           </nav>
+          <button
+            type="button"
+            className={styles.mobileMenuToggle}
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="site-mobile-menu"
+            onClick={() => setMobileMenuOpen((open) => !open)}
+          >
+            <span
+              className={`${styles.mobileMenuIcon} ${
+                mobileMenuOpen ? styles.mobileMenuIconOpen : ""
+              }`}
+              aria-hidden
+            >
+              <span />
+              <span />
+              <span />
+            </span>
+          </button>
         </div>
+      </div>
+      <div
+        id="site-mobile-menu"
+        className={`${styles.mobileMenu} ${mobileMenuOpen ? styles.mobileMenuOpen : ""}`}
+        aria-hidden={!mobileMenuOpen}
+      >
+        <nav className={styles.mobileMenuList} aria-label="Mobile primary">
+          {MOBILE_MENU_ITEMS.map((item, index) => (
+            <div key={item.key} className={styles.mobileMenuItem}>
+              <span className={styles.mobileMenuIndex}>
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              {item.render(() => setMobileMenuOpen(false))}
+            </div>
+          ))}
+        </nav>
       </div>
     </header>
   );

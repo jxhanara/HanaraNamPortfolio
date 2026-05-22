@@ -4,7 +4,13 @@ export const uiForAiCaseStudyMeta = {
   title: "Context Switching",
   subtitle:
     "How might AI interfaces support re-entry, memory, and momentum across interrupted work?",
-  caseStudyEyebrow: "Overview",
+  heroMeta: [
+    { label: "My role", value: "Team Lead" },
+    { label: "Team", value: "5 designers" },
+    { label: "Timeframe", value: "Fall 2025: Sept - Dec" },
+    { label: "Tools", value: "Figma · Next.js · React" },
+  ],
+  overviewEyebrow: "00 · OVERVIEW",
   displayThesis: [
     "Linear chat works until work stretches",
     "across hours, days, or weeks.",
@@ -12,12 +18,6 @@ export const uiForAiCaseStudyMeta = {
   introColumns: [
     "Returning users scroll, skim, and mentally reconstruct long threads just to resume where they left off. The information is still there — but re-entry often costs more effort than the task itself.",
     "We explored recall search, AI topics, summaries, and mergeable threads so AI chat feels less like a disposable feed and more like a workspace you can return to.",
-  ],
-  specRows: [
-    { label: "My role", value: "Team Lead" },
-    { label: "Team", value: "5 designers" },
-    { label: "Timeframe", value: "Fall 2025: Sept - Dec" },
-    { label: "Tools", value: "Figma · Next.js · React" },
   ],
 } as const;
 

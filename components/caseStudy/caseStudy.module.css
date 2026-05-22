@@ -131,11 +131,17 @@
   max-width: var(--ui-for-ai-rag-max);
 }
 
+/* Overview follows in-page hero — keep clear separation without double padding */
+.caseStudyPageAccentUiForAi .shellMain > .section:first-of-type {
+  padding-top: 0;
+}
+
 .caseStudyPageAccentUiForAi .nextProjectCard:hover {
   border-color: rgba(137, 197, 234, 0.45);
   background: rgba(20, 28, 32, 0.75);
 }
 
+.caseStudyPageAccentUiForAi .display,
 .caseStudyPageAccentUiForAi .h2,
 .caseStudyPageAccentUiForAi .body,
 .caseStudyPageAccentUiForAi .eyebrow,

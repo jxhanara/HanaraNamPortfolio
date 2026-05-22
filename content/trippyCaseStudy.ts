@@ -7,7 +7,25 @@ export const trippyCaseStudyMeta = {
   title: "Trippy",
   subtitle:
     "Building a Zero to One Local-First Discovery & Booking Ecosystem for a\u00A0Startup",
-  caseStudyEyebrow: "Case study",
+  heroMeta: [
+    {
+      label: "Role",
+      value: "Lead Product Designer · Product strategy · End-to-end UX/UI",
+    },
+    {
+      label: "Team",
+      value: "C-level executives · Technical & Marketing team",
+    },
+    {
+      label: "Timeframe",
+      value: "2024 – 2026",
+    },
+    {
+      label: "Tools",
+      value: "Figma · GitHub · Notion",
+    },
+  ],
+  overviewEyebrow: "00 · OVERVIEW",
   displayThesis: [
     "Locals don’t plan travel in one straight line —",
     "but today’s tools behave like they do.",
@@ -15,12 +33,6 @@ export const trippyCaseStudyMeta = {
   introColumns: [
     "Trippy is a Hong Kong-based startup building an AI travel platform designed to bridge the gap between “tourist-trap” planning and authentic local discovery.",
     "As the sole lead UX designer, I led the product from a blank canvas to a high-fidelity beta, transforming a fragmented planning process into a consolidated experience for Hong Kong locals and travelers.",
-  ],
-  specRows: [
-    { label: "My role", value: "Lead Product Designer · Product strategy · End-to-end UX/UI · Design system · User research · Beta testing" },
-    { label: "Team", value: "C-level executives · Technical team · Marketing team" },
-    { label: "Timeframe", value: "2024 – 2026" },
-    { label: "Tools", value: "Figma · GitHub · Notion" },
   ],
 } as const;
 
@@ -138,22 +150,41 @@ export const trippyResearchInsights = {
 export const trippyStrategy = {
   eyebrow: "03 · Strategy",
   title: "The expert marketplace model was slow and complex to validate",
-  body: "To evaluate this hypothesis, we explored what it would take to operationalize a consultant-led model through early research, stakeholder discussions, and feasibility analysis. Early research, stakeholder conversations, and feasibility checks revealed structural challenges.",
-  pivotEyebrow: "Pivot",
-  pivotTitle: "Strategic shift",
-  initialLabel: "Initial approach",
-  initialHeadline: "Verified local experts curate recommendations for a fee",
-  initialBullets: [
-    { title: "High onboarding friction for experts", body: "Verification processes, resume requirements — too much friction for consultants to join." },
-    { title: "Marketplace complexity slowed learning", body: "Two-sided marketplace payment infrastructure would delay MVP by months." },
-    { title: "Slow to ship", body: "Complex overhead prevented us from validating core assumptions." },
-  ],
-  workedLabel: "Approach that worked",
-  workedHeadline: "Reddit-style crowdsourcing for real-time local insight",
-  workedBullets: [
-    { title: "Low friction", body: "Anyone can contribute instantly — “Is it raining in Sai Kung now?” gets answered in real time." },
-    { title: "Technical debt (acceptable tradeoff)", body: "Achieves the same authenticity goal through community trust, not payment processing." },
-    { title: "Fast to validate", body: "No marketplace dependencies means we can test real user demand and behavior immediately." },
+  summary:
+    "To evaluate this hypothesis, we explored what it would take to operationalize a consultant-led model through early research, stakeholder discussions, and feasibility analysis. Early research, stakeholder conversations, and feasibility checks revealed structural challenges.",
+  fromLabel: "FROM — EXPERT MARKETPLACE",
+  toLabel: "TO — COMMUNITY CROWDSOURCING",
+  rows: [
+    {
+      from: {
+        title: "High onboarding friction",
+        body: "Verification processes, resume requirements — too much friction for consultants to join.",
+      },
+      to: {
+        title: "Low friction",
+        body: "Anyone can contribute instantly — “Is it raining in Sai Kung now?” gets answered in real time.",
+      },
+    },
+    {
+      from: {
+        title: "Marketplace complexity",
+        body: "Two-sided marketplace payment infrastructure would delay MVP by months.",
+      },
+      to: {
+        title: "Technical debt (acceptable tradeoff)",
+        body: "Achieves the same authenticity goal through community trust, not payment processing.",
+      },
+    },
+    {
+      from: {
+        title: "Slow to ship",
+        body: "Complex overhead prevented us from validating core assumptions.",
+      },
+      to: {
+        title: "Fast to validate",
+        body: "No marketplace dependencies means we can test real user demand and behavior immediately.",
+      },
+    },
   ],
   outcomeLine: "Same authenticity goal, 70% less complexity, and validated in weeks instead of months.",
 } as const;
@@ -289,18 +320,13 @@ export const trippyReflection = {
     },
     {
       n: "02",
-      title: "Design is alignment",
-      body: "This role extended far beyond UI. Working closely with leadership and engineering meant constantly aligning user needs with business priorities and technical constraints to move the product forward.",
+      title: "Design is a standard, not a compromise",
+      body: "Working across leadership and engineering meant constantly aligning needs with constraints — but never at the cost of simplicity. If a complex task can't be reduced to a single, effortless action, the design isn't finished.",
     },
     {
       n: "03",
       title: "AI should support, not replace",
       body: "The goal wasn’t automation for its own sake, but preserving user agency. AI handled the heavy lifting, while users remained in control — shaping their own trips rather than being led by the system.",
-    },
-    {
-      n: "04",
-      title: "Raise the bar for effort",
-      body: "This project redefined my standard for simplicity: if a complex task can’t be reduced to a single, effortless action, the design isn’t finished.",
     },
   ],
 } as const;
