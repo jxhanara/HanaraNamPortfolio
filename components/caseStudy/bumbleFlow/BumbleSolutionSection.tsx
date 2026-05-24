@@ -6,6 +6,7 @@ import {
   caseStudyRailImageSizes,
   caseStudyResponsiveImageStyle,
 } from "../caseStudyMedia";
+import sp from "./bumbleSystemPillars.module.css";
 
 const ACCENT: Record<(typeof bumbleSolution.pillars)[number]["accent"], string> = {
   green: "#5ee3a8",
@@ -19,15 +20,19 @@ export function BumbleSolutionSection() {
       <p className={cs.sectionEyebrow}>{bumbleSolution.eyebrow}</p>
       <p className={cs.display}>{bumbleSolution.displayLine[0]}</p>
       <p className={cs.body}>{bumbleSolution.intro}</p>
-      <div className={cs.solutionPillars}>
+      <div className={sp.pillarGrid}>
         {bumbleSolution.pillars.map((p) => (
-          <div key={p.kicker} className={cs.solutionPillar}>
-            <p className={cs.solutionPillarKicker}>{p.kicker}</p>
-            <p className={`${cs.bodyTight} ${cs.solutionPillarBody}`}>{p.body}</p>
-            <div className={cs.problemCardFooter}>
-              <span className={cs.problemCardIcon}>
-                <SolutionSmileIcon color={ACCENT[p.accent]} />
-              </span>
+          <div key={p.kicker} className={sp.pillarCard}>
+            <div className={sp.pillarStack}>
+              <h3 className={sp.pillarTitle}>{p.kicker}</h3>
+              <p className={sp.pillarBody}>{p.body}</p>
+              <div className={sp.pillarFooter}>
+                <SolutionSmileIcon
+                  color={ACCENT[p.accent]}
+                  className={sp.pillarMoodIcon}
+                  size={32}
+                />
+              </div>
             </div>
           </div>
         ))}

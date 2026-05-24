@@ -114,6 +114,9 @@
   --ui-ai-quote-border: rgba(137, 197, 234, 0.42);
   --ui-ai-quote-icon-bg: rgba(18, 42, 58, 0.95);
   --ui-ai-quote-icon-border: rgba(137, 197, 234, 0.35);
+  /* Card chrome — matches problem section (.card in uiForAiCaseStudy.module.css) */
+  --ui-ai-card-bg: #0f0f0f;
+  --ui-ai-card-border: #1e1e1e;
   /* Wider reading measure so section titles align with body copy below */
   --ui-for-ai-rag-max: min(56rem, 94%);
 }
@@ -134,11 +137,6 @@
 /* Overview follows in-page hero — keep clear separation without double padding */
 .caseStudyPageAccentUiForAi .shellMain > .section:first-of-type {
   padding-top: 0;
-}
-
-.caseStudyPageAccentUiForAi .nextProjectCard:hover {
-  border-color: rgba(137, 197, 234, 0.45);
-  background: rgba(20, 28, 32, 0.75);
 }
 
 .caseStudyPageAccentUiForAi .display,
@@ -1317,15 +1315,15 @@
   color: rgba(255, 255, 255, 0.72);
 }
 
-/* Next project (post–reflection) — compact band + capped preview so block fits one viewport */
-.nextProject {
+/* More case studies (post–reflection) — two-card promo grid */
+.moreCaseStudies {
   margin-top: clamp(8px, 1.5vw, 16px);
   padding-top: clamp(12px, 2vw, 20px);
   border-top: 1px solid var(--color-border-subtle);
 }
 
-.nextProjectEyebrow {
-  margin: 0 0 8px;
+.moreCaseStudiesEyebrow {
+  margin: 0 0 clamp(16px, 2.5vw, 24px);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.14em;
@@ -1333,115 +1331,114 @@
   color: var(--color-muted);
 }
 
-.nextProjectCard {
+.moreCaseStudiesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(16px, 2.5vw, 24px);
+  overflow: visible;
+  padding-block: 4px clamp(12px, 2vw, 20px);
+}
+
+@media (min-width: 768px) {
+  .moreCaseStudiesGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.moreCaseStudiesCard {
+  --more-case-studies-card-bg: rgba(24, 24, 27, 0.55);
+  --more-case-studies-card-bg-hover: rgba(26, 28, 32, 0.96);
+  --more-case-studies-shadow-hover: 0 22px 52px rgba(37, 99, 235, 0.28),
+    0 10px 28px rgba(0, 0, 0, 0.45);
+
   display: flex;
   flex-direction: column;
   text-decoration: none;
   color: inherit;
   cursor: pointer;
-  position: relative;
-  z-index: 1;
   border-radius: var(--radius-card);
   border: 1px solid var(--color-border-subtle);
-  background: rgba(24, 24, 27, 0.55);
+  background: var(--more-case-studies-card-bg);
   overflow: hidden;
-  transition: border-color 0.2s ease, background 0.2s ease;
-  max-height: min(78vh, 560px);
+  box-shadow: none;
+  transition:
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.32s ease;
 }
 
-.nextProjectLead {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
-  flex: 0 0 auto;
-  min-height: 0;
-  padding-inline: clamp(20px, 3vw, 28px);
-  padding-block: clamp(14px, 2vw, 18px);
+.moreCaseStudiesCard:hover,
+.moreCaseStudiesCard:focus-visible {
+  transform: translateY(-6px);
+  background: var(--more-case-studies-card-bg-hover);
+  box-shadow: var(--more-case-studies-shadow-hover);
 }
 
-.nextProjectLead .nextProjectEyebrow {
-  margin: 0 0 6px;
-  padding: 0;
-  max-width: var(--case-study-section-copy-max);
+.moreCaseStudiesCardTrippy {
+  --more-case-studies-shadow-hover: 0 22px 52px rgba(37, 99, 235, 0.28),
+    0 10px 28px rgba(0, 0, 0, 0.45);
 }
 
-.nextProjectLead .nextProjectTitle {
-  margin: 0;
-  padding: 0 0 6px;
-  max-width: var(--case-study-section-copy-max);
+.moreCaseStudiesCardBumble {
+  --more-case-studies-shadow-hover: 0 22px 52px rgba(255, 206, 8, 0.22),
+    0 10px 28px rgba(0, 0, 0, 0.45);
 }
 
-.nextProjectLead .nextProjectDesc {
-  margin: 0;
-  padding: 0;
-  max-width: var(--case-study-section-copy-max);
+.moreCaseStudiesCardUiForAi {
+  --more-case-studies-shadow-hover: 0 22px 52px rgba(137, 197, 234, 0.26),
+    0 10px 28px rgba(0, 0, 0, 0.45);
 }
 
-.nextProjectCard:hover {
-  border-color: rgba(56, 129, 255, 0.45);
-  background: rgba(28, 32, 40, 0.75);
+@media (prefers-reduced-motion: reduce) {
+  .moreCaseStudiesCard:hover,
+  .moreCaseStudiesCard:focus-visible {
+    transform: none;
+  }
 }
 
-.nextProjectTitle {
-  margin: 0;
-  padding: clamp(20px, 3vw, 28px) clamp(20px, 3vw, 28px) 8px;
-  font-family: var(--font-instrument-serif), serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: var(--case-study-instrument-italic-size);
-  letter-spacing: -0.02em;
-  line-height: 1.22;
-  color: var(--color-text);
-  max-width: var(--case-study-section-copy-max);
+.moreCaseStudiesMedia {
+  padding: clamp(10px, 1.5vw, 14px);
+  background: rgba(255, 255, 255, 0.03);
 }
 
-.nextProjectDesc {
-  margin: 0;
-  padding: 0 clamp(20px, 3vw, 28px) clamp(14px, 2vw, 18px);
-  font-size: 15px;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.68);
-  max-width: var(--case-study-section-copy-max);
-}
-
-.nextProjectMedia {
-  width: 100%;
-  flex: 1 1 auto;
-  min-height: 0;
-  height: clamp(140px, 26dvh, 240px);
-  max-height: clamp(140px, 26dvh, 240px);
-  background: #0a0a0c;
-  line-height: 0;
-  overflow: hidden;
+.moreCaseStudiesImageWrap {
   position: relative;
+  border-radius: calc(var(--radius-card) - 10px);
+  overflow: hidden;
+  aspect-ratio: 1037 / 580;
+  background: #0a0a0c;
 }
 
-.nextProjectImage {
-  composes: caseStudyRaster;
-  border-radius: 0;
-  width: 100% !important;
-  height: 100% !important;
-  max-height: none;
+.moreCaseStudiesImage {
   object-fit: cover;
   object-position: center center;
 }
 
-.nextProjectMeta {
+.moreCaseStudiesBody {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
-  gap: 8px 20px;
-  padding: clamp(12px, 1.5vw, 16px) clamp(20px, 3vw, 28px);
-  font-size: 13px;
-  line-height: 1.45;
-  color: var(--color-muted);
+  flex-direction: column;
+  gap: 8px;
+  padding: clamp(16px, 2vw, 20px) clamp(18px, 2.5vw, 24px) clamp(20px, 2.5vw, 24px);
 }
 
-.nextProjectMetaYear {
-  font-variant-numeric: tabular-nums;
+.moreCaseStudiesTitle {
+  margin: 0;
+  font-size: clamp(17px, 2vw, 20px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--color-text);
+}
+
+.moreCaseStudiesDesc {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-muted);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 }
 
 /* Case study page footer (Figma-inspired rail) */

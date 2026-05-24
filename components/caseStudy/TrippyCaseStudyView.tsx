@@ -1,9 +1,8 @@
 import Image from "next/image";
-import Link from "next/link";
+import { MoreCaseStudiesSection } from "./MoreCaseStudiesSection";
 import {
   trippyCaseStudyMeta,
   trippyCoreComponents,
-  trippyNextProject,
   trippyProblem,
   trippyReflection,
   trippyResearchCompetitors,
@@ -74,7 +73,7 @@ export function TrippyCaseStudyView() {
                   <p className={cs.problemCardBody}>{c.body}</p>
                   <div className={cs.problemCardFooter}>
                     <span className={cs.problemCardIcon}>
-                      <ProblemFrownIcon color={PROBLEM_ICON_COLOR[c.accent]} />
+                      <ProblemFrownIcon color={PROBLEM_ICON_COLOR[c.accent]} size={44} />
                     </span>
                   </div>
                 </div>
@@ -218,7 +217,7 @@ export function TrippyCaseStudyView() {
                   <p className={`${cs.bodyTight} ${cs.solutionPillarBody}`}>{p.body}</p>
                   <div className={cs.problemCardFooter}>
                     <span className={cs.problemCardIcon}>
-                      <SolutionSmileIcon color={PROBLEM_ICON_COLOR[p.accent]} />
+                      <SolutionSmileIcon color={PROBLEM_ICON_COLOR[p.accent]} size={44} />
                     </span>
                   </div>
                 </div>
@@ -297,33 +296,7 @@ export function TrippyCaseStudyView() {
             </div>
           </section>
 
-          <section className={cs.nextProject} aria-label="Next case study">
-            <Link
-              href={trippyNextProject.href}
-              className={cs.nextProjectCard}
-              aria-label={`${trippyNextProject.title} case study — ${trippyNextProject.description}`}
-            >
-              <div className={cs.nextProjectLead}>
-                <p className={cs.nextProjectEyebrow}>{trippyNextProject.eyebrow}</p>
-                <h2 className={cs.nextProjectTitle}>{trippyNextProject.title}</h2>
-                <p className={cs.nextProjectDesc}>{trippyNextProject.description}</p>
-              </div>
-              <div className={cs.nextProjectMedia}>
-                <Image
-                  src={trippyNextProject.imageSrc}
-                  alt={trippyNextProject.imageAlt}
-                  width={trippyNextProject.imageWidth}
-                  height={trippyNextProject.imageHeight}
-                  className={cs.nextProjectImage}
-                  sizes="(max-width: 900px) 100vw, 800px"
-                />
-              </div>
-              <div className={cs.nextProjectMeta}>
-                <span>{trippyNextProject.metaLeft}</span>
-                <span className={cs.nextProjectMetaYear}>{trippyNextProject.metaYear}</span>
-              </div>
-            </Link>
-          </section>
+          <MoreCaseStudiesSection currentSlug="trippy" />
           </div>
 
           <div className={cs.tocWrap}>

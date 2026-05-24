@@ -25,11 +25,15 @@ export function BumbleChallengeSection() {
         {bumbleChallenge.mandateBlocks.map((b, i) => (
           <article key={b.kicker} className={m.mandateCard}>
             <div className={m.mandateStack}>
-              <span className={m.mandateWatermark} aria-hidden>
+              <div className={m.mandateWatermark} aria-hidden>
                 {mandateIndex(i + 1)}
-              </span>
+              </div>
               <h3 className={m.mandateTitle}>{b.kicker}</h3>
-              <p className={m.mandateBody}>{b.body}</p>
+              <ul className={m.mandateBullets}>
+                {b.bullets.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
             </div>
           </article>
         ))}

@@ -1,0 +1,78 @@
+/* Static insight cards — matches Validation flip-card front (issueTest) */
+
+.card {
+  box-sizing: border-box;
+  border-radius: 16px;
+  border: 1px solid var(--color-border-subtle);
+  padding: clamp(20px, 3vw, 28px);
+  background: rgba(18, 18, 20, 0.75);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  align-self: stretch;
+  container-type: inline-size;
+  container-name: bumbleinsightcard;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+}
+
+.watermark {
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: clamp(40px, 11cqw, 54px);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+  user-select: none;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.bullets {
+  margin: 0;
+  padding-left: 18px;
+  width: 100%;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.body {
+  margin: 0;
+  width: 100%;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  margin-top: auto;
+  padding-top: 4px;
+  line-height: 0;
+}

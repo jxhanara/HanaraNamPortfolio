@@ -1,0 +1,54 @@
+/* System section — validation-style cards (no index) + mood icon */
+
+.pillarGrid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(14px, 2vw, 18px);
+  align-items: stretch;
+}
+
+@media (min-width: 900px) {
+  .pillarGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.pillarCard {
+  composes: card from "./bumbleInsightCard.module.css";
+  min-height: clamp(200px, 28vw, 240px);
+}
+
+.pillarStack {
+  composes: stack from "./bumbleInsightCard.module.css";
+  flex: 1 1 auto;
+  min-height: 100%;
+  width: 100%;
+}
+
+.pillarTitle {
+  composes: title from "./bumbleInsightCard.module.css";
+  width: 100%;
+}
+
+.pillarBody {
+  composes: body from "./bumbleInsightCard.module.css";
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+.pillarFooter {
+  composes: cardFooter from "./bumbleInsightCard.module.css";
+  display: block;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 4px;
+  line-height: 0;
+}
+
+.pillarMoodIcon {
+  display: block;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+}

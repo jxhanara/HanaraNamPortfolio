@@ -73,11 +73,26 @@ const MOBILE_MENU_ITEMS: MobileMenuItem[] = [
   },
 ];
 
+const MOBILE_NAV_QUERY = "(max-width: 640px)";
+
 export function SiteNav() {
   const lamNav = useLeaveAMarkNavOptional();
   const lamSlot = lamNav?.slot ?? null;
   const editing = lamSlot !== null;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Auto-dismiss the overlay if the viewport grows past the mobile breakpoint,
+  // so resizing back to desktop never strands us on the hamburger view.
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mql = window.matchMedia(MOBILE_NAV_QUERY);
+    const handleChange = (event: MediaQueryListEvent | MediaQueryList) => {
+      if (!event.matches) setMobileMenuOpen(false);
+    };
+    handleChange(mql);
+    mql.addEventListener("change", handleChange);
+    return () => mql.removeEventListener("change", handleChange);
+  }, []);
 
   useEffect(() => {
     if (!mobileMenuOpen) return;
@@ -94,65 +109,71 @@ export function SiteNav() {
   }, [mobileMenuOpen]);
 
   return (
-    <header className={`${styles.navOuter} ${editing ? styles.navOuterLeaveAMark : ""}`}>
-      <div className={styles.navInner}>
-        <div className={`${styles.navContent} ${editing ? styles.navContentLeaveAMark : ""}`}>
-          <div className={styles.logo}>
-            <Link href="/" className={styles.logoLink} aria-label="Hanara Nam home">
-              <Image
-                className={styles.logoImage}
-                src="/images/namelogo.png"
-                alt=""
-                width={75}
-                height={101}
-                priority
-              />
-            </Link>
-          </div>
-          <nav
-            className={`${styles.navLinks} ${editing ? styles.navLinksLeaveAMark : ""}`}
-            aria-label="Primary"
-          >
-            <NavPrimaryLinks />
-            {editing && lamNav ? (
-              <button
-                type="button"
-                className={styles.navVisitorPill}
-                onClick={() => lamNav.triggerPill()}
-                aria-label={`Edit visitor card: ${lamSlot.visitorName}`}
-                data-lam-ui
-              >
-                <span
-                  className={styles.navVisitorPillSwatch}
-                  style={{ background: lamSlot.gradientCSS }}
-                  aria-hidden
+    <>
+      <header
+        className={`${styles.navOuter} ${editing ? styles.navOuterLeaveAMark : ""} ${
+          mobileMenuOpen ? styles.navOuterMobileMenuOpen : ""
+        }`}
+      >
+        <div className={styles.navInner}>
+          <div className={`${styles.navContent} ${editing ? styles.navContentLeaveAMark : ""}`}>
+            <div className={styles.logo}>
+              <Link href="/" className={styles.logoLink} aria-label="Hanara Nam home">
+                <Image
+                  className={styles.logoImage}
+                  src="/images/namelogo.png"
+                  alt=""
+                  width={75}
+                  height={101}
+                  priority
                 />
-                <span className={styles.navVisitorPillName}>{lamSlot.visitorName}</span>
-                <span className={styles.navVisitorPillCaret} aria-hidden />
-              </button>
-            ) : null}
-          </nav>
-          <button
-            type="button"
-            className={styles.mobileMenuToggle}
-            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-            aria-expanded={mobileMenuOpen}
-            aria-controls="site-mobile-menu"
-            onClick={() => setMobileMenuOpen((open) => !open)}
-          >
-            <span
-              className={`${styles.mobileMenuIcon} ${
-                mobileMenuOpen ? styles.mobileMenuIconOpen : ""
-              }`}
-              aria-hidden
+              </Link>
+            </div>
+            <nav
+              className={`${styles.navLinks} ${editing ? styles.navLinksLeaveAMark : ""}`}
+              aria-label="Primary"
             >
-              <span />
-              <span />
-              <span />
-            </span>
-          </button>
+              <NavPrimaryLinks />
+              {editing && lamNav ? (
+                <button
+                  type="button"
+                  className={styles.navVisitorPill}
+                  onClick={() => lamNav.triggerPill()}
+                  aria-label={`Edit visitor card: ${lamSlot.visitorName}`}
+                  data-lam-ui
+                >
+                  <span
+                    className={styles.navVisitorPillSwatch}
+                    style={{ background: lamSlot.gradientCSS }}
+                    aria-hidden
+                  />
+                  <span className={styles.navVisitorPillName}>{lamSlot.visitorName}</span>
+                  <span className={styles.navVisitorPillCaret} aria-hidden />
+                </button>
+              ) : null}
+            </nav>
+            <button
+              type="button"
+              className={styles.mobileMenuToggle}
+              aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="site-mobile-menu"
+              onClick={() => setMobileMenuOpen((open) => !open)}
+            >
+              <span
+                className={`${styles.mobileMenuIcon} ${
+                  mobileMenuOpen ? styles.mobileMenuIconOpen : ""
+                }`}
+                aria-hidden
+              >
+                <span />
+                <span />
+                <span />
+              </span>
+            </button>
+          </div>
         </div>
-      </div>
+      </header>
       <div
         id="site-mobile-menu"
         className={`${styles.mobileMenu} ${mobileMenuOpen ? styles.mobileMenuOpen : ""}`}
@@ -169,6 +190,6 @@ export function SiteNav() {
           ))}
         </nav>
       </div>
-    </header>
+    </>
   );
 }

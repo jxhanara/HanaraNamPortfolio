@@ -1,20 +1,19 @@
 import Image from "next/image";
-import Link from "next/link";
 import { SiteFooter } from "@/components/SiteFooter";
 import { CaseStudyTocNav } from "../CaseStudyTocNav";
 import { SiteNav } from "@/components/home/SiteNav";
 import { UiForAiCaseStudyHero } from "./UiForAiCaseStudyHero";
+import { UiForAiProblemSection } from "./UiForAiProblemSection";
+import { UiForAiSeriesAccordion } from "./UiForAiSeriesAccordion";
 import {
   uiForAiCaseStudyMeta,
   uiForAiClosingReflection,
   uiForAiConceptTesting,
-  uiForAiHmw,
-  uiForAiOverviewLinks,
   uiForAiResearch,
-  uiForAiNextProject,
   uiForAiTesting,
   uiForAiToc,
 } from "@/content/uiForAiCaseStudy";
+import { MoreCaseStudiesSection } from "../MoreCaseStudiesSection";
 import homeStyles from "@/components/home/styles.module.css";
 import cs from "../caseStudy.module.css";
 import {
@@ -74,89 +73,10 @@ export function UiForAiCaseStudyView() {
                   </p>
                 ))}
               </div>
-              <div className={u.seriesCallout}>
-                <p className={u.seriesLabel}>{uiForAiOverviewLinks.label}</p>
-                <div className={u.seriesGrid}>
-                  <div className={u.seriesCol}>
-                    <p className={u.seriesBody}>{uiForAiOverviewLinks.description}</p>
-                    <a
-                      className={u.seriesPrimaryLink}
-                      href={uiForAiOverviewLinks.primaryLink.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {uiForAiOverviewLinks.primaryLink.label}
-                    </a>
-                  </div>
-                  <div className={u.seriesCol}>
-                    <p className={u.seriesCollabTitle}>{uiForAiOverviewLinks.collaborationTitle}</p>
-                    <div className={u.seriesLinkList}>
-                      {uiForAiOverviewLinks.collaborationLinks.map((link) => (
-                        <a
-                          key={link.href}
-                          className={u.seriesCollabLink}
-                          href={link.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {link.label}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <UiForAiSeriesAccordion />
             </section>
 
-            <section id="problem" className={cs.section}>
-              <p className={cs.sectionEyebrow}>01 · Problem</p>
-              <h2 className={cs.h2}>Where AI chats break down</h2>
-              <p className={cs.body}>
-                Linear chat works fine for quick sessions. But when work stretches across hours,
-                days, or weeks, returning users have to scroll, skim, and mentally reconstruct
-                everything just to get back to where they left off. The information is technically
-                still there — but resuming often takes more effort than the task itself.
-              </p>
-
-              <div className={u.cardGrid}>
-                <div className={u.card}>
-                  <div className={u.cardNum}>01</div>
-                  <div className={u.cardTitle}>Disorientation</div>
-                  <p className={u.cardBody}>
-                    Long threads bury decisions, files, and reasoning steps with no way to jump
-                    back.
-                  </p>
-                </div>
-                <div className={u.card}>
-                  <div className={u.cardNum}>02</div>
-                  <div className={u.cardTitle}>High re-entry cost</div>
-                  <p className={u.cardBody}>
-                    After stepping away, users must reconstruct context from scratch before moving
-                    forward.
-                  </p>
-                </div>
-                <div className={u.card}>
-                  <div className={u.cardNum}>03</div>
-                  <div className={u.cardTitle}>Re-prompting loop</div>
-                  <p className={u.cardBody}>
-                    Instead of building forward, users end up repeating prompts they already sent.
-                  </p>
-                </div>
-                <div className={u.card}>
-                  <div className={u.cardNum}>04</div>
-                  <div className={u.cardTitle}>Lost insights</div>
-                  <p className={u.cardBody}>
-                    Valuable outputs get buried in the scroll and forgotten before they can be acted
-                    on.
-                  </p>
-                </div>
-              </div>
-
-              <div className={cs.hmwCallout}>
-                <p className={cs.hmwQuestionLabel}>{uiForAiHmw.label}</p>
-                <p className={cs.hmwCalloutText}>“{uiForAiHmw.question}”</p>
-              </div>
-            </section>
+            <UiForAiProblemSection />
 
             <section id="research" className={cs.section}>
               <p className={cs.sectionEyebrow}>02 · Research</p>
@@ -500,33 +420,7 @@ export function UiForAiCaseStudyView() {
               </div>
             </section>
 
-            <section className={cs.nextProject} aria-label="Next case study">
-              <Link
-                href={uiForAiNextProject.href}
-                className={cs.nextProjectCard}
-                aria-label={`${uiForAiNextProject.title} case study — ${uiForAiNextProject.description}`}
-              >
-                <div className={cs.nextProjectLead}>
-                  <p className={cs.nextProjectEyebrow}>{uiForAiNextProject.eyebrow}</p>
-                  <h2 className={cs.nextProjectTitle}>{uiForAiNextProject.title}</h2>
-                  <p className={cs.nextProjectDesc}>{uiForAiNextProject.description}</p>
-                </div>
-                <div className={cs.nextProjectMedia}>
-                  <Image
-                    src={uiForAiNextProject.imageSrc}
-                    alt={uiForAiNextProject.imageAlt}
-                    width={uiForAiNextProject.imageWidth}
-                    height={uiForAiNextProject.imageHeight}
-                    className={cs.nextProjectImage}
-                    sizes="(max-width: 900px) 100vw, 800px"
-                  />
-                </div>
-                <div className={cs.nextProjectMeta}>
-                  <span>{uiForAiNextProject.metaLeft}</span>
-                  <span className={cs.nextProjectMetaYear}>{uiForAiNextProject.metaYear}</span>
-                </div>
-              </Link>
-            </section>
+            <MoreCaseStudiesSection currentSlug="ui-for-ai" />
           </div>
 
           <div className={cs.tocWrap}>

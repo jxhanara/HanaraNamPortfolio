@@ -7,7 +7,7 @@ import cs from "../caseStudy.module.css";
 import { BumbleCaseStudyHero } from "./BumbleCaseStudyHero";
 import { BumbleChallengeSection } from "./BumbleChallengeSection";
 import { BumbleCoreComponentsSection } from "./BumbleCoreComponentsSection";
-import { BumbleNextProjectSection } from "./BumbleNextProjectSection";
+import { MoreCaseStudiesSection } from "../MoreCaseStudiesSection";
 import { BumbleOverviewSection } from "./BumbleOverviewSection";
 import { BumblePrototypeSection } from "./BumblePrototypeSection";
 import { BumbleReflectionSection } from "./BumbleReflectionSection";
@@ -33,7 +33,7 @@ export function BumbleFlowCaseStudyView() {
             <BumbleSolutionSection />
             <BumbleCoreComponentsSection />
             <BumbleReflectionSection />
-            <BumbleNextProjectSection />
+            <MoreCaseStudiesSection currentSlug="bumble-flow" />
           </div>
 
           <div className={cs.tocWrap}>

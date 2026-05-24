@@ -34,10 +34,10 @@ export function BumblePrototypeSection() {
                   aria-selected={selected}
                   aria-controls={`prototype-panel-${tab.id}`}
                   tabIndex={selected ? 0 : -1}
-                  className={`${py.tab} ${selected ? py.tabActive : ""}`}
+                  className={`${py.solutionTab} ${selected ? py.solutionTabActive : ""}`}
                   onClick={() => setActiveTab(tab.id)}
                 >
-                  {tab.tabLabel}
+                  <span className={py.solutionTabLabel}>{tab.tabLabel}</span>
                 </button>
               );
             })}

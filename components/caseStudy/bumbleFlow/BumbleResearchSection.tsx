@@ -26,7 +26,7 @@ export function BumbleResearchSection() {
         {bumbleResearch.themeCards.map((c) => (
           <article key={c.pill} className={rs.themeCard}>
             <span className={rs.themePill}>{c.pill}</span>
-            <h3 className={rs.themeTitle}>{c.title}</h3>
+            <div className={rs.themeTitle}>{c.title}</div>
             <p className={rs.themeBody}>{c.body}</p>
           </article>
         ))}

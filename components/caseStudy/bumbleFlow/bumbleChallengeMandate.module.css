@@ -1,78 +1,39 @@
-/* Challenge mandate row — Figma 38:246 layout; palette matches existing pillar cards */
+/* Challenge mandate row — validation-style cards with index; 3-up on desktop */
 
 .mandateGrid {
   margin-top: 40px;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
-  /* Stretch row height to tallest card; content stays top-aligned inside each card */
+  gap: clamp(14px, 2vw, 18px);
   align-items: stretch;
 }
 
 @media (min-width: 900px) {
   .mandateGrid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 .mandateCard {
-  position: relative;
-  overflow: hidden;
-  border-radius: 16px;
-  border: 1px solid var(--color-border-subtle);
-  background: rgba(24, 24, 27, 0.4);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  display: flex;
-  flex-direction: column;
-  align-self: stretch;
-  /* Match validation `.issueTestCard` inset */
-  padding: clamp(20px, 3vw, 28px);
-  container-type: inline-size;
-  container-name: mandatecard;
+  composes: card from "./bumbleInsightCard.module.css";
 }
 
-/* Top of stack shares one y-origin across the row; extra row height sits below body */
 .mandateStack {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  flex: 0 0 auto;
-  gap: 16px;
-  min-width: 0;
+  composes: stack from "./bumbleInsightCard.module.css";
 }
 
 .mandateWatermark {
-  display: block;
-  margin: 0;
-  padding: 0;
-  font-size: clamp(40px, 11cqw, 54px);
-  font-weight: 300;
-  line-height: 1;
-  letter-spacing: -0.05em;
-  color: rgba(255, 255, 255, 0.08);
-  pointer-events: none;
-  user-select: none;
+  composes: watermark from "./bumbleInsightCard.module.css";
 }
 
 .mandateTitle {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.35;
-  color: rgba(255, 255, 255, 0.96);
+  composes: title from "./bumbleInsightCard.module.css";
 }
 
-.mandateBody {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.58;
-  color: rgba(255, 255, 255, 0.68);
+.mandateBullets {
+  composes: bullets from "./bumbleInsightCard.module.css";
 }
 
-/* Vertical rhythm between challenge intro paragraphs */
 .challengeLead {
   display: flex;
   flex-direction: column;

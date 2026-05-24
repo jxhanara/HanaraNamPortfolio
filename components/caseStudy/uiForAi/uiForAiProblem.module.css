@@ -1,0 +1,202 @@
+/* Problem — long-chat mockup + numbered pain list */
+
+.problemSplit {
+  margin-top: clamp(24px, 3vw, 36px);
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: clamp(28px, 4vw, 48px);
+  align-items: start;
+}
+
+.mockupFrame {
+  background: var(--ui-ai-card-bg, #0f0f0f);
+  border: 0.5px solid var(--ui-ai-card-border, #1e1e1e);
+  border-radius: 12px;
+  overflow: hidden;
+  min-height: clamp(420px, 52vh, 560px);
+  display: flex;
+  flex-direction: column;
+}
+
+.mockupSession {
+  margin: 0;
+  padding: 12px 16px;
+  font-size: 10.4px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  border-bottom: 0.5px solid var(--ui-ai-card-border, #1e1e1e);
+  flex-shrink: 0;
+}
+
+.mockupScroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 16px 14px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 72%,
+    transparent 100%
+  );
+}
+
+.bubbleYou,
+.bubbleAi {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 88%;
+}
+
+.bubbleAi {
+  align-self: flex-start;
+}
+
+.bubbleYou {
+  align-self: flex-end;
+}
+
+.bubbleRole {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.32);
+}
+
+.bubbleYou .bubbleRole {
+  text-align: right;
+  color: rgba(137, 197, 234, 0.55);
+}
+
+.bubbleLines {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 0.5px solid var(--ui-ai-card-border, #1e1e1e);
+}
+
+.bubbleYou .bubbleLines {
+  background: rgba(137, 197, 234, 0.12);
+  border-color: rgba(137, 197, 234, 0.22);
+}
+
+.bubbleAi .bubbleLines {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.bubbleLine {
+  display: block;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.bubbleYou .bubbleLine {
+  background: rgba(137, 197, 234, 0.45);
+  margin-left: auto;
+}
+
+.problemAside {
+  min-width: 0;
+  padding-top: 4px;
+}
+
+.problemIntro {
+  margin: 0 0 clamp(20px, 2.5vw, 28px);
+  font-size: 15.2px;
+  line-height: 1.62;
+  color: rgba(255, 255, 255, 0.74);
+  max-width: none;
+}
+
+.painList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.painItem {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(20px, 2.5vw, 32px) clamp(16px, 2vw, 24px);
+  align-items: start;
+  padding: clamp(18px, 2.2vw, 22px) 0;
+  border-top: 0.5px solid rgba(255, 255, 255, 0.14);
+}
+
+.painItem:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.painNum {
+  font-family: var(--font-instrument-serif), serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(32px, 3.8vw, 44px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ui-ai-accent, #89c5ea);
+  padding-top: 2px;
+}
+
+.painCopy {
+  min-width: 0;
+}
+
+.painTitle {
+  margin: 0 0 8px;
+  font-family: var(--font-instrument-serif), serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(22px, 2.4vw, 28px);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text, #fff);
+}
+
+.painBody {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.74);
+}
+
+@media (max-width: 900px) {
+  .problemSplit {
+    grid-template-columns: 1fr;
+  }
+
+  .mockupFrame {
+    min-height: 360px;
+  }
+
+  .bubbleYou,
+  .bubbleAi {
+    max-width: 92%;
+  }
+}
+
+@media (max-width: 600px) {
+  .painItem {
+    grid-template-columns: auto 1fr;
+    gap: 14px 16px;
+  }
+
+  .painNum {
+    font-size: 28px;
+  }
+
+  .painTitle {
+    font-size: 20px;
+  }
+}

@@ -39,6 +39,17 @@
   z-index: 1320;
 }
 
+/* When the mobile overlay is open, lift the nav above it so the X stays tappable. */
+.navOuterMobileMenuOpen {
+  z-index: 1320;
+}
+
+/* Overlay is dark; nav already has its own translucent bg, so drop it while the menu is open. */
+.navOuterMobileMenuOpen .navInner {
+  background: transparent;
+  backdrop-filter: none;
+}
+
 .navInner {
   display: flex;
   justify-content: center;
@@ -206,27 +217,50 @@
 
 .mobileMenuIcon {
   position: relative;
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: space-between;
+  display: inline-block;
   width: 22px;
-  height: 14px;
+  height: 16px;
 }
 
 .mobileMenuIcon span {
-  display: block;
-  width: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
   height: 1.5px;
   background: currentColor;
   border-radius: 2px;
-  transform-origin: center;
+  transform-origin: center center;
   transition:
-    transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.2s ease;
+    top 0.22s cubic-bezier(0.65, 0.05, 0.36, 1) 0.18s,
+    transform 0.22s cubic-bezier(0.65, 0.05, 0.36, 1),
+    opacity 0.12s ease 0.12s;
+}
+
+.mobileMenuIcon span:nth-child(1) {
+  top: 0;
+}
+
+.mobileMenuIcon span:nth-child(2) {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mobileMenuIcon span:nth-child(3) {
+  top: 100%;
+  transform: translateY(-100%);
+}
+
+/* Bars first collapse to center (top transition delayed), then rotate into the X. */
+.mobileMenuIconOpen span {
+  transition:
+    top 0.22s cubic-bezier(0.65, 0.05, 0.36, 1),
+    transform 0.22s cubic-bezier(0.65, 0.05, 0.36, 1) 0.18s,
+    opacity 0.12s ease;
 }
 
 .mobileMenuIconOpen span:nth-child(1) {
-  transform: translateY(6.25px) rotate(45deg);
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
 }
 
 .mobileMenuIconOpen span:nth-child(2) {
@@ -234,7 +268,8 @@
 }
 
 .mobileMenuIconOpen span:nth-child(3) {
-  transform: translateY(-6.25px) rotate(-45deg);
+  top: 50%;
+  transform: translateY(-50%) rotate(-45deg);
 }
 
 /* Fullscreen overlay menu. Hidden by default; opens via .mobileMenuOpen. */
@@ -342,10 +377,10 @@
 .hero {
   position: relative;
   width: 100%;
-  min-height: clamp(460px, 64vh, 640px);
   display: flex;
   align-items: flex-start;
   padding-top: var(--home-section-gap);
+  padding-bottom: var(--home-section-gap);
 }
 
 /* Same 1037px rail as case-study blocks so hero copy lines up with TRIPPY, etc. */
@@ -636,7 +671,6 @@
   align-items: center;
   width: 100%;
   gap: 64px;
-  margin-top: var(--home-section-gap);
 }
 
 .projectBlock {
@@ -929,10 +963,6 @@
     --home-section-gap: clamp(28px, 3.5vw, 44px);
   }
 
-  .hero {
-    min-height: clamp(340px, 50vh, 500px);
-  }
-
   .heroInner {
     padding: clamp(36px, 5vw, 72px) 0;
   }
@@ -956,10 +986,6 @@
 }
 
 @media (max-width: 1024px) {
-  .hero {
-    min-height: clamp(420px, 58vh, 560px);
-  }
-
   .heroInner {
     min-height: unset;
     padding: clamp(44px, 9vw, 72px) 0;
@@ -986,7 +1012,6 @@
 
 @media (max-width: 640px) {
   .hero {
-    min-height: unset;
     display: block;
   }
 

@@ -341,17 +341,3 @@ export const trippyToc = [
   { id: "core-components", label: "Core components" },
   { id: "reflection", label: "Reflection" },
 ] as const;
-
-/** Next case study promo (after reflection). */
-export const trippyNextProject = {
-  eyebrow: "Next project",
-  title: "Bumble Flow",
-  description: "Redesigning dating from passive matching to active coordination.",
-  href: "/bumble-flow-case-study",
-  imageSrc: "/images/bumbleflowthumbnail.png",
-  imageWidth: 3607,
-  imageHeight: 2481,
-  imageAlt: "Bumble Flow project preview",
-  metaLeft: "Product design · Mobile",
-  metaYear: "2026",
-} as const;

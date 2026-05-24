@@ -40,11 +40,11 @@
 }
 
 .insightBox {
-  border: 0.5px solid #1e1e1e;
+  border: 0.5px solid var(--ui-ai-card-border, #1e1e1e);
   border-radius: 8px;
   padding: 20px 22px;
   margin: 20px 0 0;
-  background: #0c0c0c;
+  background: var(--ui-ai-card-bg, #0f0f0f);
 }
 
 .insightLabel {
@@ -78,14 +78,14 @@
 }
 
 .researchCard {
-  background: #111;
-  border: 0.5px solid #1e1e1e;
+  background: var(--ui-ai-card-bg, #0f0f0f);
+  border: 0.5px solid var(--ui-ai-card-border, #1e1e1e);
   border-radius: 10px;
   padding: 22px 24px;
 }
 
 .researchCardAdjacent {
-  background: #0c0c0c;
+  background: var(--ui-ai-card-bg, #0f0f0f);
 }
 
 .researchCardType {
@@ -146,8 +146,8 @@
 }
 
 .conceptTestingRuledOutCard {
-  background: #111;
-  border: 0.5px solid #1e1e1e;
+  background: var(--ui-ai-card-bg, #0f0f0f);
+  border: 0.5px solid var(--ui-ai-card-border, #1e1e1e);
   border-radius: 10px;
   padding: 22px 24px;
 }
@@ -174,8 +174,8 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.74);
-  background: #141414;
-  border: 0.5px solid #1e1e1e;
+  background: rgba(0, 0, 0, 0.28);
+  border: 0.5px solid var(--ui-ai-card-border, #1e1e1e);
   border-radius: 4px;
   padding: 2px 7px;
   white-space: nowrap;
@@ -218,8 +218,8 @@
 }
 
 .conceptTestingCard {
-  background: #111;
-  border: 0.5px solid #1e1e1e;
+  background: var(--ui-ai-card-bg, #0f0f0f);
+  border: 0.5px solid var(--ui-ai-card-border, #1e1e1e);
   border-radius: 10px;
   overflow: hidden;
 }
@@ -228,7 +228,7 @@
   position: relative;
   width: 100%;
   aspect-ratio: 3 / 4;
-  border-bottom: 0.5px solid #1e1e1e;
+  border-bottom: 0.5px solid var(--ui-ai-card-border, #1e1e1e);
 }
 
 .conceptTestingImage {
@@ -675,73 +675,166 @@
   object-fit: cover;
 }
 
-.seriesCallout {
-  margin-top: 20px;
-  padding: 14px 0 0 16px;
-  border-left: 1px solid rgba(255, 255, 255, 0.24);
+/* Matches problem-section card surface (.card) + overview body gray */
+.seriesAccordion {
+  --ui-ai-series-surface: #0f0f0f;
+  --ui-ai-series-border: #1e1e1e;
+  --ui-ai-series-muted: rgba(255, 255, 255, 0.74);
+  margin-top: clamp(24px, 3vw, 32px);
   max-width: min(60rem, 100%);
+  border: 0.5px solid var(--ui-ai-series-border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--ui-ai-series-surface);
 }
 
-.seriesGrid {
-  display: grid;
-  grid-template-columns: 0.95fr 1.05fr;
-  gap: 24px 28px;
-  align-items: start;
+.seriesTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  margin: 0;
+  padding: clamp(14px, 2vw, 18px) clamp(16px, 2.5vw, 20px);
+  border: none;
+  background: var(--ui-ai-series-surface);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
 }
 
-.seriesCol {
+.seriesTrigger:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.seriesTriggerCopy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 10px;
   min-width: 0;
 }
 
-.seriesLabel {
-  margin: 0 0 8px;
-  font-size: 10.4px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-}
-
-.seriesBody {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.62;
-  color: rgba(255, 255, 255, 0.74);
-}
-
-.seriesPrimaryLink {
-  display: inline-block;
-  margin-top: 10px;
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--ui-ai-accent, #89c5ea);
-  text-decoration: none;
-}
-
-.seriesPrimaryLink:hover,
-.seriesCollabLink:hover {
-  text-decoration: underline;
-}
-
-.seriesCollabTitle {
-  margin: 0 0 8px;
-  font-size: 11px;
+.seriesTriggerLabel {
+  font-size: 12px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.84);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ui-ai-series-muted);
 }
 
-.seriesLinkList {
+.seriesTriggerTitle {
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ui-ai-accent, #89c5ea);
+}
+
+.seriesTriggerMeta {
+  font-size: 12px;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ui-ai-series-muted);
+}
+
+.seriesChevron {
+  flex-shrink: 0;
+  color: var(--ui-ai-accent, #89c5ea);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.seriesChevronOpen {
+  transform: rotate(180deg);
+}
+
+.seriesPanel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.seriesPanelOpen {
+  grid-template-rows: 1fr;
+}
+
+.seriesPanelInner {
+  overflow: hidden;
+  min-height: 0;
+  background: var(--ui-ai-series-surface);
+  border-top: 0.5px solid var(--ui-ai-series-border);
+}
+
+.seriesPanelDesc {
+  margin: 0;
+  padding: clamp(16px, 2.5vw, 20px) clamp(16px, 2.5vw, 20px) 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ui-ai-series-muted);
+  max-width: 52rem;
+}
+
+.seriesLinkGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: clamp(14px, 2vw, 18px) clamp(16px, 2.5vw, 20px)
+    clamp(16px, 2.5vw, 20px);
+}
+
+.seriesLinkCard {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
+  min-height: 72px;
+  padding: 14px 16px 16px;
+  padding-right: 36px;
+  border-radius: 8px;
+  border: 0.5px solid var(--ui-ai-series-border);
+  background: var(--ui-ai-series-surface);
+  text-decoration: none;
+  color: inherit;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
-.seriesCollabLink {
-  display: inline-block;
+.seriesLinkCard:hover {
+  border-color: rgba(137, 197, 234, 0.35);
+  background: rgba(137, 197, 234, 0.06);
+}
+
+.seriesLinkIcon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  color: rgba(137, 197, 234, 0.55);
+}
+
+.seriesLinkCardTitle {
   font-size: 14px;
-  line-height: 1.55;
+  font-weight: 500;
+  line-height: 1.35;
   color: var(--ui-ai-accent, #89c5ea);
-  text-decoration: none;
-  white-space: nowrap;
+}
+
+.seriesLinkCardSubtitle {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ui-ai-series-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seriesPanel,
+  .seriesChevron {
+    transition: none;
+  }
 }
 
 @media (max-width: 600px) {
@@ -792,8 +885,7 @@
     margin: -18px -18px 14px;
   }
 
-  .seriesGrid {
+  .seriesLinkGrid {
     grid-template-columns: 1fr;
-    gap: 14px;
   }
 }

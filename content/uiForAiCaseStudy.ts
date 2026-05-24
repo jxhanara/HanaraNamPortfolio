@@ -1,4 +1,4 @@
-/** UI for AI / Context Switching case study — copy, TOC + next project promo. */
+/** UI for AI / Context Switching case study — copy and TOC. */
 
 export const uiForAiCaseStudyMeta = {
   title: "Context Switching",
@@ -21,6 +21,35 @@ export const uiForAiCaseStudyMeta = {
   ],
 } as const;
 
+export const uiForAiProblem = {
+  title: "Where AI chats break down",
+  intro:
+    "Linear chat works fine for quick sessions. But when work stretches across hours, days, or weeks, returning users have to scroll, skim, and mentally reconstruct everything just to get back to where they left off — resuming often takes more effort than the task itself.",
+  mockupSession: "Session · Day 4 · 137 messages",
+  painPoints: [
+    {
+      title: "Disorientation",
+      body:
+        "Long threads bury decisions, files, and reasoning steps with no way to jump back.",
+    },
+    {
+      title: "High re-entry cost",
+      body:
+        "After stepping away, users must reconstruct context from scratch before moving forward.",
+    },
+    {
+      title: "Re-prompting loop",
+      body:
+        "Instead of building forward, users end up repeating prompts they already sent.",
+    },
+    {
+      title: "Lost insights",
+      body:
+        "Valuable outputs get buried in the scroll and forgotten before they can be acted on.",
+    },
+  ],
+} as const;
+
 /** HMW callout (problem) — label matches Bumble HMW card pattern. */
 export const uiForAiHmw = {
   label: "HMW question",
@@ -34,22 +63,26 @@ export const uiForAiClosingReflection = {
   text: "When you step away from your work, your work should be ready and waiting for you. Not just saving time — saving focus.",
 } as const;
 
-export const uiForAiOverviewLinks = {
+export const uiForAiOverviewSeries = {
   label: "Part of a series",
+  title: "UI for AI",
+  relatedCount: 3,
   description:
-    "This case study is part of UI for AI, an ongoing collaborative exploration of interface patterns for long-horizon AI work. Follow the broader project stream for experiments, methods, and in-progress reflections.",
-  primaryLink: {
-    label: "Follow UI for AI on Medium ↗",
-    href: "https://medium.com/ui-for-ai",
-  },
-  collaborationTitle: "Direct collaborations with partner teams",
-  collaborationLinks: [
+    "An ongoing collaborative exploration of interface patterns for long-horizon AI work — experiments, methods, and in-progress reflections.",
+  links: [
     {
-      label: "No More Blank Canvas — Rethinking How People Start with AI ↗",
+      title: "Follow UI for AI on Medium",
+      subtitle: "The full project stream",
+      href: "https://medium.com/ui-for-ai",
+    },
+    {
+      title: "No More Blank Canvas",
+      subtitle: "Rethinking how people start with AI",
       href: "https://medium.com/ui-for-ai/no-more-blank-canvas-rethinking-how-people-start-with-ai-fd427af24dc8",
     },
     {
-      label: "Breaking the Scroll — Reimagining Conversation Flow in AI Chats ↗",
+      title: "Breaking the Scroll",
+      subtitle: "Reimagining conversation flow in AI chats",
       href: "https://medium.com/ui-for-ai/breaking-the-scroll-reimagining-conversation-flow-in-ai-chats-4fc4202dbacf",
     },
   ],
@@ -210,17 +243,3 @@ export const uiForAiToc = [
   { id: "testing", label: "Testing" },
   { id: "reflection", label: "Reflection" },
 ] as const;
-
-export const uiForAiNextProject = {
-  eyebrow: "Next project",
-  title: "Trippy",
-  description:
-    "An intelligent travel planning app — AI-powered itinerary planning and local discovery.",
-  href: "/trippy-case-study",
-  imageSrc: "/images/trippyportfoliothumbnail.png",
-  imageWidth: 3607,
-  imageHeight: 2481,
-  imageAlt: "Trippy portfolio preview",
-  metaLeft: "Product design · Mobile",
-  metaYear: "2024 – 2025",
-} as const;

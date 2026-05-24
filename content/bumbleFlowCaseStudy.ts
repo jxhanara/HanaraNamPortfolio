@@ -51,15 +51,21 @@ export const bumbleChallenge = {
   mandateBlocks: [
     {
       kicker: "The goal",
-      body: "Increase conversion among non-paying users — 90% of whom are under 35.",
+      bullets: [
+        "Increase conversion among non-paying users — 90% of whom are under 35.",
+      ],
     },
     {
       kicker: "The hypothesis",
-      body: 'Users would convert to paid subscribers if they were notified of matches within 0.5km via “timely notifications”.',
+      bullets: [
+        'Users would convert to paid subscribers if they were notified of matches within 0.5km via “timely notifications”.',
+      ],
     },
     {
       kicker: "The tech",
-      body: "Use precise location services to alert users on mobile, desktop, and watch.",
+      bullets: [
+        "Use precise location services to alert users on mobile, desktop, and watch.",
+      ],
     },
   ],
 } as const;
@@ -607,17 +613,3 @@ export const bumbleToc = [
   { id: "decisions", label: "Decisions" },
   { id: "reflection", label: "Reflection" },
 ] as const;
-
-export const bumbleNextProject = {
-  eyebrow: "Next project",
-  title: "Trippy",
-  description:
-    "An intelligent travel planning app — AI-powered itineraries, vibe-based discovery, and local community in one place.",
-  href: "/trippy-case-study",
-  imageSrc: "/images/trippyportfoliothumbnail.png",
-  imageWidth: 3607,
-  imageHeight: 2481,
-  imageAlt: "Trippy portfolio preview",
-  metaLeft: "Lead product design · Mobile",
-  metaYear: "2024 – 2026",
-} as const;
