@@ -77,12 +77,12 @@ export const trippyResearchCompetitors = {
       imageWidth: 960,
       imageHeight: 571,
       ratings: [
-        { label: "LLM Driven Travel Itinerary Generator", filled: 2 },
+        { label: "AI Itinerary Generator", filled: 2 },
         { label: "Interactive community", filled: 3 },
         { label: "Simple Design", filled: 3 },
       ],
       summary:
-        "Triple Korea is our gold standard for high-integration planning. Built-in route navigation eliminates the need to exit the app for Google Maps. Triple keeps users in-app by managing reservations natively.",
+        "Triple Korea sets the gold standard for integrated trip planning, keeping users in-app through built-in navigation and native reservation management.",
     },
     {
       id: "wanderlog",
@@ -93,28 +93,28 @@ export const trippyResearchCompetitors = {
       imageWidth: 420,
       imageHeight: 280,
       ratings: [
-        { label: "LLM Driven Travel Itinerary Generator", filled: 1 },
+        { label: "AI Itinerary Generator", filled: 1 },
         { label: "Interactive community", filled: 2 },
         { label: "Simple Design", filled: 2 },
       ],
       summary:
-        "Real-time “Google Docs-style” collaboration for groups. However, broken booking UX—users are often redirected to external 3rd-party sites, breaking the mobile experience.",
+        "Real-time, Google Docs-style collaboration for group planning, but external booking redirects often disrupt the mobile experience.",
     },
     {
       id: "aggregators",
       logoSrc: "/assets/trippy/competitiveanalysisimages/otherapplogos.png",
       logoAlt: "Trip.com, Klook, Agoda, Tripadvisor",
-      imageSrc: "/assets/trippy/competitiveanalysisimages/otherappdesigns.png",
-      imageAlt: "Booking aggregator apps and interface collage",
-      imageWidth: 420,
-      imageHeight: 236,
+      imageSrc: "/assets/trippy/tripadvisor.jpeg",
+      imageAlt: "Tripadvisor AI travel planning — kick-start your trip flow",
+      imageWidth: 1200,
+      imageHeight: 614,
       ratings: [
-        { label: "LLM Driven Travel Itinerary Generator", filled: 1 },
+        { label: "AI Itinerary Generator", filled: 1 },
         { label: "Interactive community", filled: 2 },
         { label: "Simple Design", filled: 1 },
       ],
       summary:
-        "Trip.com, Klook, Tripadvisor, and Agoda all suffer from information overload and identity crisis. Agoda’s AI Review Summarization reduces due diligence time but UI is cluttered. Tripadvisor’s booking features are hidden within content.",
+        "Trip.com, Klook, Tripadvisor, and Agoda suffer from cluttered, unfocused experiences. Agoda buries AI summaries in dense UI, while Tripadvisor hides booking within heavy content flows.",
     },
   ],
   footnote: "*Only key insights are shown for simplicity.",
@@ -151,7 +151,7 @@ export const trippyStrategy = {
   eyebrow: "03 · Strategy",
   title: "The expert marketplace model was slow and complex to validate",
   summary:
-    "To evaluate this hypothesis, we explored what it would take to operationalize a consultant-led model through early research, stakeholder discussions, and feasibility analysis. Early research, stakeholder conversations, and feasibility checks revealed structural challenges.",
+    "To evaluate this hypothesis, we explored how a consultant-led model could be operationalized through early research, stakeholder conversations, and feasibility analysis, which revealed key structural challenges.",
   fromLabel: "FROM — EXPERT MARKETPLACE",
   toLabel: "TO — COMMUNITY CROWDSOURCING",
   rows: [
@@ -296,7 +296,7 @@ export const trippySolution = {
 } as const;
 
 export const trippyCoreComponents = {
-  eyebrow: "06 · Core components",
+  eyebrow: "06 · Decisions",
   title: "Design system",
   body: "The design system for Trippy is a comprehensive toolkit that ensures consistency and efficiency across all user interfaces. It includes a set of reusable components, style guidelines, and design patterns that maintain a cohesive look and feel throughout the app.",
   imageSrc: "/assets/trippy/trippydesignsystem.png",
@@ -338,6 +338,6 @@ export const trippyToc = [
   { id: "strategy", label: "Strategy" },
   { id: "validation", label: "Validation" },
   { id: "solution", label: "Solution" },
-  { id: "core-components", label: "Core components" },
+  { id: "decisions", label: "Decisions" },
   { id: "reflection", label: "Reflection" },
 ] as const;

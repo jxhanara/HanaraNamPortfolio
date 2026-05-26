@@ -1,0 +1,78 @@
+/* Validation insight cards — same structure as Bumble challenge mandate row */
+
+.insightGrid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(14px, 2vw, 18px);
+  align-items: stretch;
+}
+
+@media (min-width: 900px) {
+  .insightGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.insightCard {
+  composes: card from "./bumbleFlow/bumbleInsightCard.module.css";
+}
+
+.insightStack {
+  composes: stack from "./bumbleFlow/bumbleInsightCard.module.css";
+}
+
+.insightWatermark {
+  composes: watermark from "./bumbleFlow/bumbleInsightCard.module.css";
+}
+
+.insightTitle {
+  composes: title from "./bumbleFlow/bumbleInsightCard.module.css";
+}
+
+.insightBullets {
+  composes: bullets from "./bumbleFlow/bumbleInsightCard.module.css";
+}
+
+/* Synthesis callout — Bumble validation layout; Trippy blue accent */
+.synthesisCallout {
+  margin-top: 40px;
+  border: 0.5px solid rgba(56, 129, 255, 0.42);
+  border-radius: 10px;
+  background: rgba(12, 20, 32, 0.92);
+  padding: 22px 24px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: start;
+  box-shadow: inset 0 1px 0 rgba(120, 170, 255, 0.08);
+}
+
+.synthesisIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(16, 28, 48, 0.98);
+  border: 0.5px solid rgba(56, 129, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.synthesisLabel {
+  margin: 0 0 10px;
+  font-size: 10.4px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(174, 208, 255, 0.88);
+}
+
+.synthesisText {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.74);
+  max-width: var(--case-study-section-copy-max);
+}

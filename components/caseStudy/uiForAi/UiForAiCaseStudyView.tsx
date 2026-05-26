@@ -7,7 +7,7 @@ import { UiForAiProblemSection } from "./UiForAiProblemSection";
 import { UiForAiSeriesAccordion } from "./UiForAiSeriesAccordion";
 import {
   uiForAiCaseStudyMeta,
-  uiForAiClosingReflection,
+  uiForAiReflection,
   uiForAiConceptTesting,
   uiForAiResearch,
   uiForAiTesting,
@@ -16,13 +16,11 @@ import {
 import { MoreCaseStudiesSection } from "../MoreCaseStudiesSection";
 import homeStyles from "@/components/home/styles.module.css";
 import cs from "../caseStudy.module.css";
-import {
-  caseStudyRailImageSizes,
-  caseStudyResponsiveImageStyle,
-} from "../caseStudyMedia";
+import { caseStudyResponsiveImageStyle } from "../caseStudyMedia";
 import u from "./uiForAiCaseStudy.module.css";
 import rewindAiImage from "@/assets/uiforai/rewindai.jpg";
 import piecesAppImage from "@/assets/uiforai/piecesapp.png";
+import gemNiImage from "@/assets/uiforai/gem-ni.png";
 import contextsConceptImage from "@/assets/uiforai/contexts.JPG";
 import reentryConceptImage from "@/assets/uiforai/reentrypanel.JPG";
 import thematicConceptImage from "@/assets/uiforai/thematicchatgrouping.JPG";
@@ -32,6 +30,57 @@ function PhIconRect() {
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
       <rect x="1" y="1" width="12" height="12" rx="1" stroke="#333" strokeWidth="1.2" />
     </svg>
+  );
+}
+
+type ResearchCard = (typeof uiForAiResearch.cards)[number];
+
+function ResearchCardVisual({ card }: { card: ResearchCard }) {
+  const alt = card.visualLabel ?? card.name;
+
+  if (card.name === "Rewind AI") {
+    return (
+      <Image
+        src={rewindAiImage}
+        alt={alt}
+        className={u.researchImage}
+        sizes="(max-width: 900px) 100vw, 33vw"
+        style={caseStudyResponsiveImageStyle}
+      />
+    );
+  }
+
+  if (card.name === "Pieces") {
+    return (
+      <Image
+        src={piecesAppImage}
+        alt={alt}
+        className={u.researchImage}
+        sizes="(max-width: 900px) 100vw, 33vw"
+        style={caseStudyResponsiveImageStyle}
+      />
+    );
+  }
+
+  if (card.name === "GEM-NI") {
+    return (
+      <Image
+        src={gemNiImage}
+        alt={alt}
+        className={u.researchImage}
+        sizes="(max-width: 900px) 100vw, 33vw"
+        style={caseStudyResponsiveImageStyle}
+      />
+    );
+  }
+
+  return (
+    <div className={u.researchImagePlaceholder}>
+      <div className={u.phIcon}>
+        <PhIconRect />
+      </div>
+      <span>{alt}</span>
+    </div>
   );
 }
 
@@ -85,38 +134,35 @@ export function UiForAiCaseStudyView() {
               </h2>
               <div className={u.researchCards}>
                 {uiForAiResearch.cards.map((card) => (
-                  <article
-                    key={card.name}
-                    className={`${u.researchCard} ${card.visualLabel ? u.researchCardAdjacent : ""}`}
-                  >
-                    {card.visualLabel ? (
-                      <div className={u.researchImageFrame}>
-                        <Image
-                          src={card.name === "Rewind AI" ? rewindAiImage : piecesAppImage}
-                          alt={card.visualLabel}
-                          className={u.researchImage}
-                          sizes={caseStudyRailImageSizes}
-                          style={caseStudyResponsiveImageStyle}
-                        />
-                      </div>
-                    ) : null}
-                    <div className={u.researchCardType}>
-                      <span>{card.type}</span>
-                      <a href={card.linkHref} target="_blank" rel="noopener noreferrer">
-                        {card.linkLabel}
-                      </a>
+                  <article key={card.name} className={u.researchCard}>
+                    <div className={u.researchImageFrame}>
+                      <ResearchCardVisual card={card} />
                     </div>
-                    <div className={u.researchCardName}>{card.name}</div>
-                    <p className={u.researchCardDesc}>{card.description}</p>
-                    <p className={u.researchCardQuote}>{card.quote}</p>
+                    <div className={u.researchCardBody}>
+                      <div className={u.researchCardType}>
+                        <span>{card.type}</span>
+                        <a href={card.linkHref} target="_blank" rel="noopener noreferrer">
+                          {card.linkLabel}
+                        </a>
+                      </div>
+                      <h3 className={u.researchCardName}>{card.name}</h3>
+                      <p className={u.researchCardDesc}>{card.description}</p>
+                    </div>
                   </article>
                 ))}
               </div>
 
-              <div className={u.insightBox}>
-                <div className={u.insightLabel}>{uiForAiResearch.synthesis.label}</div>
-                <div className={u.insightTitle}>{uiForAiResearch.synthesis.title}</div>
-                <p className={u.insightBody}>{uiForAiResearch.synthesis.body}</p>
+              <div className={u.researchSynthesis}>
+                <div className={u.researchSynthesisLead}>
+                  <p className={u.researchSynthesisLabel}>{uiForAiResearch.synthesis.label}</p>
+                  <h3 className={u.researchSynthesisTitle}>{uiForAiResearch.synthesis.title}</h3>
+                </div>
+                <div className={u.researchSynthesisCopy}>
+                  <p className={u.researchSynthesisBody}>{uiForAiResearch.synthesis.body}</p>
+                  <p className={u.researchSynthesisTakeaway}>
+                    → {uiForAiResearch.synthesis.takeaway}
+                  </p>
+                </div>
               </div>
             </section>
 
@@ -371,52 +417,31 @@ export function UiForAiCaseStudyView() {
             </section>
 
             <section id="reflection" className={`${cs.section} ${cs.sectionBeforeNext}`}>
-              <p className={cs.sectionEyebrow}>05 · Reflection</p>
-              <h2 className={cs.h2}>Why it matters</h2>
-              <p className={cs.body}>
-                Re-entry breaks down when people remember fragments, not timelines. Our solution meets
-                users where they are — searching by keyword, jumping by topic, or picking up from a
-                summary — rather than forcing them to scroll until something looks familiar.
-              </p>
-
-              <div className={u.takeawayGrid}>
-                <div className={u.takeaway}>
-                  <div className={u.takeawayNum}>01</div>
-                  <div className={u.takeawayTitle}>Retrieval beats re-generation</div>
-                  <p className={u.takeawayBody}>
-                    The core frustration was finding past outputs, not generating new ones. Treating
-                    chat history as a recoverable asset changes the whole experience.
-                  </p>
+              <p className={cs.sectionEyebrow}>{uiForAiReflection.eyebrow}</p>
+              <div className={cs.reflectionSplit}>
+                <div className={cs.reflectionSplitCopy}>
+                  <h2 className={`${cs.h2} ${cs.reflectionSplitHeading}`}>
+                    {uiForAiReflection.title}
+                  </h2>
+                  <div className={cs.reflectionIntro}>
+                    {uiForAiReflection.intro.map((paragraph) => (
+                      <p key={paragraph.slice(0, 48)} className={cs.body}>
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
                 </div>
-                <div className={u.takeaway}>
-                  <div className={u.takeawayNum}>02</div>
-                  <div className={u.takeawayTitle}>Lightweight wins</div>
-                  <p className={u.takeawayBody}>
-                    The best interaction required the least new behavior. Automation and quick recall
-                    outperformed expressive but heavier alternatives.
-                  </p>
+                <div className={cs.reflectionCardStack}>
+                  {uiForAiReflection.takeaways.map((takeaway) => (
+                    <article key={takeaway.n} className={cs.takeawayCard}>
+                      <div className={cs.takeawayCardBadge} aria-hidden>
+                        {takeaway.n}
+                      </div>
+                      <h3 className={cs.takeawayCardTitle}>{takeaway.title}</h3>
+                      <p className={cs.takeawayCardBody}>{takeaway.body}</p>
+                    </article>
+                  ))}
                 </div>
-                <div className={u.takeaway}>
-                  <div className={u.takeawayNum}>03</div>
-                  <div className={u.takeawayTitle}>Placement is everything</div>
-                  <p className={u.takeawayBody}>
-                    Context and suggestions land best when they appear in the main chat at the right
-                    moment — not in a panel users have to seek out.
-                  </p>
-                </div>
-                <div className={u.takeaway}>
-                  <div className={u.takeawayNum}>04</div>
-                  <div className={u.takeawayTitle}>AI as a durable workspace</div>
-                  <p className={u.takeawayBody}>
-                    This project gestures toward a future where AI chats work less like disposable
-                    conversations and more like spaces you can actually return to.
-                  </p>
-                </div>
-              </div>
-
-              <div className={cs.hmwCallout}>
-                <p className={cs.hmwQuestionLabel}>{uiForAiClosingReflection.label}</p>
-                <p className={cs.hmwCalloutText}>“{uiForAiClosingReflection.text}”</p>
               </div>
             </section>
 

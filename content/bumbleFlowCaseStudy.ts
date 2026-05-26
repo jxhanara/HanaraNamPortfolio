@@ -36,7 +36,7 @@ export const bumbleCaseStudyMeta = {
     "not just proximity.",
   ],
   introColumns: [
-    "This project began with a speculative brief from the Bumble Customer Acquisition Team. The initial mandate was transactional: leverage precise location data and timely notifications to convert non-paying users into subscribers.",
+    "This project began with a speculative brief inspired by the Bumble Customer Acquisition Team, given as part of a course project. The initial mandate was transactional: leverage precise location data and timely notifications to convert non-paying users into subscribers.",
     "I reframed the opportunity around coordination — moving location out of the UI and into system logic — so premium value is tied to mutual readiness and lower-friction scheduling, not “nearby” alone.",
   ],
 } as const;
@@ -71,7 +71,7 @@ export const bumbleChallenge = {
 } as const;
 
 export const bumbleResearch = {
-  eyebrow: "03 · Research",
+  eyebrow: "02 · Research",
   title:
     "Proximity without intent is not a date. It is a notification users learned to ignore.",
   lead: [
@@ -128,7 +128,7 @@ export const bumbleResearch = {
 } as const;
 
 export const bumbleStrategy = {
-  eyebrow: "05 · Strategy",
+  eyebrow: "04 · Strategy",
   title: "Design transformation",
   summary:
     "I pivoted from a system that found gaps in a calendar to one that aligns shared intent before surfacing availability.",
@@ -179,7 +179,7 @@ export const bumbleStrategy = {
 } as const;
 
 export const bumbleValidation = {
-  eyebrow: "04 · Validation",
+  eyebrow: "03 · Validation",
   displayLine: "Fully automated scheduling felt invasive and reduced user control",
   body: "My initial concept fully automated same-day scheduling through calendar syncing. Testing showed that efficiency came at the cost of control — users felt overexposed, and real-time availability made interactions feel monitored rather than natural.",
   issuesIntro: "From testing, three key issues emerged:",
@@ -280,7 +280,7 @@ const BUMBLE_FLOW_PROTOTYPE_URL = "https://hanaranam.github.io/BumbleFlowCMU/" a
 
 /** Prototype section: structured intro, methods, pipeline, then tabbed scenarios (profiles + phones). */
 export const bumblePrototypeInteractive = {
-  eyebrow: "02 · SOLUTION",
+  eyebrow: "05 · SOLUTION",
   title: "From Figma to code, and back again",
   /** Short lead under the section title (method cards carry the detail). */
   introLead: [
@@ -457,7 +457,7 @@ export type BumblePrototypeScenarioId =
  */
 /** Prototype section shell: tabs + walkthrough (Premium × Premium) + vibe coding pipeline. */
 export const bumblePrototypeSection = {
-  eyebrow: "02 · SOLUTION",
+  eyebrow: "05 · SOLUTION",
   title: "A step by step walkthrough",
   tabs: [
     { id: "premium-premium" as const, tabLabel: "Premium × Premium" },
@@ -605,10 +605,10 @@ export const bumbleReflection = {
 export const bumbleToc = [
   { id: "overview", label: "Overview" },
   { id: "challenge", label: "Challenge" },
-  { id: "solution", label: "Solution" },
   { id: "research", label: "Research" },
   { id: "validation", label: "Validation" },
   { id: "strategy", label: "Strategy" },
+  { id: "solution", label: "Solution" },
   { id: "system", label: "System" },
   { id: "decisions", label: "Decisions" },
   { id: "reflection", label: "Reflection" },

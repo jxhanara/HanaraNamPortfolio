@@ -26,10 +26,10 @@ export function BumbleFlowCaseStudyView() {
             <BumbleCaseStudyHero />
             <BumbleOverviewSection />
             <BumbleChallengeSection />
-            <BumblePrototypeSection />
             <BumbleResearchSection />
             <BumbleValidationSection />
             <BumbleStrategySection />
+            <BumblePrototypeSection />
             <BumbleSolutionSection />
             <BumbleCoreComponentsSection />
             <BumbleReflectionSection />

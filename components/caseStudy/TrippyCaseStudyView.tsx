@@ -9,7 +9,6 @@ import {
   trippyResearchInsights,
   trippySolution,
   trippyToc,
-  trippyValidation,
 } from "@/content/trippyCaseStudy";
 import { SiteFooter } from "@/components/SiteFooter";
 import { CaseStudyTocNav } from "./CaseStudyTocNav";
@@ -18,14 +17,16 @@ import { ProblemFrownIcon, SolutionSmileIcon } from "./CaseStudyMoodIcons";
 import { SiteNav } from "@/components/home/SiteNav";
 import { TrippyCaseStudyHero } from "./TrippyCaseStudyHero";
 import { TrippyStrategySection } from "./TrippyStrategySection";
+import { TrippyValidationSection } from "./TrippyValidationSection";
 import homeStyles from "@/components/home/styles.module.css";
 import cs from "./caseStudy.module.css";
 import {
   caseStudyRailImageSizes,
   caseStudyResponsiveImageStyle,
 } from "./caseStudyMedia";
+import sp from "./bumbleFlow/bumbleSystemPillars.module.css";
 
-const PROBLEM_ICON_COLOR: Record<
+const PILLAR_ACCENT: Record<
   (typeof trippyProblem.cards)[number]["accent"],
   string
 > = {
@@ -66,15 +67,19 @@ export function TrippyCaseStudyView() {
                 {p}
               </p>
             ))}
-            <div className={cs.problemGrid}>
+            <div className={sp.pillarGrid}>
               {trippyProblem.cards.map((c) => (
-                <div key={c.kicker} className={cs.problemCard}>
-                  <p className={cs.problemCardKicker}>{c.kicker}</p>
-                  <p className={cs.problemCardBody}>{c.body}</p>
-                  <div className={cs.problemCardFooter}>
-                    <span className={cs.problemCardIcon}>
-                      <ProblemFrownIcon color={PROBLEM_ICON_COLOR[c.accent]} size={44} />
-                    </span>
+                <div key={c.kicker} className={sp.pillarCard}>
+                  <div className={sp.pillarStack}>
+                    <h3 className={sp.pillarTitle}>{c.kicker}</h3>
+                    <p className={sp.pillarBody}>{c.body}</p>
+                    <div className={sp.pillarFooter}>
+                      <ProblemFrownIcon
+                        color={PILLAR_ACCENT[c.accent]}
+                        className={sp.pillarMoodIcon}
+                        size={32}
+                      />
+                    </div>
                   </div>
                 </div>
               ))}
@@ -90,7 +95,11 @@ export function TrippyCaseStudyView() {
               <p className={cs.competitiveIntro}>{trippyResearchCompetitors.intro}</p>
               <div className={cs.competitiveGrid}>
                 {trippyResearchCompetitors.cards.map((c) => (
-                  <article key={c.id} className={cs.competitorCard}>
+                  <article
+                    key={c.id}
+                    className={cs.competitorCard}
+                    data-competitor={c.id}
+                  >
                     <div className={cs.competitorLogoRow}>
                       <Image
                         src={c.logoSrc}
@@ -108,32 +117,32 @@ export function TrippyCaseStudyView() {
                           alt={c.imageAlt}
                           width={c.imageWidth}
                           height={c.imageHeight}
-                          className={cs.caseStudyRaster}
                           sizes="(max-width: 900px) 100vw, 360px"
-                          style={caseStudyResponsiveImageStyle}
                         />
                       </div>
                     </div>
-                    <ul className={cs.ratingList} aria-label={`Evaluation: ${c.logoAlt}`}>
-                      {c.ratings.map((r) => (
-                        <li key={r.label} className={cs.ratingRow}>
-                          <span className={cs.ratingLabel}>{r.label}</span>
-                          <span className={cs.dotRow} aria-hidden>
-                            {[1, 2, 3].map((i) => (
-                              <span
-                                key={i}
-                                className={
-                                  i <= r.filled ? cs.ratingDotFilled : cs.ratingDot
-                                }
-                              />
-                            ))}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                    <div className={cs.competitorSummary}>
-                      <p className={cs.summaryLabel}>Summary</p>
-                      <p className={cs.summaryText}>{c.summary}</p>
+                    <div className={cs.competitorCardLower}>
+                      <ul className={cs.ratingList} aria-label={`Evaluation: ${c.logoAlt}`}>
+                        {c.ratings.map((r) => (
+                          <li key={r.label} className={cs.ratingRow}>
+                            <span className={cs.ratingLabel}>{r.label}</span>
+                            <span className={cs.dotRow} aria-hidden>
+                              {[1, 2, 3].map((i) => (
+                                <span
+                                  key={i}
+                                  className={
+                                    i <= r.filled ? cs.ratingDotFilled : cs.ratingDot
+                                  }
+                                />
+                              ))}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                      <div className={cs.competitorSummary}>
+                        <p className={cs.summaryLabel}>Summary</p>
+                        <p className={cs.summaryText}>{c.summary}</p>
+                      </div>
                     </div>
                   </article>
                 ))}
@@ -155,70 +164,25 @@ export function TrippyCaseStudyView() {
 
           <TrippyStrategySection />
 
-          <section id="validation" className={cs.section}>
-            <p className={cs.sectionEyebrow}>{trippyValidation.eyebrow}</p>
-            <p className={cs.display}>{trippyValidation.displayLine}</p>
-            <p className={cs.body}>{trippyValidation.body}</p>
-
-            <div className={cs.validationStatsMedia}>
-              <div className={cs.validationStatsStack}>
-                {trippyValidation.stats.map((s) => (
-                  <div key={s.value} className={cs.validationStatBlock}>
-                    <p className={cs.statValue}>{s.value}</p>
-                    <p className={cs.statLabel}>{s.label}</p>
-                  </div>
-                ))}
-              </div>
-              <div className={cs.validationQuotesFigure}>
-                <Image
-                  src={trippyValidation.userQuotesImageSrc}
-                  alt={trippyValidation.userQuotesImageAlt}
-                  width={trippyValidation.userQuotesImageWidth}
-                  height={trippyValidation.userQuotesImageHeight}
-                  className={cs.caseStudyRaster}
-                  sizes="(max-width: 900px) 100vw, 520px"
-                  style={caseStudyResponsiveImageStyle}
-                />
-              </div>
-            </div>
-
-            <div className={cs.insightRow}>
-              {trippyValidation.insightModules.map((m) => (
-                <div key={m.n} className={cs.insightCard}>
-                  <span className={cs.insightBigNum} aria-hidden>
-                    {m.n}
-                  </span>
-                  <div>
-                    <h3 className={cs.insightTitle}>{m.title}</h3>
-                    <ul className={cs.insightList}>
-                      {m.bullets.map((b) => (
-                        <li key={b}>{b}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className={cs.synthesis}>
-              <p className={cs.synthesisLabel}>Synthesis</p>
-              <p className={cs.synthesisText}>{trippyValidation.synthesis}</p>
-            </div>
-          </section>
+          <TrippyValidationSection />
 
           <section id="solution" className={cs.section}>
             <p className={cs.sectionEyebrow}>{trippySolution.eyebrow}</p>
             <p className={cs.display}>{trippySolution.displayLine[0]}</p>
             <p className={cs.body}>{trippySolution.intro}</p>
-            <div className={cs.solutionPillars}>
+            <div className={sp.pillarGrid}>
               {trippySolution.pillars.map((p) => (
-                <div key={p.kicker} className={cs.solutionPillar}>
-                  <p className={cs.solutionPillarKicker}>{p.kicker}</p>
-                  <p className={`${cs.bodyTight} ${cs.solutionPillarBody}`}>{p.body}</p>
-                  <div className={cs.problemCardFooter}>
-                    <span className={cs.problemCardIcon}>
-                      <SolutionSmileIcon color={PROBLEM_ICON_COLOR[p.accent]} size={44} />
-                    </span>
+                <div key={p.kicker} className={sp.pillarCard}>
+                  <div className={sp.pillarStack}>
+                    <h3 className={sp.pillarTitle}>{p.kicker}</h3>
+                    <p className={sp.pillarBody}>{p.body}</p>
+                    <div className={sp.pillarFooter}>
+                      <SolutionSmileIcon
+                        color={PILLAR_ACCENT[p.accent]}
+                        className={sp.pillarMoodIcon}
+                        size={32}
+                      />
+                    </div>
                   </div>
                 </div>
               ))}
@@ -250,7 +214,7 @@ export function TrippyCaseStudyView() {
             ))}
           </section>
 
-          <section id="core-components" className={cs.section}>
+          <section id="decisions" className={cs.section}>
             <p className={cs.sectionEyebrow}>{trippyCoreComponents.eyebrow}</p>
             <h2 className={cs.h2}>{trippyCoreComponents.title}</h2>
             <p className={cs.body}>{trippyCoreComponents.body}</p>

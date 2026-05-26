@@ -1,4 +1,4 @@
-/* Problem — long-chat mockup + numbered pain list */
+/* Problem — annotated chat card (left) + pain list (right) */
 
 .problemSplit {
   margin-top: clamp(24px, 3vw, 36px);
@@ -8,101 +8,141 @@
   align-items: start;
 }
 
+.mockupCol {
+  display: flex;
+  min-width: 0;
+  align-self: start;
+}
+
 .mockupFrame {
-  background: var(--ui-ai-card-bg, #0f0f0f);
-  border: 0.5px solid var(--ui-ai-card-border, #1e1e1e);
-  border-radius: 12px;
-  overflow: hidden;
-  min-height: clamp(420px, 52vh, 560px);
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 0;
   display: flex;
   flex-direction: column;
+  padding: 21px 22px 22px;
+  background: #0e0e0d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  overflow: hidden;
 }
 
 .mockupSession {
-  margin: 0;
-  padding: 12px 16px;
+  margin: 0 0 14px;
+  padding: 0;
+  flex-shrink: 0;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
   font-size: 10.4px;
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
-  border-bottom: 0.5px solid var(--ui-ai-card-border, #1e1e1e);
-  flex-shrink: 0;
+  color: rgba(230, 228, 223, 0.55);
+  border: none;
+}
+
+.mockupBody {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.mockupFade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: 80px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, #0e0e0d 0%, rgba(14, 14, 13, 0.92) 35%, transparent 100%);
 }
 
 .mockupScroll {
-  flex: 1 1 auto;
-  min-height: 0;
-  padding: 16px 14px 20px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  overflow: hidden;
-  mask-image: linear-gradient(
-    to bottom,
-    #000 0%,
-    #000 72%,
-    transparent 100%
-  );
+  gap: 10px;
+  padding-right: 10px;
 }
 
-.bubbleYou,
-.bubbleAi {
+.msgRow {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  max-width: 88%;
+  gap: 6px;
+  opacity: 1;
 }
 
-.bubbleAi {
-  align-self: flex-start;
+.msgRowDimmed {
+  opacity: 0.35;
 }
 
-.bubbleYou {
-  align-self: flex-end;
-}
-
-.bubbleRole {
+.msgRole {
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.32);
+  color: rgba(230, 228, 223, 0.45);
 }
 
-.bubbleYou .bubbleRole {
-  text-align: right;
-  color: rgba(137, 197, 234, 0.55);
+.msgYou .msgRole {
+  color: rgba(126, 179, 232, 0.72);
 }
 
-.bubbleLines {
+.msgBubble {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 12px 14px;
-  border-radius: 10px;
-  border: 0.5px solid var(--ui-ai-card-border, #1e1e1e);
+  gap: 5px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.bubbleYou .bubbleLines {
-  background: rgba(137, 197, 234, 0.12);
-  border-color: rgba(137, 197, 234, 0.22);
+.msgYou .msgBubble {
+  background: rgba(126, 179, 232, 0.14);
+  border-color: rgba(126, 179, 232, 0.22);
 }
 
-.bubbleAi .bubbleLines {
+.msgAi .msgBubble {
   background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
-.bubbleLine {
+.msgBar {
   display: block;
-  height: 8px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.14);
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(230, 228, 223, 0.2);
 }
 
-.bubbleYou .bubbleLine {
-  background: rgba(137, 197, 234, 0.45);
-  margin-left: auto;
+.msgYou .msgBar {
+  background: rgba(126, 179, 232, 0.55);
+}
+
+.msgAi .msgBar {
+  background: rgba(230, 228, 223, 0.18);
+}
+
+.calloutBadge {
+  position: absolute;
+  top: 50%;
+  right: -6px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  color: #0e0e0d;
+  background: #7eb3e8;
+  box-shadow: 0 0 0 3px #000;
 }
 
 .problemAside {
@@ -111,9 +151,9 @@
 }
 
 .problemIntro {
-  margin: 0 0 clamp(20px, 2.5vw, 28px);
+  margin: 0 0 clamp(26px, 3.2vw, 34px);
   font-size: 15.2px;
-  line-height: 1.62;
+  line-height: 1.58;
   color: rgba(255, 255, 255, 0.74);
   max-width: none;
 }
@@ -122,14 +162,17 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  column-gap: clamp(12px, 1.5vw, 18px);
 }
 
 .painItem {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: clamp(20px, 2.5vw, 32px) clamp(16px, 2vw, 24px);
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
   align-items: start;
-  padding: clamp(18px, 2.2vw, 22px) 0;
+  padding: clamp(12px, 1.5vw, 14px) 0;
   border-top: 0.5px solid rgba(255, 255, 255, 0.14);
 }
 
@@ -138,28 +181,34 @@
   padding-top: 0;
 }
 
+.painItem:last-child {
+  padding-bottom: 0;
+}
+
 .painNum {
+  grid-column: 1;
   font-family: var(--font-instrument-serif), serif;
   font-style: italic;
   font-weight: 400;
-  font-size: clamp(32px, 3.8vw, 44px);
+  font-size: clamp(28px, 3.2vw, 38px);
   line-height: 1;
   letter-spacing: -0.02em;
   color: var(--ui-ai-accent, #89c5ea);
-  padding-top: 2px;
+  padding-top: 1px;
 }
 
 .painCopy {
+  grid-column: 2;
   min-width: 0;
 }
 
 .painTitle {
-  margin: 0 0 8px;
+  margin: 0 0 5px;
   font-family: var(--font-instrument-serif), serif;
   font-style: italic;
   font-weight: 400;
-  font-size: clamp(22px, 2.4vw, 28px);
-  line-height: 1.2;
+  font-size: clamp(20px, 2.1vw, 26px);
+  line-height: 1.18;
   letter-spacing: -0.02em;
   color: var(--color-text, #fff);
 }
@@ -167,29 +216,29 @@
 .painBody {
   margin: 0;
   font-size: 14px;
-  line-height: 1.65;
+  line-height: 1.55;
   color: rgba(255, 255, 255, 0.74);
 }
 
 @media (max-width: 900px) {
   .problemSplit {
     grid-template-columns: 1fr;
+    align-items: start;
   }
 
   .mockupFrame {
-    min-height: 360px;
+    min-height: 320px;
   }
 
-  .bubbleYou,
-  .bubbleAi {
-    max-width: 92%;
+  .calloutBadge {
+    right: 8px;
   }
 }
 
 @media (max-width: 600px) {
-  .painItem {
-    grid-template-columns: auto 1fr;
-    gap: 14px 16px;
+  .painList {
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    column-gap: 14px;
   }
 
   .painNum {

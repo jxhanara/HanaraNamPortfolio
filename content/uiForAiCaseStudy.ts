@@ -24,7 +24,7 @@ export const uiForAiCaseStudyMeta = {
 export const uiForAiProblem = {
   title: "Where AI chats break down",
   intro:
-    "Linear chat works fine for quick sessions. But when work stretches across hours, days, or weeks, returning users have to scroll, skim, and mentally reconstruct everything just to get back to where they left off — resuming often takes more effort than the task itself.",
+    "Linear chat works fine for quick sessions, but when work stretches across days or weeks, getting back up to speed takes more effort than the actual task. Scrolling, skimming, and mentally reconstructing past context shouldn't be part of the process.",
   mockupSession: "Session · Day 4 · 137 messages",
   painPoints: [
     {
@@ -55,6 +55,31 @@ export const uiForAiHmw = {
   label: "HMW question",
   question:
     "How might we help people quickly re-enter an AI conversation without losing context or momentum?",
+} as const;
+
+export const uiForAiReflection = {
+  eyebrow: "05 · Reflection",
+  title: "Why it matters",
+  intro: [
+    "Re-entry breaks down when people remember fragments, not timelines. Our solution meets users where they are — searching by keyword, jumping by topic, or picking up from a summary — rather than forcing them to scroll until something looks familiar.",
+  ],
+  takeaways: [
+    {
+      n: "01",
+      title: "Retrieval beats re-generation",
+      body: "The core frustration was finding past outputs, not generating new ones. Treating chat history as a recoverable asset changes the whole experience.",
+    },
+    {
+      n: "02",
+      title: "Lightweight wins",
+      body: "The best interactions required the least new behavior. Automation and quick recall work best when they surface in the moment, right in the main chat, not in a panel users have to seek out.",
+    },
+    {
+      n: "03",
+      title: "AI as a durable workspace",
+      body: "This project gestures toward a future where AI chats work less like disposable conversations and more like spaces you can actually return to.",
+    },
+  ],
 } as const;
 
 /** Closing reflection callout — same card treatment as HMW. */
@@ -97,7 +122,7 @@ export const uiForAiResearch = {
       linkHref: "https://docs.pieces.app/products/meet-pieces",
       name: "Pieces",
       description:
-        "A persistent, context-aware workflow engine with three core pillars: a Long-Term Memory Engine that passively captures workflow context across websites, code, and apps; a Copilot grounded in that live context; and a Workstream Activity timeline with periodic roll-ups of past activity. Users jump back into a previous workflow without restating context — the system already knows where they left off.",
+        "A workflow engine built on long-term memory across apps, a context-aware copilot, and a workstream timeline that helps users resume work.",
       quote:
         "\"You don't have to keep explaining context like you do with other AI tools.\"",
       visualLabel: "Pieces timeline and summaries reference",
@@ -108,7 +133,7 @@ export const uiForAiResearch = {
       linkHref: "https://www.rewind.ai",
       name: "Rewind AI",
       description:
-        "A passive memory tool that records everything you see, say, and hear — creating a searchable archive of your full digital activity. Rather than requiring deliberate note-taking, it indexes context automatically and surfaces it through keyword search. Long-term memory without the cognitive overhead of deciding what to save.",
+        "A passive memory system that automatically records and indexes digital activity, turning everyday context into searchable memory.",
       quote:
         "\"Rewind takes all the pressure of staying organized and taking notes off, letting me focus on getting work done.\"",
       visualLabel: "Rewind AI timeline reference",
@@ -119,16 +144,18 @@ export const uiForAiResearch = {
       linkHref: "https://dl.acm.org/doi/10.1145/2702123.2702398",
       name: "GEM-NI",
       description:
-        "A graph-based design tool that supports parallel exploration of alternatives — branching, merging, recalling history, and comparing design states simultaneously. Designers naturally work non-linearly, revisiting and recombining earlier ideas, but most tools force a single forward path.",
+        "A graph-based design tool built for non-linear workflows, allowing designers to branch, merge, and compare multiple design directions in parallel.",
       quote:
         "\"creating alternatives from history is superior because I like the idea of being able to pick something from the actual history, which could contain ideas that were not further developed.\"",
-      visualLabel: undefined,
+      visualLabel: "GEM-NI diagram",
     },
   ],
   synthesis: {
     label: "Synthesis",
     title: "What the research pointed toward",
-    body: "Across all three sources, the same tension surfaced: users need structure to re-enter complex work, but too much structure creates new overhead. GEM-NI showed the value of making history recoverable without forcing a linear path. Rewind AI demonstrated that passive indexing removes the burden of deciding what to save. Pieces showed how periodic roll-ups and a persistent memory layer let users jump between contexts without losing momentum. Together, they shaped a clear direction: context recovery should feel lightweight, automatic, and keyword-driven.",
+    body: "Across all three sources, the same tension emerged: users need enough structure to re-enter complex work without adding new overhead. GEM-NI emphasized recoverable history, Rewind AI showed the value of passive indexing, and Pieces highlighted how persistent memory supports seamless context switching.",
+    takeaway:
+      "Context recovery should feel lightweight, automatic, and keyword-driven.",
   },
 } as const;
 

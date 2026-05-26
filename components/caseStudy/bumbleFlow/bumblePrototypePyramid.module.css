@@ -117,9 +117,9 @@
 .pipelineIntroBody {
   margin: 0;
   font-family: var(--font-dm-sans), system-ui, sans-serif;
-  font-size: 15px;
+  font-size: 15.2px;
   line-height: 1.62;
-  color: rgba(255, 255, 255, 0.68);
+  color: rgba(255, 255, 255, 0.74);
 }
 
 /* Segment labels — pill shape aligned with UI for AI Testing; Bumble yellow accent. */

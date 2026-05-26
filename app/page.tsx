@@ -24,6 +24,13 @@ const BUMBLE_DESC = (
   </>
 );
 
+const UI_FOR_AI_DESC = (
+  <>
+    Exploring how AI interfaces can support re-entry, memory, and momentum across
+    interrupted work.
+  </>
+);
+
 export default function HomePage() {
   return (
     <div className={styles.page}>
@@ -68,7 +75,7 @@ export default function HomePage() {
               <ProjectCard
                 id="ui-for-ai"
                 title="UI for AI"
-                description="coming soon..."
+                description={UI_FOR_AI_DESC}
                 dateLabel="2025 - 2026"
                 imageSrc="/images/uiforaithumbnail.png"
                 imageAlt="UI for AI project preview"
