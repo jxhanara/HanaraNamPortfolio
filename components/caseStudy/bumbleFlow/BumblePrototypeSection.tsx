@@ -1,9 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { bumblePrototypeSection, type BumblePrototypeTabId } from "@/content/bumbleFlowCaseStudy";
+import {
+  bumbleFreeFreeDualPhone,
+  bumblePremiumFreeDualPhone,
+  bumblePrototypeSection,
+  type BumblePrototypeTabId,
+} from "@/content/bumbleFlowCaseStudy";
 import cs from "../caseStudy.module.css";
 import { PrototypeDualPhoneWalkthrough } from "./BumblePrototypeDualPhoneSection";
+import { PrototypePremiumFreeWalkthrough } from "./BumblePremiumFreeDualPhoneSection";
+import { PrototypeFreeFreeWalkthrough } from "./BumbleFreeFreeDualPhoneSection";
 import { BumbleVibeCodingPipelineBlock } from "./BumblePrototypePyramidSection";
 import ps from "./bumblePrototypeSection.module.css";
 import py from "./bumblePrototypePyramid.module.css";
@@ -55,6 +62,18 @@ export function BumblePrototypeSection() {
               <h3 className={ps.tabTitle}>{pp.title}</h3>
               <p className={ps.tabDescription}>{pp.description}</p>
               <PrototypeDualPhoneWalkthrough />
+            </>
+          ) : activeTab === "premium-premium-partial" ? (
+            <>
+              <h3 className={ps.tabTitle}>{bumblePremiumFreeDualPhone.title}</h3>
+              <p className={ps.tabDescription}>{bumblePremiumFreeDualPhone.description}</p>
+              <PrototypePremiumFreeWalkthrough />
+            </>
+          ) : activeTab === "free-free" ? (
+            <>
+              <h3 className={ps.tabTitle}>{bumbleFreeFreeDualPhone.title}</h3>
+              <p className={ps.tabDescription}>{bumbleFreeFreeDualPhone.description}</p>
+              <PrototypeFreeFreeWalkthrough />
             </>
           ) : (
             <div className={ps.tabEmpty} aria-hidden />

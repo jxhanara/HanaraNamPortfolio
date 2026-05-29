@@ -72,6 +72,12 @@ export function PrototypeDualPhoneWalkthrough() {
   // small post-buffer at completion.
   const scrollLockUntilRef = useRef(0);
 
+  // Wheel-snapping: while the panel is pinned, each wheel gesture advances
+  // exactly one step. This timestamp swallows the momentum-tail wheel events
+  // (and rapid repeats) that otherwise made one swipe skip two steps — or land
+  // mid-step so a second swipe was needed.
+  const wheelCooldownUntilRef = useRef(0);
+
   // Belt-and-suspenders guard for the dot flicker the user saw on auto-
   // advance: even after the scroll lock releases, this freeze window prevents
   // the scroll-derived listener from reverting a video/click-driven change
@@ -335,6 +341,54 @@ export function PrototypeDualPhoneWalkthrough() {
     };
   }, [steps.length]);
 
+  // —— Effect: wheel-snap one step per gesture while the panel is pinned ——
+  // The pin is `steps.length * 100vh` tall, so native momentum scroll crosses a
+  // variable number of step boundaries per swipe. While the sticky panel fills
+  // the viewport we intercept the wheel and advance exactly one step, letting
+  // native scroll through only at the first/last dot so the section can be
+  // entered and exited normally.
+  useEffect(() => {
+    const COOLDOWN_MS = 680;
+
+    const onWheel = (e: WheelEvent) => {
+      const pin = pinRef.current;
+      if (!pin) return;
+
+      const rect = pin.getBoundingClientRect();
+      const viewportH = window.innerHeight;
+      // Engaged only while the sticky panel is locked to the viewport.
+      const engaged = rect.top <= 0 && rect.bottom >= viewportH;
+      if (!engaged) return; // entry / exit → native scroll
+
+      // Ignore horizontal / negligible wheel noise.
+      if (e.deltaY === 0 || Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+
+      const dir = e.deltaY > 0 ? 1 : -1;
+      const current = stepRef.current;
+      const target = current + dir;
+
+      // At a boundary in this direction → release to native scroll so the user
+      // can leave the walkthrough.
+      if (target < 0 || target > lastIndex) return;
+
+      // Inside the walkthrough: this gesture is ours.
+      e.preventDefault();
+
+      const now = performance.now();
+      if (now < wheelCooldownUntilRef.current) return; // swallow momentum tail
+      wheelCooldownUntilRef.current = now + COOLDOWN_MS;
+
+      stepSourceRef.current = "click";
+      stepRef.current = target;
+      scrollLockUntilRef.current = Number.POSITIVE_INFINITY;
+      nonScrollChangeAtRef.current = now;
+      setStepIndex(target);
+    };
+
+    window.addEventListener("wheel", onWheel, { passive: false });
+    return () => window.removeEventListener("wheel", onWheel);
+  }, [lastIndex]);
+
   // —— Effect: Kevin timeupdate → pause-for-Lindsey, auto-advance step ——
   useEffect(() => {
     const kevin = kevinVideoRef.current;
@@ -371,23 +425,18 @@ export function PrototypeDualPhoneWalkthrough() {
         return; // skip step-advance this tick
       }
 
-      // —— Auto-advance step (forward only) ——
-      let target = 0;
-      for (let i = steps.length - 1; i >= 0; i--) {
-        if (t >= steps[i].kevinTime - 0.25) {
-          target = i;
-          break;
+      // —— Freeze at the current step's boundary ——
+      // The video plays ONLY the current step's segment, then pauses so the
+      // phone stays in sync with the on-screen narrative. It never advances the
+      // step or drives the scroll position — moving between steps is fully
+      // manual (scroll-snap / dot click). This is what stops the runaway
+      // auto-scroll the user saw after a single swipe.
+      const nextIdx = stepRef.current + 1;
+      if (nextIdx <= steps.length - 1) {
+        const boundary = steps[nextIdx].kevinTime;
+        if (t >= boundary - 0.1 && !kevin.paused && !kevinPausedForLindseyRef.current) {
+          kevin.pause();
         }
-      }
-      if (target > stepRef.current) {
-        stepSourceRef.current = "video";
-        stepRef.current = target;
-        // Pre-lock the scroll listener BEFORE state update so the gap before
-        // useEffect schedules its animation can't be exploited by a stale
-        // scroll position computing the old step.
-        scrollLockUntilRef.current = Number.POSITIVE_INFINITY;
-        nonScrollChangeAtRef.current = performance.now();
-        setStepIndex(target);
       }
 
       // —— Lindsey appearance (timeupdate-driven, in case we didn't pause) ——
@@ -473,24 +522,6 @@ export function PrototypeDualPhoneWalkthrough() {
                     ariaHiddenWhenInvisible
                   />
                 </div>
-
-                <span
-                  className={`${dp.scrollHint} ${stepIndex >= lastIndex ? dp.scrollHintHidden : ""}`}
-                  aria-hidden
-                >
-                  {bumblePrototypeDualPhone.scrollHint}
-                  <span className={dp.scrollHintChevron}>
-                    <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M3 5l4 4 4-4"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-                </span>
               </div>
 
               {/* Middle column — timeline (slim). */}
@@ -545,6 +576,25 @@ export function PrototypeDualPhoneWalkthrough() {
                     <p className={dp.stepBody}>{activeStep.body}</p>
                   </div>
                 </div>
+
+                {/* Scroll hint below the description text. */}
+                <span
+                  className={`${dp.scrollHint} ${dp.scrollHintBelowText} ${stepIndex >= lastIndex ? dp.scrollHintHidden : ""}`}
+                  aria-hidden
+                >
+                  {bumblePrototypeDualPhone.scrollHint}
+                  <span className={dp.scrollHintChevron}>
+                    <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M3 5l4 4 4-4"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </div>
             </div>
           </div>

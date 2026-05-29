@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useLeaveAMarkNavOptional } from "@/components/leaveAMark/LeaveAMarkNavContext";
-import { WorkNavLink } from "./WorkNavLink";
 import styles from "./styles.module.css";
 
 const RESUME_URL =
@@ -19,7 +18,6 @@ function NavPrimaryLinks() {
       <Link className={styles.navLink} href="/about">
         About
       </Link>
-      <WorkNavLink className={styles.navLink}>Work</WorkNavLink>
       <a className={styles.navLink} href={RESUME_URL} target="_blank" rel="noreferrer">
         Resume
       </a>
@@ -47,14 +45,6 @@ const MOBILE_MENU_ITEMS: MobileMenuItem[] = [
       <Link href="/about" className={styles.mobileMenuLink} onClick={onNavigate}>
         about
       </Link>
-    ),
-  },
-  {
-    key: "work",
-    render: (onNavigate) => (
-      <WorkNavLink className={styles.mobileMenuLink} onClick={onNavigate}>
-        work
-      </WorkNavLink>
     ),
   },
   {

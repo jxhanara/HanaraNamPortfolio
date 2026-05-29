@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, type KeyboardEvent } from "react";
+import { useState, useEffect, useRef, type KeyboardEvent } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { SiteNav } from "@/components/home";
 import homeStyles from "@/components/home/styles.module.css";
@@ -128,9 +128,32 @@ const NOW_ITEMS: { k: string; v: string }[] = [
 ];
 
 export default function AboutPage() {
+  const lovesSectionRef = useRef<HTMLElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
   const [isSwapping, setIsSwapping] = useState(false);
   const [isLovesHoverPaused, setLovesHoverPaused] = useState(false);
+  const [isLovesInView, setLovesInView] = useState(false);
+
+  useEffect(() => {
+    const section = lovesSectionRef.current;
+    if (!section) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setLovesInView(true);
+          setActiveIdx(0);
+          setIsSwapping(false);
+        } else {
+          setLovesInView(false);
+        }
+      },
+      { threshold: 0.2 },
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   function selectArchive(targetIndex: number) {
     setActiveIdx((prev) => {
@@ -146,7 +169,7 @@ export default function AboutPage() {
   }
 
   useEffect(() => {
-    if (isLovesHoverPaused) return undefined;
+    if (isLovesHoverPaused || !isLovesInView) return undefined;
     const id = window.setInterval(() => {
       setActiveIdx((prev) => {
         const wrapped = (prev + 1) % ARCHIVE.length;
@@ -160,7 +183,7 @@ export default function AboutPage() {
       });
     }, ARCHIVE_ROTATE_MS);
     return () => window.clearInterval(id);
-  }, [isLovesHoverPaused, activeIdx]);
+  }, [isLovesHoverPaused, isLovesInView, activeIdx]);
 
   const active = ARCHIVE[activeIdx];
 
@@ -448,7 +471,7 @@ export default function AboutPage() {
       </section>
 
       {/* 04 LOVES · featured + thumb rail (Layout D) */}
-      <section className={`${styles.section} ${styles.loves}`}>
+      <section ref={lovesSectionRef} className={`${styles.section} ${styles.loves}`}>
         <div className={styles.wrap}>
           <div className={styles.sectionLabel}>
             <span className={styles.num}>04 —</span> Things I love, in no order

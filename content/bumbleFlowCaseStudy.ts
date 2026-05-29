@@ -507,7 +507,7 @@ export const bumblePrototypeDualPhone = {
   steps: [
     {
       id: "free-preview",
-      label: "Step 1 · Free mode",
+      label: "Step 1",
       title: "Limited preview — see what Premium unlocks",
       body:
         "Kevin starts on Free. He can browse and tap into profiles, but availability and meeting-vibe context are gated — the system signals what unlocks at Premium without forcing the upgrade.",
@@ -516,7 +516,7 @@ export const bumblePrototypeDualPhone = {
     },
     {
       id: "premium-unlock",
-      label: "Step 2 · Premium unlocked",
+      label: "Step 2",
       title: "Full profile context — and a place to declare intent",
       body:
         "After upgrading, Kevin sees the full profile: photos, availability days, and meeting vibe. If he's not ready to connect a calendar, he can manually mark the days he's free and the meeting vibe he prefers — no sync required.",
@@ -525,7 +525,7 @@ export const bumblePrototypeDualPhone = {
     },
     {
       id: "calendar-connect",
-      label: "Step 3 · Calendar opt-in",
+      label: "Step 3",
       title: "Connect Google Calendar when you're ready",
       body:
         "Once he feels comfortable, Kevin connects his Google Calendar. Sync is opt-in and revocable — privacy stays with the user, not the system.",
@@ -534,7 +534,7 @@ export const bumblePrototypeDualPhone = {
     },
     {
       id: "curate-availability",
-      label: "Step 4 · Curated availability",
+      label: "Step 4",
       title: "Add, remove, and star times that fit",
       body:
         "Kevin can add or remove time blocks beyond what his calendar imported, and star the ones he's generally free. Starred slots feed the recommender — so even when two calendars don't perfectly overlap, the system still suggests times that work for both.",
@@ -543,7 +543,7 @@ export const bumblePrototypeDualPhone = {
     },
     {
       id: "chat-coordinate",
-      label: "Step 5 · Chat & coordinate",
+      label: "Step 5",
       title: "Overlap surfaced in chat — propose, accept, or counter",
       body:
         "Once matched, both phones drop into the chat. The system surfaces the times Kevin and Lindsey overlap today, with the option to expand the full week in calendar or list view. One side suggests; the other accepts or counters with a new time.",
@@ -553,7 +553,7 @@ export const bumblePrototypeDualPhone = {
     },
     {
       id: "plan-confirmed",
-      label: "Step 6 · Plan confirmed",
+      label: "Step 6",
       title: "A venue, a calendar invite, a real plan",
       body:
         "When a time is confirmed, the system recommends a venue based on both vibes and the time of day. The meetup drops into Bumble Flow's calendar automatically — and Kevin can mirror it back to Google Calendar if he wants.",
@@ -566,6 +566,215 @@ export const bumblePrototypeDualPhone = {
 
 export type BumblePrototypeDualPhoneStepId =
   (typeof bumblePrototypeDualPhone.steps)[number]["id"];
+
+/**
+ * Premium × Free dual-phone walkthrough (John on Free × Jennifer on Premium).
+ *
+ * Scroll-driven like Premium × Premium: the scroll-pin advances one step per
+ * wheel gesture, and each step plays one video segment then pauses at its
+ * boundary so the phone stays in sync with the on-screen narrative.
+ *
+ * Per step:
+ *   - `johnTime` / `johnPlay` / `johnPauseAt` — where John seeks on entry,
+ *     whether he plays, and the time he pauses at (segment boundary).
+ *   - `jenniferVisible` / `jenniferTime` / `jenniferPlay` / `jenniferPauseAt`
+ *     — same for Jennifer, plus whether her phone is shown.
+ *
+ * Choreography: John plays steps 1–3 (and pauses at 34 after he sends his
+ * message), Jennifer takes over for steps 4–5, then on the final step John
+ * resumes from 34 to "receive" her time and both play to the end.
+ */
+export const bumblePremiumFreeDualPhone = {
+  johnVideoSrc: "/assets/bumbleflow/BumbleFlow_PremiumxFree(John).mov",
+  jenniferVideoSrc: "/assets/bumbleflow/BumbleFlow_Premium(Jennifer)xFree.mov",
+  johnLabel: "John (Free)",
+  jenniferLabel: "Jennifer (Premium)",
+  scrollHint: "Scroll to continue",
+  title: "Protected availability, guided coordination",
+  description:
+    "With only one synced calendar, the system helps both users coordinate while keeping availability private. John (Free) is on the left, Jennifer (Premium) on the right. John suggests broad time windows, while Jennifer sees specific options based on her schedule. Scroll to advance the timeline.",
+  steps: [
+    {
+      id: "discovering-match",
+      label: "Step 1",
+      title: "Discovering a Match",
+      body: "John is on the free plan. While browsing the Sunset Summary, he notices Jennifer has an availability badge on her profile, signaling that she uses Premium. He sends a like, she matches back, and they enter the chat with different levels of access to the platform.",
+      johnTime: 0,
+      johnPlay: true,
+      johnPauseAt: 21 as number | null,
+      jenniferVisible: false,
+      jenniferTime: 0,
+      jenniferPlay: false,
+      jenniferPauseAt: null as number | null,
+    },
+    {
+      id: "nudge-premium",
+      label: "Step 2",
+      title: "A Nudge Toward Premium",
+      body: "In chat, John sees a hint that there may be a good time to meet based on Jennifer’s availability. He can’t see her calendar or exact free windows, but when he taps “Explore More Suggestions,” he’s prompted to upgrade for more scheduling control.",
+      johnTime: 21,
+      johnPlay: true,
+      johnPauseAt: 30 as number | null,
+      jenniferVisible: false,
+      jenniferTime: 0,
+      jenniferPlay: false,
+      jenniferPauseAt: null as number | null,
+    },
+    {
+      id: "flexible-suggestion",
+      label: "Step 3",
+      title: "Sending a Flexible Suggestion",
+      body: "Without access to scheduling tools, John sends a simple preference: “Afternoon.” It gives Jennifer a starting point while leaving room for her to suggest something more specific.",
+      johnTime: 30,
+      johnPlay: true,
+      johnPauseAt: 33 as number | null,
+      jenniferVisible: false,
+      jenniferTime: 0,
+      jenniferPlay: false,
+      jenniferPauseAt: null as number | null,
+    },
+    {
+      id: "premium-coordination",
+      label: "Step 4",
+      title: "Premium Unlocks Better Coordination",
+      body: "Jennifer sees John’s like, reviews his profile, and matches back. Because her calendar is connected, the system identifies an available time window and suggests a meeting time she can send with a tap. If the recommendation doesn’t work for her, she can browse her available calendar slots and choose a different time instead.",
+      johnTime: 33,
+      johnPlay: false,
+      johnPauseAt: null as number | null,
+      jenniferVisible: true,
+      jenniferTime: 0,
+      jenniferPlay: true,
+      jenniferPauseAt: 10 as number | null,
+    },
+    {
+      id: "choosing-time",
+      label: "Step 5",
+      title: "Choosing a Specific Time",
+      body: "Jennifer opens her scheduling options and selects a time that works for her. The system helps her quickly turn a general interest into a concrete plan.",
+      johnTime: 33,
+      johnPlay: false,
+      johnPauseAt: null as number | null,
+      jenniferVisible: true,
+      jenniferTime: 10,
+      jenniferPlay: true,
+      jenniferPauseAt: 17 as number | null,
+    },
+    {
+      id: "clear-boundaries",
+      label: "Step 6",
+      title: "Clear Boundaries Between Free and Premium",
+      body: "John receives Jennifer’s proposed time and can accept it or continue the conversation. He can see the meeting suggestion, but not Jennifer’s full availability. This keeps scheduling easy while preserving the value of Premium access.",
+      johnTime: 33,
+      johnPlay: true,
+      johnPauseAt: null as number | null,
+      jenniferVisible: true,
+      jenniferTime: 17,
+      jenniferPlay: true,
+      jenniferPauseAt: null as number | null,
+    },
+  ],
+} as const;
+
+export type BumblePremiumFreeStepId =
+  (typeof bumblePremiumFreeDualPhone.steps)[number]["id"];
+
+/**
+ * Free × Free dual-phone walkthrough (John on Free × Jennifer on Free).
+ *
+ * Scroll-driven like the other two tabs, but here the phones hand off rather
+ * than coexist: John (left) plays steps 1–3 alone, his recording disappears,
+ * then Jennifer (right) plays steps 4–5 alone.
+ *
+ * Per step (same shape as Premium × Free, plus `johnVisible` so John's phone
+ * can be hidden once the focus moves to Jennifer):
+ *   - `johnVisible` / `johnTime` / `johnPlay` / `johnPauseAt`
+ *   - `jenniferVisible` / `jenniferTime` / `jenniferPlay` / `jenniferPauseAt`
+ */
+export const bumbleFreeFreeDualPhone = {
+  johnVideoSrc: "/assets/bumbleflow/BumbleFlow_FreexFree(John).mov",
+  jenniferVideoSrc: "/assets/bumbleflow/BumbleFlow_FreexFree(Jennifer).mov",
+  johnLabel: "John (Free)",
+  jenniferLabel: "Jennifer (Free)",
+  scrollHint: "Scroll to continue",
+  title: "Intent-based coordination, user-led planning",
+  description:
+    "Neither user has a synced calendar, so coordination relies on shared interests and simple time preferences. John (Free) is on the left, Jennifer (Free) is on the right. The system helps them express intent, but confirming a time still requires conversation. Scroll to advance the timeline.",
+  steps: [
+    {
+      id: "discovering-match",
+      label: "Step 1",
+      title: "Discovering a Match",
+      body: "John is on the free plan and has selected Coffee and Drinks as his preferred meeting vibes. While browsing Discover, he finds Jennifer and sends a like. She likes him back, and they match.",
+      johnVisible: true,
+      johnTime: 0,
+      johnPlay: true,
+      johnPauseAt: 8 as number | null,
+      jenniferVisible: false,
+      jenniferTime: 0,
+      jenniferPlay: false,
+      jenniferPauseAt: null as number | null,
+    },
+    {
+      id: "suggesting-time",
+      label: "Step 2",
+      title: "Suggesting a Time",
+      body: "When John enters the chat, the system notices that both users selected Coffee and suggests broad meeting windows like Morning or Afternoon. Without calendar data, it can only recommend general times. If John taps “Explore More Suggestions,” he encounters an upgrade prompt, reinforcing that calendar syncing, specific time slots, and smarter coordination are Premium features.",
+      johnVisible: true,
+      johnTime: 8,
+      johnPlay: true,
+      johnPauseAt: 18 as number | null,
+      jenniferVisible: false,
+      jenniferTime: 0,
+      jenniferPlay: false,
+      jenniferPauseAt: null as number | null,
+    },
+    {
+      id: "sending-intent",
+      label: "Step 3",
+      title: "Sending Intent",
+      body: "John selects Afternoon and sends it to Jennifer. Rather than locking in a meeting, the suggestion communicates interest and provides a starting point for coordination.",
+      johnVisible: true,
+      johnTime: 19,
+      johnPlay: true,
+      johnPauseAt: null as number | null,
+      jenniferVisible: false,
+      jenniferTime: 0,
+      jenniferPlay: false,
+      jenniferPauseAt: null as number | null,
+    },
+    {
+      id: "matching-without-premium",
+      label: "Step 4",
+      title: "Matching Without Premium",
+      body: "Jennifer doesn’t receive a notification that John liked her because that visibility feature is reserved for Premium users. When she visits the Liked You section herself, she notices John’s profile and coffee vibe tag, likes him back, and they match.",
+      johnVisible: false,
+      johnTime: 19,
+      johnPlay: false,
+      johnPauseAt: null as number | null,
+      jenniferVisible: true,
+      jenniferTime: 0,
+      jenniferPlay: true,
+      jenniferPauseAt: 10 as number | null,
+    },
+    {
+      id: "continuing-conversation",
+      label: "Step 5",
+      title: "Continuing the Conversation",
+      body: "When Jennifer enters the chat, she sees that John suggested coffee this afternoon. Instead of immediately agreeing, she selects “Chat First.” Without synced availability, they must coordinate through conversation alone, trading messages to find a time that works. The extra back-and-forth highlights the difference between Free and Premium, where scheduling support helps reduce coordination effort.",
+      johnVisible: false,
+      johnTime: 19,
+      johnPlay: false,
+      johnPauseAt: null as number | null,
+      jenniferVisible: true,
+      jenniferTime: 10,
+      jenniferPlay: true,
+      jenniferPauseAt: null as number | null,
+    },
+  ],
+} as const;
+
+export type BumbleFreeFreeStepId =
+  (typeof bumbleFreeFreeDualPhone.steps)[number]["id"];
 
 export const bumbleCoreComponents = {
   eyebrow: "07 · Decisions",

@@ -180,6 +180,11 @@
   pointer-events: none;
 }
 
+/* Hint placed below the description text in the right column. */
+.scrollHintBelowText {
+  margin-top: clamp(16px, 2.4vh, 28px);
+}
+
 .scrollHintChevron {
   display: inline-flex;
   width: 14px;
