@@ -9,3 +9,4 @@ tsconfig.tsbuildinfo
 # Source screen recordings — served copies live under public/assets/
 assets/bumbleflow/*.mov
 assets/trippy/*.mov
+assets/uiforai/*.gif

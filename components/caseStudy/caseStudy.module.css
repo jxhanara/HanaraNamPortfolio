@@ -436,6 +436,12 @@
   max-width: var(--ui-for-ai-rag-max);
 }
 
+/* UI for AI: Testing + Concept Testing titles span the full content width */
+.caseStudyPageAccentUiForAi #testing .h2,
+.caseStudyPageAccentUiForAi #concept-testing .h2 {
+  max-width: none;
+}
+
 .h3 {
   margin: 0 0 12px;
   font-size: 22px;

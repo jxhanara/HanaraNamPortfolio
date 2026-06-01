@@ -215,7 +215,7 @@ export const uiForAiConceptTesting = {
 } as const;
 
 export const uiForAiTesting = {
-  eyebrow: "04 · Testing",
+  eyebrow: "03 · Testing",
   titleLines: ["From baseline", "to breakthrough"] as const,
   intro:
     "We started by measuring the problem directly — then ran two rounds of testing to close the gap.",
@@ -223,41 +223,79 @@ export const uiForAiTesting = {
     tag: "Baseline",
     title: "Measuring the problem first",
     body:
-      "Before building anything, we gave participants a standard AI chat interface with a long scrolling conversation and asked them to find a specific piece of information. We timed how long it took — scrolling up and down, backtracking, and using Cmd+F with multiple failed attempts.",
+      "Before designing anything, we gave participants a standard AI chat with a long conversation and timed how long it took to find a specific piece of information. Most scrolled back and forth, backtracked, and ran multiple Cmd+F searches with no clear result.",
     statValue: "~56s",
     statLabel: "Average re-entry time with standard chat",
     statContext:
-      "Scrolling, backtracking, repeated Cmd+F searches with no clear anchor point",
+      "Scrolling, backtracking, repeated Cmd+F with no clear anchor point",
     footnote: "This gave us a concrete number to design against.",
   },
   round1: {
     tag: "Round 1 — Lo-Fi Prototype",
-    title: "Combining concepts, testing structure",
+    title: "Three directions, one clear signal",
     body:
-      "After team discussions, we synthesized our three concept sketches — Contexts, the Re-Entry Panel, and Thematic Chat Grouping — into a single lo-fi prototype. We tested this with participants to validate the core structure and identify what needed to change before moving to hi-fi.",
-    chips: [
-      "Re-entry orientation landed well",
-      "Next Steps felt action-oriented, not summary",
-      "Panel placement needed refinement",
+      "We put three directions in front of users. Two earned their place and merged into the design we'd build. The third was set aside.",
+    hint: "Click an idea to expand it and see the prototype.",
+    ideas: [
+      {
+        index: "01",
+        status: "cut",
+        statusLabel: "Set aside",
+        name: "Task Contexts",
+        desc:
+          "Workflows split into a named to-do list. Users tagged chats to a task; a side panel surfaced related past conversations with excerpts to jump into.",
+        verdict:
+          "Compelling in concept, but it asked users to do organizational work upfront before getting any value.",
+        imageAlt: "Task Contexts lo-fi prototype — named to-do list with tagged chats",
+      },
+      {
+        index: "02",
+        status: "kept",
+        statusLabel: "Validated",
+        name: "Re-Entry Panel",
+        desc:
+          "An AI-generated session recap with key topics and next steps, shown whenever users returned to an older chat.",
+        verdict: "Landed immediately, with zero setup.",
+        imageAlt: "Re-Entry Panel lo-fi prototype — AI session recap with key topics and next steps",
+      },
+      {
+        index: "03",
+        status: "kept",
+        statusLabel: "Validated",
+        name: "Related Chats",
+        desc:
+          "When a task is active, the interface automatically pulls in past chats that are relevant to it. Users can browse excerpts from those chats and click directly into the section that matters, no manual searching required.",
+        verdict: "Landed immediately, with zero setup.",
+        imageAlt: "Related Chats lo-fi prototype — relevant past chats with jumpable excerpts",
+      },
     ] as const,
-    mediaLabel: "Round 1 — lo-fi prototype screens",
-    pivot: {
-      label: "Design pivot from Round 1",
-      text:
-        "Users treated Next Steps as a prompt to act on immediately — not a summary to read. It moved out of the panel and into the chat input area where the action was actually happening.",
+    merge: {
+      label: "Combined into the build",
+      chips: ["Re-Entry Panel", "Related Chats"] as const,
+      result:
+        "The two validated directions merged into one experience: an automatic in-chat recap with topics, plus a side panel that surfaces relevant past conversations when you need them.",
     },
+  },
+  whatChanged: {
+    tag: "What changed",
+    title: "Narrowing to what users actually valued",
+    body:
+      "With Task Contexts set aside, the team committed to the combined Re-Entry experience and moved the AI summary directly into the chat, expanding automatically when users returned. No extra steps required.",
+    imageAlts: [
+      "Re-Entry Panel in context of the chat interface — mid-fi",
+      "Related chat surfacing in context of the chat interface — mid-fi",
+    ] as const,
   },
   round2: {
     tag: "Round 2 — Hi-Fi Prototype",
     title: "Validating with the real thing",
     body:
-      "With the pivot applied, we rebuilt the prototype in hi-fi and repeated the same task-based timing test against the baseline. Participants were given the same long-chat task — find a specific piece of information — this time with the Re-Entry Panel available.",
+      "We rebuilt in hi-fi and ran the same timing task against the baseline. Re-entry time dropped to 29 seconds. One more insight surfaced: users wanted to act on Next Steps immediately while typing, not read them in a panel. It moved into the chat input where the action was.",
     stats: [
       { number: "29", suffix: "s", label: "Avg. re-entry time with hi-fi panel" },
       { number: "~48", suffix: "%", label: "Faster than the 56s baseline" },
       { number: "16", suffix: "ppl", label: "Participants across both rounds" },
     ] as const,
-    mediaLabel: "Round 2 — hi-fi prototype screens",
   },
 } as const;
 
@@ -266,7 +304,7 @@ export const uiForAiToc = [
   { id: "problem", label: "Problem" },
   { id: "research", label: "Research" },
   { id: "concept-testing", label: "Concepts" },
-  { id: "solution", label: "Solution" },
   { id: "testing", label: "Testing" },
+  { id: "solution", label: "Solution" },
   { id: "reflection", label: "Reflection" },
 ] as const;

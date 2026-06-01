@@ -4,6 +4,8 @@ import { CaseStudyTocNav } from "../CaseStudyTocNav";
 import { SiteNav } from "@/components/home/SiteNav";
 import { UiForAiCaseStudyHero } from "./UiForAiCaseStudyHero";
 import { UiForAiProblemSection } from "./UiForAiProblemSection";
+import { UiForAiTestingRound1 } from "./UiForAiTestingRound1";
+import { UiForAiWhatChangedGallery } from "./UiForAiWhatChangedGallery";
 import { UiForAiSeriesAccordion } from "./UiForAiSeriesAccordion";
 import {
   uiForAiCaseStudyMeta,
@@ -24,6 +26,8 @@ import gemNiImage from "@/assets/uiforai/gem-ni.png";
 import contextsConceptImage from "@/assets/uiforai/contexts.JPG";
 import reentryConceptImage from "@/assets/uiforai/reentrypanel.JPG";
 import thematicConceptImage from "@/assets/uiforai/thematicchatgrouping.JPG";
+import reEntryPanelMidFiImage from "@/assets/uiforai/UIforAI_ReEntryPanelMidFi.png";
+import relatedChatsMidFiImage from "@/assets/uiforai/UIforAI_RelatedChatsMidFi.png";
 
 function PhIconRect() {
   return (
@@ -81,21 +85,6 @@ function ResearchCardVisual({ card }: { card: ResearchCard }) {
       </div>
       <span>{alt}</span>
     </div>
-  );
-}
-
-function TestingMediaPlaceholder({ label }: { label: string }) {
-  return (
-    <article className={`${u.conceptTestingCard} ${u.testingMediaTight}`}>
-      <div className={u.conceptTestingImageWrap}>
-        <div className={u.testingMediaPlaceholder}>
-          <div className={u.phIcon}>
-            <PhIconRect />
-          </div>
-          <span>{label}</span>
-        </div>
-      </div>
-    </article>
   );
 }
 
@@ -241,88 +230,10 @@ export function UiForAiCaseStudyView() {
               </div>
             </section>
 
-            <section id="solution" className={cs.section}>
-              <p className={cs.sectionEyebrow}>03 · Solution</p>
-              <h2 className={cs.h2}>The Re-Entry Panel</h2>
-              <p className={cs.body}>
-                The panel lives alongside the chat and stays available throughout the conversation.
-                Users can expand or collapse it whenever they need help reorienting — surfacing
-                structure and familiar cues without requiring a scroll through the full transcript.
-              </p>
-
-              <div className={`${u.conceptBlock} ${u.conceptBlockFirst}`}>
-                <div className={u.conceptTag}>Concept 1 + 2</div>
-                <div className={u.conceptName}>Recall Search + Thread Map</div>
-                <p className={u.conceptDesc}>
-                  Users type keywords they remember — a hotel name, a topic, a file — and the system
-                  surfaces relevant past messages. AI-generated topics organize the conversation into
-                  scannable sections, giving users both a keyword path and a structural map back into
-                  their work.
-                </p>
-                <div className={u.solutionVideoFrame}>
-                  <video
-                    className={u.solutionVideo}
-                    src="/assets/uiforai/ContextSwitching_SearchJumpBackIn.mp4"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                  />
-                </div>
-              </div>
-
-              <div className={u.conceptBlock}>
-                <div className={u.conceptTag}>Concept 3 + 4</div>
-                <div className={u.conceptName}>Welcome Back + Next Steps</div>
-                <p className={u.conceptDesc}>
-                  A collapsible summary appears when you return, catching you up without re-reading
-                  the last ten messages. Once reoriented, context-aware Next Steps appear directly in
-                  the chat input — pre-filling prompts so users can continue with a single click rather
-                  than starting from a blank box.
-                </p>
-                <div className={u.solutionVideoFrame}>
-                  <video
-                    className={u.solutionVideo}
-                    src="/assets/uiforai/ContextSwitching_AISummaryNextSteps.mp4"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                  />
-                </div>
-              </div>
-
-              <div className={u.conceptBlock}>
-                <div className={u.conceptTag}>Concept 5</div>
-                <div className={u.conceptName}>Resume State</div>
-                <p className={u.conceptDesc}>
-                  Work rarely lives in one window. Side-by-Side Reference lets users pull up related
-                  chats in the same view, drag outputs across conversations, and merge threads when they
-                  belong together — carrying key context, preferences, and decisions forward
-                  automatically.
-                </p>
-                <div className={u.solutionVideoFrame}>
-                  <video
-                    className={u.solutionVideo}
-                    src="/assets/uiforai/ContextSwitching_RelatedChatsMerge.mp4"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                  />
-                </div>
-              </div>
-            </section>
-
             <section id="testing" className={cs.section}>
               <p className={cs.sectionEyebrow}>{uiForAiTesting.eyebrow}</p>
               <h2 className={cs.h2}>
-                {uiForAiTesting.titleLines[0]}
-                <br />
-                {uiForAiTesting.titleLines[1]}
+                {uiForAiTesting.titleLines[0]} {uiForAiTesting.titleLines[1]}
               </h2>
               <p className={cs.body}>{uiForAiTesting.intro}</p>
 
@@ -337,14 +248,13 @@ export function UiForAiCaseStudyView() {
                     <p className={u.roundTitle}>{uiForAiTesting.baseline.title}</p>
                     <p className={u.roundBody}>{uiForAiTesting.baseline.body}</p>
                     <div className={u.testingBaselineCard}>
-                      <div className={u.testingBcCell}>
+                      <div className={u.testingBcHeadline}>
                         <p className={u.testingBcNum}>{uiForAiTesting.baseline.statValue}</p>
                         <p className={u.testingBcLabel}>{uiForAiTesting.baseline.statLabel}</p>
                       </div>
-                      <div className={u.testingBcDivider} aria-hidden />
-                      <div className={`${u.testingBcCell} ${u.testingBcContext}`}>
-                        <p className={u.roundBody}>{uiForAiTesting.baseline.statContext}</p>
-                      </div>
+                      <p className={u.testingBcContextText}>
+                        {uiForAiTesting.baseline.statContext}
+                      </p>
                       <p className={u.testingBcNote}>{uiForAiTesting.baseline.footnote}</p>
                     </div>
                   </div>
@@ -359,35 +269,31 @@ export function UiForAiCaseStudyView() {
                     <div className={u.conceptTag}>{uiForAiTesting.round1.tag}</div>
                     <p className={u.roundTitle}>{uiForAiTesting.round1.title}</p>
                     <p className={u.roundBody}>{uiForAiTesting.round1.body}</p>
-                    <div className={u.testingChipRow}>
-                      {uiForAiTesting.round1.chips.map((chip) => (
-                        <span key={chip} className={u.testingChip}>
-                          {chip}
-                        </span>
-                      ))}
-                    </div>
-                    <TestingMediaPlaceholder label={uiForAiTesting.round1.mediaLabel} />
-                    <div className={`${u.conceptTestingConverge} ${u.testingMediaTight}`}>
-                      <div className={u.conceptTestingConvergeIcon} aria-hidden>
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                          <path
-                            d="M2 7L5 10L12 3"
-                            stroke="#89c5ea"
-                            strokeWidth="1.4"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </div>
-                      <div>
-                        <p className={u.conceptTestingConvergeLabel}>
-                          {uiForAiTesting.round1.pivot.label}
-                        </p>
-                        <p className={u.conceptTestingConvergeText}>
-                          {uiForAiTesting.round1.pivot.text}
-                        </p>
-                      </div>
-                    </div>
+                    <UiForAiTestingRound1 />
+                  </div>
+                </div>
+
+                <div className={u.testingStep}>
+                  <div className={u.testingSpine}>
+                    <div className={u.testingDot} />
+                    <div className={u.testingLine} />
+                  </div>
+                  <div className={u.testingStepContent}>
+                    <div className={u.conceptTag}>{uiForAiTesting.whatChanged.tag}</div>
+                    <p className={u.roundTitle}>{uiForAiTesting.whatChanged.title}</p>
+                    <p className={u.roundBody}>{uiForAiTesting.whatChanged.body}</p>
+                    <UiForAiWhatChangedGallery
+                      slides={[
+                        {
+                          src: reEntryPanelMidFiImage,
+                          alt: uiForAiTesting.whatChanged.imageAlts[0],
+                        },
+                        {
+                          src: relatedChatsMidFiImage,
+                          alt: uiForAiTesting.whatChanged.imageAlts[1],
+                        },
+                      ]}
+                    />
                   </div>
                 </div>
 
@@ -410,8 +316,86 @@ export function UiForAiCaseStudyView() {
                         </div>
                       ))}
                     </div>
-                    <TestingMediaPlaceholder label={uiForAiTesting.round2.mediaLabel} />
                   </div>
+                </div>
+              </div>
+            </section>
+
+            <section id="solution" className={cs.section}>
+              <p className={cs.sectionEyebrow}>04 · Solution</p>
+              <h2 className={cs.h2}>The Re-Entry Panel</h2>
+              <p className={cs.body}>
+                The panel lives alongside the chat and stays available throughout the conversation.
+                Users can expand or collapse it whenever they need help reorienting — surfacing
+                structure and familiar cues without requiring a scroll through the full transcript.
+              </p>
+
+              <div className={`${u.conceptBlock} ${u.conceptBlockFirst}`}>
+                <div className={u.conceptTag}>Concept 1 + 2</div>
+                <div className={u.conceptName}>Recall Search + Thread Map</div>
+                <p className={u.conceptDesc}>
+                  Users type keywords they remember — a hotel name, a topic, a file — and the system
+                  surfaces relevant past messages. AI-generated topics organize the conversation into
+                  scannable sections, giving users both a keyword path and a structural map back into
+                  their work.
+                </p>
+                <div className={u.solutionVideoFrame}>
+                  <video
+                    className={u.solutionVideo}
+                    src="/assets/uiforai/UIforAI_RecallSearch_ThreadMap.mp4"
+                    aria-label="Recall Search and Thread Map demo in the Re-Entry Panel"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                  />
+                </div>
+              </div>
+
+              <div className={u.conceptBlock}>
+                <div className={u.conceptTag}>Concept 3 + 4</div>
+                <div className={u.conceptName}>Welcome Back + Next Steps</div>
+                <p className={u.conceptDesc}>
+                  A collapsible summary appears when you return, catching you up without re-reading
+                  the last ten messages. Once reoriented, context-aware Next Steps appear directly in
+                  the chat input — pre-filling prompts so users can continue with a single click rather
+                  than starting from a blank box.
+                </p>
+                <div className={u.solutionVideoFrame}>
+                  <video
+                    className={u.solutionVideo}
+                    src="/assets/uiforai/UIforAI_WelcomeBack_NextSteps.mp4"
+                    aria-label="Welcome Back summary and Next Steps demo in the Re-Entry Panel"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                  />
+                </div>
+              </div>
+
+              <div className={u.conceptBlock}>
+                <div className={u.conceptTag}>Concept 5</div>
+                <div className={u.conceptName}>Resume State</div>
+                <p className={u.conceptDesc}>
+                  Work rarely lives in one window. Side-by-Side Reference lets users pull up related
+                  chats in the same view, drag outputs across conversations, and merge threads when they
+                  belong together — carrying key context, preferences, and decisions forward
+                  automatically.
+                </p>
+                <div className={u.solutionVideoFrame}>
+                  <video
+                    className={u.solutionVideo}
+                    src="/assets/uiforai/UIforAI_ResumeState.mp4"
+                    aria-label="Resume State side-by-side reference and thread merge demo"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                  />
                 </div>
               </div>
             </section>

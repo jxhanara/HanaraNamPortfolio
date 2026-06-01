@@ -1,6 +1,6 @@
 import { uiForAiCaseStudyMeta } from "@/content/uiForAiCaseStudy";
-import { MediaStrip } from "@/components/home/MediaStrip";
 import h from "../bumbleFlow/bumbleHero.module.css";
+import { UiForAiHeroCarousel } from "./UiForAiHeroCarousel";
 
 export function UiForAiCaseStudyHero() {
   return (
@@ -22,10 +22,7 @@ export function UiForAiCaseStudyHero() {
       </div>
 
       <div className={h.phones}>
-        <MediaStrip
-          ariaLabel="Prototype recording placeholder"
-          className={h.phonesStrip}
-        />
+        <UiForAiHeroCarousel />
       </div>
     </header>
   );
