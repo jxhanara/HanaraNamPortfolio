@@ -39,6 +39,9 @@ export const metadata: Metadata = {
   title: "Hanara Nam — Portfolio",
   description:
     "Multidisciplinary designer crafting thoughtful interfaces for complex systems.",
+  icons: {
+    icon: "/images/namelogo.png",
+  },
 };
 
 export default function RootLayout({
