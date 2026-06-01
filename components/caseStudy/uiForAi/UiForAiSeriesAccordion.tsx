@@ -49,7 +49,7 @@ function ChevronIcon({ open }: { open: boolean }) {
 export function UiForAiSeriesAccordion() {
   const [open, setOpen] = useState(false);
   const panelId = useId();
-  const { label, title, relatedCount, description, links } = uiForAiOverviewSeries;
+  const { label, title, description, links } = uiForAiOverviewSeries;
 
   return (
     <div className={u.seriesAccordion}>
@@ -64,7 +64,7 @@ export function UiForAiSeriesAccordion() {
           <span className={u.seriesTriggerLabel}>{label}</span>
           <span className={u.seriesTriggerTitle}>{title}</span>
           <span className={u.seriesTriggerMeta}>
-            · {relatedCount} related read{relatedCount === 1 ? "" : "s"}
+            · {links.length} related reads
           </span>
         </span>
         <ChevronIcon open={open} />

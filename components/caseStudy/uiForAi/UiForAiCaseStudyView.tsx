@@ -14,6 +14,7 @@ import {
   uiForAiResearch,
   uiForAiTesting,
   uiForAiToc,
+  type UiForAiResearchCard,
 } from "@/content/uiForAiCaseStudy";
 import { MoreCaseStudiesSection } from "../MoreCaseStudiesSection";
 import homeStyles from "@/components/home/styles.module.css";
@@ -37,10 +38,8 @@ function PhIconRect() {
   );
 }
 
-type ResearchCard = (typeof uiForAiResearch.cards)[number];
-
-function ResearchCardVisual({ card }: { card: ResearchCard }) {
-  const alt = card.visualLabel ?? card.name;
+function ResearchCardVisual({ card }: { card: UiForAiResearchCard }) {
+  const alt = card.visualLabel;
 
   if (card.name === "Rewind AI") {
     return (

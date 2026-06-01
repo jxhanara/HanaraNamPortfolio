@@ -159,6 +159,8 @@ export const uiForAiResearch = {
   },
 } as const;
 
+export type UiForAiResearchCard = (typeof uiForAiResearch.cards)[number];
+
 export const uiForAiConceptTesting = {
   eyebrow: "02b · Concept Testing",
   title: "How we narrowed to what mattered",
