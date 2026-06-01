@@ -59,6 +59,13 @@ export function VisitorCard({ mode = "create", initial, onConfirm, onCancel }: V
               ✦
             </span>
           </div>
+          {mode === "create" ? (
+            <p className={styles.cardIntro}>
+              Your visitor pass to Hanara&apos;s interactive portfolio! Explore projects,
+              leave comments, and ask questions as you browse. Any comments you leave are
+              visible only to Hanara.
+            </p>
+          ) : null}
           <div className={styles.cardNameWrap}>
             <input
               className={styles.cardNameInline}
@@ -94,19 +101,6 @@ export function VisitorCard({ mode = "create", initial, onConfirm, onCancel }: V
               <span className={styles.cardMetaLabel}>NO.</span>
               <span className={styles.cardMetaValue}>{no}</span>
             </div>
-          </div>
-          <div className={styles.cardSig}>
-            <svg viewBox="0 0 200 30" width="100%" height="28" aria-hidden>
-              <path
-                d="M2 22 C 18 8, 30 28, 50 18 S 90 6, 110 22 S 150 26, 178 12"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                opacity=".7"
-              />
-            </svg>
-            <span className={styles.cardSigLabel}>SIGNATURE</span>
           </div>
         </div>
 

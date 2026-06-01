@@ -384,6 +384,134 @@
   cursor: pointer;
 }
 
+/* Mark intro — fly-in with sparkle trail + greeting bubble (first visit) */
+.introOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1350;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.introDim {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 6, 12, 0.62);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.introTrail {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+  transition: opacity 0.7s ease;
+}
+
+.introTrailFade {
+  opacity: 0;
+}
+
+.introTrailLine {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.85;
+  filter: drop-shadow(0 0 7px var(--glow-from, rgba(123, 97, 255, 0.7)));
+}
+
+.introStar {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: introStarPop 1.5s ease-out forwards;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.85));
+}
+
+@keyframes introStarPop {
+  0% {
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.introMover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 88px;
+  height: 88px;
+  offset-rotate: 0deg;
+  will-change: offset-distance;
+}
+
+/* Scales Mark up for the intro without disturbing the offset-path anchor (centered). */
+.introScale {
+  width: 100%;
+  height: 100%;
+  transform: scale(1.5);
+  transform-origin: center;
+}
+
+.introBubble {
+  position: absolute;
+  transform: translate(-12px, calc(-100% - 56px)) scale(0.92);
+  transform-origin: left bottom;
+  max-width: 270px;
+  padding: 12px 16px;
+  border-radius: 16px 16px 16px 4px;
+  background: rgba(248, 249, 252, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.45);
+  color: #1a1a22;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+.introBubbleShow {
+  opacity: 1;
+  transform: translate(-12px, calc(-100% - 64px)) scale(1);
+}
+
+.introBubbleText {
+  display: block;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+}
+
+.introBubbleTail {
+  position: absolute;
+  left: 18px;
+  bottom: -7px;
+  width: 14px;
+  height: 14px;
+  background: rgba(248, 249, 252, 0.97);
+  border-right: 1px solid rgba(255, 255, 255, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+  transform: rotate(45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .introOverlay {
+    display: none;
+  }
+}
+
 /* Visitor card */
 .cardStage {
   position: fixed;
@@ -470,6 +598,17 @@
   opacity: 0.85;
 }
 
+.cardIntro {
+  position: relative;
+  margin: -6px 0 0;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.5;
+  letter-spacing: 0.005em;
+  opacity: 0.82;
+  max-width: 44ch;
+}
+
 .cardNameWrap {
   position: relative;
   display: flex;
@@ -553,22 +692,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.cardSig {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin-top: -4px;
-}
-
-.cardSigLabel {
-  font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  opacity: 0.65;
-  padding-left: 4px;
 }
 
 .swatchRow {

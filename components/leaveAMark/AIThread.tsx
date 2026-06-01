@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, Key, ReactNode } from "react";
 import type { Gradient } from "./constants";
 import { generateAIReply } from "./AIThreads";
+import { logQuestion } from "@/lib/syncToSupabase";
 import type { AnnotationItem, ThreadMessage } from "./types";
 import styles from "./LeaveAMark.module.css";
 
@@ -15,9 +16,23 @@ export type AIThreadProps = {
   pageContext?: string;
   /** When false (e.g. comment bubble collapsed), follow-up draft UI closes. Sticky omits → treated as true. */
   surfaceOpen?: boolean;
+  /** For logging questions to the admin database. */
+  visitorId?: string;
+  visitorName?: string;
+  pagePath?: string;
 };
 
-export function AIThread({ item, onChange, gradient, compact, pageContext, surfaceOpen = true }: AIThreadProps) {
+export function AIThread({
+  item,
+  onChange,
+  gradient,
+  compact,
+  pageContext,
+  surfaceOpen = true,
+  visitorId,
+  visitorName,
+  pagePath,
+}: AIThreadProps) {
   const [followUpOpen, setFollowUpOpen] = useState(false);
   const [followDraft, setFollowDraft] = useState("");
   const followTaRef = useRef<HTMLTextAreaElement>(null);
@@ -38,13 +53,23 @@ export function AIThread({ item, onChange, gradient, compact, pageContext, surfa
     const cur = itemRef.current;
     const t = cur.thread ?? [];
     let cancelled = false;
-    generateAIReply(t, pageContext).then((text) => {
+    const lastVisitorText = [...t].reverse().find((m) => m.from === "visitor")?.text ?? "";
+    generateAIReply(t, pageContext).then((res) => {
       if (cancelled) return;
       const latest = itemRef.current;
       if (latest.id !== cur.id || latest.aiState !== "thinking") return;
+      void logQuestion({
+        visitorId,
+        visitorName,
+        pagePath,
+        question: lastVisitorText,
+        answer: res.text,
+        matched: res.matched,
+        kind: res.kind,
+      });
       onChangeRef.current({
         ...latest,
-        thread: [...(latest.thread ?? []), { from: "ai", text, at: Date.now() }],
+        thread: [...(latest.thread ?? []), { from: "ai", text: res.text, at: Date.now() }],
         aiState: "done",
       });
     });

@@ -392,9 +392,22 @@ const FALLBACK_LIBRARY: Record<string, string[]> = {
   ],
 };
 
+// Shown when a genuine question doesn't match anything in the library yet.
+export const NOT_IN_LIBRARY_REPLY =
+  "Sorry, I'm currently updating and expanding my database of questions. Please check back tomorrow!";
+
 // ─── Match function ───────────────────────────────────────────────────────────
 
-function matchResponse(text: string): string {
+export type AIReplyResult = {
+  /** The text shown to the visitor. */
+  text: string;
+  /** True when a library entry answered the question. */
+  matched: boolean;
+  /** Coarse intent bucket, useful for triaging logged questions. */
+  kind: "question" | "reaction" | "observation";
+};
+
+function matchResponse(text: string): AIReplyResult {
   const lower = text.toLowerCase();
 
   let bestScore = 0;
@@ -408,13 +421,21 @@ function matchResponse(text: string): string {
     }
   }
 
+  const kind = classify(text);
+
   if (bestScore >= 1 && bestResponse) {
-    return bestResponse;
+    return { text: bestResponse, matched: true, kind };
   }
 
-  const kind = classify(text);
+  // Genuine questions we can't answer yet get the honest "updating" message so
+  // they stand out in the logs as gaps to fill. Reactions/observations keep a
+  // warm catch-all so casual comments still feel human.
+  if (kind === "question") {
+    return { text: NOT_IN_LIBRARY_REPLY, matched: false, kind };
+  }
+
   const opts = FALLBACK_LIBRARY[kind];
-  return opts[Math.floor(Math.random() * opts.length)];
+  return { text: opts[Math.floor(Math.random() * opts.length)], matched: false, kind };
 }
 
 // ─── Main export (replaces the old API-calling version) ───────────────────────
@@ -422,7 +443,8 @@ function matchResponse(text: string): string {
 export async function generateAIReply(
   thread: { from: "visitor" | "ai"; text: string; at: number }[],
   pageContext?: string,
-): Promise<string> {
+): Promise<AIReplyResult> {
+  void pageContext;
   const visitorText =
     [...thread].reverse().find((m) => m.from === "visitor")?.text ?? "";
 

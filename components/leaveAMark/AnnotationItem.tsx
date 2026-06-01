@@ -14,9 +14,21 @@ type AnnotationItemProps = {
   onDelete: (id: string) => void;
   gradient: Gradient;
   pageContext?: string;
+  visitorId?: string;
+  visitorName?: string;
+  pagePath?: string;
 };
 
-export function AnnotationItem({ item, onChange, onDelete, gradient, pageContext }: AnnotationItemProps) {
+export function AnnotationItem({
+  item,
+  onChange,
+  onDelete,
+  gradient,
+  pageContext,
+  visitorId,
+  visitorName,
+  pagePath,
+}: AnnotationItemProps) {
   const [editing, setEditing] = useState(item.text === "" && !!item._fresh);
   const [commentPeekOpen, setCommentPeekOpen] = useState(false);
   const textRef = useRef<HTMLTextAreaElement>(null);
@@ -236,7 +248,16 @@ export function AnnotationItem({ item, onChange, onDelete, gradient, pageContext
             </div>
           )}
           {item.thread && item.thread.length > 0 ? (
-            <AIThread item={item} onChange={onChange} gradient={gradient} compact pageContext={pageContext} />
+            <AIThread
+              item={item}
+              onChange={onChange}
+              gradient={gradient}
+              compact
+              pageContext={pageContext}
+              visitorId={visitorId}
+              visitorName={visitorName}
+              pagePath={pagePath}
+            />
           ) : null}
           <div className={styles.stickyTape} data-lam-anno-drag aria-hidden title="Drag" />
         </div>
@@ -347,6 +368,9 @@ export function AnnotationItem({ item, onChange, onDelete, gradient, pageContext
                 gradient={gradient}
                 pageContext={pageContext}
                 surfaceOpen={!commentDocked || commentPeekOpen}
+                visitorId={visitorId}
+                visitorName={visitorName}
+                pagePath={pagePath}
               />
             ) : null}
           </div>

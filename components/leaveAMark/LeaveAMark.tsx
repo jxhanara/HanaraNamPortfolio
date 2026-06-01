@@ -9,8 +9,9 @@ import { ArchivePanel } from "./ArchivePanel";
 import { Character } from "./Character";
 import { JumpSpotlight } from "./JumpSpotlight";
 import { CharacterLauncher } from "./CharacterLauncher";
+import { MarkIntro } from "./MarkIntro";
 import { EdgeGlow, type EdgeGlowMode } from "./EdgeGlow";
-import { gradById, gradCSS, TOOLBAR_POS_KEY } from "./constants";
+import { gradById, gradCSS, MARK_INTRO_SEEN_KEY, TOOLBAR_POS_KEY } from "./constants";
 import styles from "./LeaveAMark.module.css";
 import type { GradientId } from "./constants";
 import { syncPageAnnotations, syncVisitor } from "@/lib/syncToSupabase";
@@ -109,6 +110,7 @@ export function LeaveAMark() {
       : readToolbarPosFromStorage(),
   );
   const [toast, setToast] = useState<{ text: string } | null>(null);
+  const [introActive, setIntroActive] = useState(false);
   const [archiveOpen, setArchiveOpen] = useState(false);
   const [showExitCapture, setShowExitCapture] = useState(false);
   const [scrollY, setScrollY] = useState(0);
@@ -198,6 +200,22 @@ export function LeaveAMark() {
     const existingCard = loadActiveVisitorCard();
     if (existingCard) {
       syncVisitor(existingCard);
+    }
+    try {
+      if (!localStorage.getItem(MARK_INTRO_SEEN_KEY)) {
+        setIntroActive(true);
+      }
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const finishIntro = useCallback(() => {
+    setIntroActive(false);
+    try {
+      localStorage.setItem(MARK_INTRO_SEEN_KEY, "1");
+    } catch {
+      /* ignore */
     }
   }, []);
 
@@ -536,6 +554,8 @@ export function LeaveAMark() {
   const showDim = phase === "centering" || phase === "cardIn" || phase === "card";
 
   if (!desktop || !hydrated) return null;
+  // The admin dashboard is a private, internal view — never surface the visitor-facing tool there.
+  if (pageKey.startsWith("/leave-a-mark-admin")) return null;
 
   return (
     <div className={styles.leaveAMark}>
@@ -557,6 +577,9 @@ export function LeaveAMark() {
                     item={it}
                     gradient={gradient}
                     pageContext={`Portfolio page: ${pageKey}`}
+                    visitorId={card?.id}
+                    visitorName={card?.name}
+                    pagePath={pageKey}
                     onChange={(next) =>
                       setItems((arr) => arr.map((x) => (x.id === next.id ? { ...next, _fresh: false } : x)))
                     }
@@ -599,7 +622,9 @@ export function LeaveAMark() {
             phase === "exiting") && <Character pose={characterPose} gradient={gradient} />}
         </div>
 
-        {phase === "idle" && (
+        {introActive ? <MarkIntro gradient={gradient} onDone={finishIntro} /> : null}
+
+        {phase === "idle" && !introActive && (
           <div className={styles.launcherStage}>
             <CharacterLauncher
               onLaunch={launch}

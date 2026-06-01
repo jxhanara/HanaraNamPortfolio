@@ -15,6 +15,7 @@ export const LEGACY_CARD_STORAGE_KEY = "leaveAMark.v1";
 
 export const ACTIVE_VISITOR_ID_KEY = "leaveAMark.activeVisitorId";
 export const TOOLBAR_POS_KEY = "leaveAMark.toolbarPos";
+export const MARK_INTRO_SEEN_KEY = "leaveAMark.markIntroSeen";
 
 export function visitorStorageKey(visitorId: string): string {
   return `hanara-portfolio-visitor-${visitorId}`;
