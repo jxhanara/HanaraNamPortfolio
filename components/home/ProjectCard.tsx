@@ -8,8 +8,9 @@ type ProjectCardProps = {
   title: string;
   description: ReactNode;
   dateLabel: string;
-  imageSrc: string;
-  imageAlt: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  thumbnail?: ReactNode;
   href?: string;
   external?: boolean;
 };
@@ -21,6 +22,7 @@ export function ProjectCard({
   dateLabel,
   imageSrc,
   imageAlt,
+  thumbnail,
   href,
   external,
 }: ProjectCardProps) {
@@ -38,14 +40,16 @@ export function ProjectCard({
 
   const thumb = (
     <div className={styles.thumbWrap}>
-      <Image
-        className={styles.thumb}
-        src={imageSrc}
-        alt={imageAlt}
-        fill
-        sizes="(max-width: 1037px) 100vw, 1037px"
-        priority={title === "TRIPPY"}
-      />
+      {thumbnail ?? (
+        <Image
+          className={styles.thumb}
+          src={imageSrc as string}
+          alt={imageAlt ?? title}
+          fill
+          sizes="(max-width: 1037px) 100vw, 1037px"
+          priority={title === "TRIPPY"}
+        />
+      )}
     </div>
   );
 

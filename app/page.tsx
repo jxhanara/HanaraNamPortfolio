@@ -8,6 +8,8 @@ import {
 import { SiteFooter } from "@/components/SiteFooter";
 import { BUMBLE_FLOW_STRIP_VIDEOS } from "@/components/home/bumbleFlowStrip";
 import { TRIPPY_STRIP_VIDEOS } from "@/components/home/trippyStrip";
+import { UiForAiThumbnail } from "@/components/home/UiForAiThumbnail";
+import { NasaThumbnail } from "@/components/home/NasaThumbnail";
 import styles from "@/components/home/styles.module.css";
 
 const TRIPPY_DESC = (
@@ -28,6 +30,13 @@ const UI_FOR_AI_DESC = (
   <>
     Exploring how AI interfaces can support re-entry, memory, and momentum across
     interrupted work.
+  </>
+);
+
+const NASA_DESC = (
+  <>
+    Designing for a future where astronauts and Earth can no longer work in real time,
+    creating tools for asynchronous coordination on Mars missions.
   </>
 );
 
@@ -77,9 +86,19 @@ export default function HomePage() {
                 title="UI for AI"
                 description={UI_FOR_AI_DESC}
                 dateLabel="2025 - 2026"
-                imageSrc="/images/uiforaithumbnail.png"
                 imageAlt="UI for AI project preview"
+                thumbnail={<UiForAiThumbnail />}
                 href="/ui-for-ai-case-study"
+              />
+            </div>
+            <div className={`${styles.projectBlock} ${styles.projectBlockComingSoon}`} aria-disabled>
+              <ProjectCard
+                id="nasa"
+                title="NASA (MHCI Capstone)"
+                description={NASA_DESC}
+                dateLabel="2026"
+                imageAlt="NASA MHCI Capstone project preview"
+                thumbnail={<NasaThumbnail />}
               />
             </div>
           </div>

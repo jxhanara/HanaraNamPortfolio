@@ -681,6 +681,14 @@
   gap: 24px;
 }
 
+/* Not-yet-published project — dimmed + non-interactive (no link, no hover). */
+.projectBlockComingSoon {
+  opacity: 0.55;
+  cursor: default;
+  pointer-events: none;
+  user-select: none;
+}
+
 .projectCardLink {
   display: flex;
   flex-direction: column;
@@ -698,7 +706,8 @@
   width: 100%;
 }
 
-.projectCardLink:hover .thumb {
+.projectCardLink:hover .thumb,
+.projectCardLink:hover .thumbWrap > * {
   transform: scale(1.02);
 }
 
@@ -744,7 +753,8 @@
   width: 100%;
   border-radius: var(--radius-card);
   overflow: hidden;
-  aspect-ratio: 1037 / 580;
+  /* Slightly taller than 580 — keeps phone strips peeking below on typical viewports */
+  aspect-ratio: 1037 / 640;
   background: #111;
 }
 
@@ -979,8 +989,8 @@
 
   .thumbWrap {
     width: 100%;
-    height: calc(100vh - 19rem);
-    max-height: calc(100vh - 19rem);
+    height: calc(100vh - 15.25rem);
+    max-height: calc(100vh - 15.25rem);
     aspect-ratio: auto;
   }
 }

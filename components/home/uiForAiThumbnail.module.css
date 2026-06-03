@@ -1,0 +1,151 @@
+/* UI for AI home thumbnail — light-blue gradient stage with a single MacBook
+   bleeding off the right edge, matching the Trippy / Bumble Flow device thumbnails. */
+
+.thumb {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 18% 12%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 46%),
+    linear-gradient(135deg, #dceffb 0%, #b6dbf2 48%, #8dc2e7 100%);
+  transition: transform 0.45s ease;
+}
+
+.laptop {
+  position: absolute;
+  top: 50%;
+  left: auto;
+  right: 5%;
+  width: 56%;
+  transform: translateY(-50%);
+  transform-origin: center center;
+}
+
+/* Two feet on the underside of the base, near the ends */
+.laptop::before,
+.laptop::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  width: clamp(40px, 7.5%, 78px);
+  height: clamp(4px, 0.5vw, 6px);
+  border-radius: 0 0 5px 5px;
+  background: linear-gradient(180deg, #d2d6d9 0%, #aeb3b8 46%, #83888d 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 4px 6px rgba(0, 0, 0, 0.32);
+  z-index: 0;
+}
+
+.laptop::before {
+  left: 8%;
+}
+
+.laptop::after {
+  right: 8%;
+}
+
+/* Lid: thin black display bezel with a slim aluminum rim */
+.screen {
+  position: relative;
+  width: 100%;
+  padding: clamp(6px, 0.85vw, 11px);
+  border-radius: clamp(14px, 1.9vw, 24px) clamp(14px, 1.9vw, 24px) clamp(4px, 0.5vw, 6px)
+    clamp(4px, 0.5vw, 6px);
+  background: #050506;
+  border: 1px solid #3a3d40;
+  box-shadow:
+    inset 0 0 0 1.5px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Camera notch — pops down from the top bezel into the display */
+.notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(60px, 10%, 108px);
+  height: clamp(15px, 2vw, 25px);
+  background: #050506;
+  border-radius: 0 0 9px 9px;
+  z-index: 5;
+}
+
+.notch::after {
+  content: "";
+  position: absolute;
+  bottom: clamp(4px, 0.5vw, 7px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #0e1013;
+  box-shadow: inset 0 0 0 1px rgba(120, 150, 180, 0.3);
+}
+
+.display {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1265 / 899;
+  overflow: hidden;
+  border-radius: clamp(9px, 1.2vw, 16px) clamp(9px, 1.2vw, 16px) 0 0;
+  background: #f3f4f6;
+}
+
+.media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Aluminum base / hinge deck — wider than the lid with a rounded front lip */
+.base {
+  position: relative;
+  width: 116%;
+  margin-left: -8%;
+  height: clamp(14px, 1.8vw, 23px);
+  border-radius: 0 0 clamp(9px, 1.1vw, 15px) clamp(9px, 1.1vw, 15px);
+  background: linear-gradient(
+    180deg,
+    #5f6469 0%,
+    #b9bdc1 7%,
+    #e9ebed 17%,
+    #d2d6d9 46%,
+    #aeb3b8 76%,
+    #83888d 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 22px 44px rgba(40, 70, 100, 0.36);
+}
+
+/* Finger groove notch centered along the front lip */
+.base::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(84px, 14%, 144px);
+  height: clamp(5px, 0.65vw, 9px);
+  border-radius: 0 0 9px 9px;
+  background: linear-gradient(180deg, #5c6065 0%, #9a9fa4 100%);
+  box-shadow:
+    inset 6px 0 7px -4px rgba(0, 0, 0, 0.55),
+    inset -6px 0 7px -4px rgba(0, 0, 0, 0.55),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .laptop {
+    left: 50%;
+    right: auto;
+    width: 78%;
+    transform: translate(-50%, -50%);
+  }
+}
