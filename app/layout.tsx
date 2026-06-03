@@ -54,6 +54,11 @@ export default function RootLayout({
       lang="en"
       className={`${dmSans.variable} ${instrumentSerif.variable} ${displaySerif.variable} ${caveat.variable}`}
     >
+      <head>
+        {/* Mark mounts client-side after hydration; warming the sprite in cache
+            avoids a visible pop-in when the launcher/intro first paints. */}
+        <link rel="preload" as="image" href="/images/cutecharacter.png" />
+      </head>
       <body className={dmSans.className}>
         <LeaveAMarkRoot>{children}</LeaveAMarkRoot>
       </body>

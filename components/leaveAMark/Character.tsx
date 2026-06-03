@@ -30,7 +30,15 @@ export function Character({ pose, gradient }: CharacterProps) {
     <div className={`${styles.character} ${poseClass[pose]}`}>
       <div className={styles.charBob}>
         <div className={styles.charShadow} aria-hidden />
-        <img className={styles.charSprite} src={CHARACTER_SRC} alt="" draggable={false} />
+        <img
+          className={styles.charSprite}
+          src={CHARACTER_SRC}
+          alt=""
+          draggable={false}
+          decoding="async"
+          // @ts-expect-error fetchpriority is valid HTML but not yet in React's img types
+          fetchpriority="high"
+        />
         <svg className={styles.charWand} viewBox="0 0 60 80" aria-hidden>
           <defs>
             <linearGradient id={gradId} x1="0" y1="0" x2="1" y2="1">

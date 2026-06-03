@@ -475,8 +475,8 @@ export type BumblePrototypeTabId = (typeof bumblePrototypeSection.tabs)[number][
 
 export const bumblePrototypeDualPhone = {
   /** Single-file relative paths under /public — must exist on disk. */
-  kevinVideoSrc: "/assets/bumbleflow/BumbleFlow_Kevin.mov",
-  lindseyVideoSrc: "/assets/bumbleflow/BumbleFlow_Lindsey_New.mov",
+  kevinVideoSrc: "/assets/bumbleflow/BumbleFlow_Kevin.mp4",
+  lindseyVideoSrc: "/assets/bumbleflow/BumbleFlow_Lindsey_New.mp4",
   kevinPosterLabel: "Kevin",
   lindseyPosterLabel: "Lindsey",
   scrollHint: "Scroll to continue",
@@ -585,8 +585,8 @@ export type BumblePrototypeDualPhoneStepId =
  * resumes from 34 to "receive" her time and both play to the end.
  */
 export const bumblePremiumFreeDualPhone = {
-  johnVideoSrc: "/assets/bumbleflow/BumbleFlow_PremiumxFree(John).mov",
-  jenniferVideoSrc: "/assets/bumbleflow/BumbleFlow_Premium(Jennifer)xFree.mov",
+  johnVideoSrc: "/assets/bumbleflow/BumbleFlow_PremiumxFree(John).mp4",
+  jenniferVideoSrc: "/assets/bumbleflow/BumbleFlow_Premium(Jennifer)xFree.mp4",
   johnLabel: "John (Free)",
   jenniferLabel: "Jennifer (Premium)",
   scrollHint: "Scroll to continue",
@@ -691,8 +691,8 @@ export type BumblePremiumFreeStepId =
  *   - `jenniferVisible` / `jenniferTime` / `jenniferPlay` / `jenniferPauseAt`
  */
 export const bumbleFreeFreeDualPhone = {
-  johnVideoSrc: "/assets/bumbleflow/BumbleFlow_FreexFree(John).mov",
-  jenniferVideoSrc: "/assets/bumbleflow/BumbleFlow_FreexFree(Jennifer).mov",
+  johnVideoSrc: "/assets/bumbleflow/BumbleFlow_FreexFree(John).mp4",
+  jenniferVideoSrc: "/assets/bumbleflow/BumbleFlow_FreexFree(Jennifer).mp4",
   johnLabel: "John (Free)",
   jenniferLabel: "Jennifer (Free)",
   scrollHint: "Scroll to continue",
