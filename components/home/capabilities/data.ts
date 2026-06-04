@@ -32,7 +32,7 @@ export const CAPABILITIES: readonly Capability[] = [
   {
     id: "collab",
     num: "03",
-    title: "Collaborate & Adapt",
+    title: "Collaborate &\u00A0Adapt",
     oneLiner: "Cross-functional by default, generous on purpose.",
     paras: [
       "I thrive in cross-functional environments and adapt quickly to what a team needs in the moment.",

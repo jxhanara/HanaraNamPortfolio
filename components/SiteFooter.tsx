@@ -31,6 +31,10 @@ export function SiteFooter() {
           something <em>together.</em>
         </h2>
 
+        <p className={styles.footCredit}>
+          Hand-built with Cursor, Claude Code, and a very patient dog.
+        </p>
+
         <div className={styles.footGrid}>
           <div className={styles.footEmailBlock}>
             <h5 className={styles.footColTitle}>Email</h5>
@@ -38,8 +42,7 @@ export function SiteFooter() {
               jxhanara@gmail.com
             </a>
             <p className={styles.footEmailNote}>
-              I&apos;m always up for a chat — especially anything design, dogs,
-              or food.
+              I&apos;m always up for a chat! Especially about design, dogs, or food.
             </p>
           </div>
 
