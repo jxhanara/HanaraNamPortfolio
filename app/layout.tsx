@@ -36,11 +36,27 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.hanaranam.com"),
   title: "Hanara Nam — Portfolio",
   description:
     "Multidisciplinary designer crafting thoughtful interfaces for complex systems.",
   icons: {
     icon: "/images/namelogo.png",
+  },
+  openGraph: {
+    title: "Hanara Nam — Portfolio",
+    description:
+      "Multidisciplinary designer crafting thoughtful interfaces for complex systems.",
+    url: "https://www.hanaranam.com",
+    siteName: "Hanara Nam",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hanara Nam — Portfolio",
+    description:
+      "Multidisciplinary designer crafting thoughtful interfaces for complex systems.",
   },
 };
 
