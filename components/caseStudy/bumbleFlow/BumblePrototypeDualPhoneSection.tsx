@@ -9,6 +9,7 @@ import {
 } from "react";
 import { bumblePrototypeDualPhone } from "@/content/bumbleFlowCaseStudy";
 import dp from "./bumblePrototypeDualPhone.module.css";
+import { useWalkthroughStepGestures } from "./useWalkthroughStepGestures";
 
 /**
  * Premium × Premium scroll-driven walkthrough.
@@ -341,53 +342,16 @@ export function PrototypeDualPhoneWalkthrough() {
     };
   }, [steps.length]);
 
-  // —— Effect: wheel-snap one step per gesture while the panel is pinned ——
-  // The pin is `steps.length * 100vh` tall, so native momentum scroll crosses a
-  // variable number of step boundaries per swipe. While the sticky panel fills
-  // the viewport we intercept the wheel and advance exactly one step, letting
-  // native scroll through only at the first/last dot so the section can be
-  // entered and exited normally.
-  useEffect(() => {
-    const COOLDOWN_MS = 680;
-
-    const onWheel = (e: WheelEvent) => {
-      const pin = pinRef.current;
-      if (!pin) return;
-
-      const rect = pin.getBoundingClientRect();
-      const viewportH = window.innerHeight;
-      // Engaged only while the sticky panel is locked to the viewport.
-      const engaged = rect.top <= 0 && rect.bottom >= viewportH;
-      if (!engaged) return; // entry / exit → native scroll
-
-      // Ignore horizontal / negligible wheel noise.
-      if (e.deltaY === 0 || Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
-
-      const dir = e.deltaY > 0 ? 1 : -1;
-      const current = stepRef.current;
-      const target = current + dir;
-
-      // At a boundary in this direction → release to native scroll so the user
-      // can leave the walkthrough.
-      if (target < 0 || target > lastIndex) return;
-
-      // Inside the walkthrough: this gesture is ours.
-      e.preventDefault();
-
-      const now = performance.now();
-      if (now < wheelCooldownUntilRef.current) return; // swallow momentum tail
-      wheelCooldownUntilRef.current = now + COOLDOWN_MS;
-
-      stepSourceRef.current = "click";
-      stepRef.current = target;
-      scrollLockUntilRef.current = Number.POSITIVE_INFINITY;
-      nonScrollChangeAtRef.current = now;
-      setStepIndex(target);
-    };
-
-    window.addEventListener("wheel", onWheel, { passive: false });
-    return () => window.removeEventListener("wheel", onWheel);
-  }, [lastIndex]);
+  useWalkthroughStepGestures({
+    pinRef,
+    stepRef,
+    lastIndex,
+    setStepIndex,
+    stepSourceRef,
+    scrollLockUntilRef,
+    wheelCooldownUntilRef,
+    nonScrollChangeAtRef,
+  });
 
   // —— Effect: Kevin timeupdate → pause-for-Lindsey, auto-advance step ——
   useEffect(() => {

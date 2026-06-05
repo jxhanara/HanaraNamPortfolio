@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { WorkNavLink } from "@/components/home/WorkNavLink";
 import styles from "./SiteFooter.module.css";
 
 const RESUME_URL =
@@ -50,9 +49,6 @@ export function SiteFooter() {
             <h5 className={styles.footColTitle}>Main</h5>
             <ul className={styles.footList}>
               <li>
-                <WorkNavLink className={styles.footLink}>Work</WorkNavLink>
-              </li>
-              <li>
                 <Link className={styles.footLink} href="/">
                   Home
                 </Link>
@@ -61,6 +57,16 @@ export function SiteFooter() {
                 <Link className={styles.footLink} href="/about">
                   About
                 </Link>
+              </li>
+              <li>
+                <a
+                  className={styles.footLink}
+                  href={RESUME_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Resume
+                </a>
               </li>
             </ul>
           </div>
@@ -76,17 +82,6 @@ export function SiteFooter() {
                   rel="noreferrer"
                 >
                   LinkedIn
-                  <IconArrowOut />
-                </a>
-              </li>
-              <li>
-                <a
-                  className={styles.footLinkExt}
-                  href={RESUME_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Resume
                   <IconArrowOut />
                 </a>
               </li>

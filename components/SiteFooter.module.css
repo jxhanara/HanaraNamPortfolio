@@ -165,6 +165,12 @@
 
 @media (max-width: 1000px) {
   .footGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    column-gap: clamp(40px, 14vw, 72px);
+    row-gap: clamp(28px, 6vw, 40px);
+  }
+
+  .footEmailBlock {
+    grid-column: 1 / -1;
   }
 }

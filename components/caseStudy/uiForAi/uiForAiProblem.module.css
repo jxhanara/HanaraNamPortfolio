@@ -226,8 +226,28 @@
     align-items: start;
   }
 
-  .mockupFrame {
-    min-height: 320px;
+  .mockupFrameStacked {
+    min-height: 0;
+    height: auto !important;
+    overflow: hidden;
+  }
+
+  .mockupFrameStacked .mockupFade {
+    display: none;
+  }
+
+  .mockupFrameStacked .mockupBody {
+    flex: 0 0 auto;
+    overflow: hidden;
+  }
+
+  .mockupFrameStacked .mockupScroll {
+    padding-right: 0;
+  }
+
+  /* End on the YOU bubble before the AI row with callout #2 */
+  .mockupScroll .msgRow:nth-child(n + 6) {
+    display: none;
   }
 
   .calloutBadge {

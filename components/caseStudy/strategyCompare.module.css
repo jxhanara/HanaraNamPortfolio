@@ -1,0 +1,137 @@
+/* FROM / TO comparison — desktop: paired rows; mobile: all From, then all To */
+
+.compare {
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.compareDesktop {
+  display: block;
+}
+
+.compareMobile {
+  display: none;
+}
+
+.compareHead {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(20px, 3.2vw, 36px);
+  padding: clamp(12px, 1.6vw, 16px) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fromColLabel {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.compare[data-accent="trippy"] .fromColLabel {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.toColLabel {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: 1.45;
+}
+
+.compare[data-accent="bumble"] .toColLabel {
+  color: #ffce08;
+}
+
+.compare[data-accent="trippy"] .toColLabel {
+  color: #3881ff;
+}
+
+.compareRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(20px, 3.2vw, 36px);
+  padding: clamp(14px, 1.8vw, 18px) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.compareRow:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.pivotBlock + .pivotBlock {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pivotBlockLabel {
+  margin: 0;
+  padding: clamp(12px, 1.6vw, 16px) 0 clamp(10px, 1.4vw, 14px);
+}
+
+.pivotItem {
+  padding: clamp(14px, 1.8vw, 18px) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pivotItem:last-child {
+  border-bottom: none;
+  padding-bottom: clamp(8px, 1.2vw, 12px);
+}
+
+.cell {
+  min-width: 0;
+}
+
+.rowTitleFrom {
+  margin: 0 0 6px;
+  font-family: var(--font-instrument-serif), serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(20px, 2.35vw, 26px);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.42);
+  text-decoration: line-through;
+  text-decoration-color: rgba(255, 255, 255, 0.35);
+  text-decoration-thickness: 1px;
+}
+
+.rowTitleTo {
+  margin: 0 0 6px;
+  font-family: var(--font-instrument-serif), serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(20px, 2.35vw, 26px);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.rowBody {
+  margin: 0;
+  font-size: clamp(14px, 1.45vw, 15px);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.compare[data-accent="trippy"] .rowBody {
+  font-size: 15.2px;
+  line-height: 1.62;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+@media (max-width: 720px) {
+  .compareDesktop {
+    display: none;
+  }
+
+  .compareMobile {
+    display: block;
+  }
+}

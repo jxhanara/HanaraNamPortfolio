@@ -9,6 +9,7 @@ import {
 } from "react";
 import { bumbleFreeFreeDualPhone } from "@/content/bumbleFlowCaseStudy";
 import dp from "./bumblePrototypeDualPhone.module.css";
+import { useWalkthroughStepGestures } from "./useWalkthroughStepGestures";
 
 type StepSource = "init" | "scroll" | "click";
 
@@ -273,42 +274,16 @@ export function PrototypeFreeFreeWalkthrough() {
     };
   }, [steps.length]);
 
-  // —— Wheel-snap one step per gesture while the panel is pinned ——
-  useEffect(() => {
-    const COOLDOWN_MS = 680;
-
-    const onWheel = (e: WheelEvent) => {
-      const pin = pinRef.current;
-      if (!pin) return;
-
-      const rect = pin.getBoundingClientRect();
-      const viewportH = window.innerHeight;
-      const engaged = rect.top <= 0 && rect.bottom >= viewportH;
-      if (!engaged) return;
-
-      if (e.deltaY === 0 || Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
-
-      const dir = e.deltaY > 0 ? 1 : -1;
-      const current = stepRef.current;
-      const target = current + dir;
-      if (target < 0 || target > lastIndex) return;
-
-      e.preventDefault();
-
-      const now = performance.now();
-      if (now < wheelCooldownUntilRef.current) return;
-      wheelCooldownUntilRef.current = now + COOLDOWN_MS;
-
-      stepSourceRef.current = "click";
-      stepRef.current = target;
-      scrollLockUntilRef.current = Number.POSITIVE_INFINITY;
-      nonScrollChangeAtRef.current = now;
-      setStepIndex(target);
-    };
-
-    window.addEventListener("wheel", onWheel, { passive: false });
-    return () => window.removeEventListener("wheel", onWheel);
-  }, [lastIndex]);
+  useWalkthroughStepGestures({
+    pinRef,
+    stepRef,
+    lastIndex,
+    setStepIndex,
+    stepSourceRef,
+    scrollLockUntilRef,
+    wheelCooldownUntilRef,
+    nonScrollChangeAtRef,
+  });
 
   const activeStep = steps[stepIndex];
 

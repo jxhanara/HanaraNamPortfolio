@@ -54,9 +54,14 @@
   gap: 6px;
 }
 
+.tabItem {
+  display: flex;
+  flex-direction: column;
+}
+
 .tab {
   display: grid;
-  grid-template-columns: 48px 1fr;
+  grid-template-columns: 48px 1fr auto;
   gap: 20px;
   align-items: start;
   padding: 18px 0;
@@ -125,6 +130,35 @@
   letter-spacing: 0.01em;
 }
 
+.tabCaret {
+  display: none;
+  align-self: center;
+  justify-self: end;
+  flex-shrink: 0;
+  color: var(--color-muted);
+  transition:
+    transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.3s ease;
+}
+
+.tabCaretExpanded {
+  transform: rotate(180deg);
+  color: var(--color-accent-pink);
+}
+
+.tabActive .tabCaret {
+  color: var(--color-accent-pink);
+}
+
+.tabPanel {
+  display: none;
+}
+
+.tabPanelInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
 .detail {
   position: sticky;
   top: 24px;
@@ -175,6 +209,14 @@
     transition: none;
   }
 
+  .tabCaret {
+    transition: none;
+  }
+
+  .tabPanelOpen {
+    transition: none;
+  }
+
   .detail {
     animation: none;
   }
@@ -183,7 +225,7 @@
 @media (max-width: 800px) {
   .stage {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 0;
     width: 100%;
   }
 
@@ -192,12 +234,62 @@
   }
 
   .detail {
-    position: static;
-    padding-top: 0;
+    display: none;
+  }
+
+  .tabCaret {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
   }
 
   .tab {
-    grid-template-columns: 36px 1fr;
+    grid-template-columns: 36px 1fr 32px;
     padding: 14px 0;
+    align-items: center;
+  }
+
+  .tab:hover {
+    padding-left: 0;
+  }
+
+  .tabPanel {
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow: hidden;
+    transition: grid-template-rows 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .tabPanelOpen {
+    grid-template-rows: 1fr;
+  }
+
+  .tabPanel:not(.tabPanelOpen) .tabPanelInner {
+    visibility: hidden;
+  }
+
+  .tabPanelOpen .tabPanelInner {
+    visibility: visible;
+  }
+
+  .tabPanelInner {
+    min-height: 0;
+    overflow: hidden;
+    padding: 0 0 20px 56px;
+  }
+
+  /* Tab subtitle already shows the one-liner — body copy only when expanded */
+  .tabPanel .detailTitle {
+    display: none;
+  }
+
+  .tabPanel .detailBody p {
+    max-width: none;
+  }
+
+  .tabPanel .detailBody p:first-child {
+    margin-top: 0;
   }
 }

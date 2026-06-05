@@ -30,13 +30,25 @@ const MOCKUP_MESSAGES: MockupMessage[] = [
 ];
 
 const DIMMED_MESSAGE_COUNT = 4;
+/** Mobile: end on the YOU bubble immediately before the AI row with callout #2 */
+const MOCKUP_MOBILE_VISIBLE_COUNT = 5;
 const STACKED_MOCKUP_MQ = "(max-width: 900px)";
 
-function LongChatMockup({ heightPx }: { heightPx: number | null }) {
+function LongChatMockup({
+  heightPx,
+  isStacked,
+}: {
+  heightPx: number | null;
+  isStacked: boolean;
+}) {
+  const messages = isStacked
+    ? MOCKUP_MESSAGES.slice(0, MOCKUP_MOBILE_VISIBLE_COUNT)
+    : MOCKUP_MESSAGES;
+
   return (
     <div className={p.mockupCol}>
       <div
-        className={p.mockupFrame}
+        className={`${p.mockupFrame} ${isStacked ? p.mockupFrameStacked : ""}`}
         aria-hidden
         style={heightPx != null ? { height: heightPx } : undefined}
       >
@@ -44,7 +56,7 @@ function LongChatMockup({ heightPx }: { heightPx: number | null }) {
         <div className={p.mockupBody}>
           <div className={p.mockupFade} aria-hidden />
           <div className={p.mockupScroll}>
-            {MOCKUP_MESSAGES.map((message, index) => (
+            {messages.map((message, index) => (
               <div
                 key={index}
                 className={`${p.msgRow} ${message.role === "you" ? p.msgYou : p.msgAi} ${
@@ -72,13 +84,18 @@ function LongChatMockup({ heightPx }: { heightPx: number | null }) {
 export function UiForAiProblemSection() {
   const asideRef = useRef<HTMLDivElement>(null);
   const [mockupHeight, setMockupHeight] = useState<number | null>(null);
+  const [isStacked, setIsStacked] = useState(false);
 
   useEffect(() => {
     const el = asideRef.current;
     if (!el) return;
 
+    const mq = window.matchMedia(STACKED_MOCKUP_MQ);
+
     const syncHeight = () => {
-      if (window.matchMedia(STACKED_MOCKUP_MQ).matches) {
+      const stacked = mq.matches;
+      setIsStacked(stacked);
+      if (stacked) {
         setMockupHeight(null);
         return;
       }
@@ -88,10 +105,12 @@ export function UiForAiProblemSection() {
     syncHeight();
     const observer = new ResizeObserver(syncHeight);
     observer.observe(el);
+    mq.addEventListener("change", syncHeight);
     window.addEventListener("resize", syncHeight);
 
     return () => {
       observer.disconnect();
+      mq.removeEventListener("change", syncHeight);
       window.removeEventListener("resize", syncHeight);
     };
   }, []);
@@ -102,7 +121,7 @@ export function UiForAiProblemSection() {
       <h2 className={cs.h2}>{uiForAiProblem.title}</h2>
 
       <div className={p.problemSplit}>
-        <LongChatMockup heightPx={mockupHeight} />
+        <LongChatMockup heightPx={mockupHeight} isStacked={isStacked} />
 
         <div ref={asideRef} className={p.problemAside}>
           <p className={p.problemIntro}>{uiForAiProblem.intro}</p>

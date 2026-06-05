@@ -5,6 +5,12 @@
   overflow-x: clip;
 }
 
+@media (max-width: 1024px) {
+  .rail {
+    overflow-x: visible;
+  }
+}
+
 .tabPanel {
   margin-top: clamp(20px, 3vw, 28px);
   width: 100%;

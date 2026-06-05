@@ -1044,6 +1044,38 @@
   min-width: 0;
 }
 
+@media (max-width: 899px) {
+  .validationStatsStack {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: clamp(12px, 3.5vw, 18px);
+    row-gap: 0;
+    flex: none;
+    width: 100%;
+  }
+
+  .validationStatBlock {
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: left;
+  }
+
+  .validationStatsStack .statValue {
+    font-size: clamp(22px, 6.2vw, 30px);
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+  }
+
+  .validationStatsStack .statLabel {
+    margin-top: 8px;
+    font-size: clamp(10px, 2.6vw, 11.5px);
+    line-height: 1.4;
+    max-width: none;
+    width: 100%;
+  }
+}
+
 .validationStatBlock {
   min-width: 0;
 }
@@ -1833,25 +1865,29 @@
   color: rgba(255, 255, 255, 0.78);
 }
 
-/* Bumble validation — phones + flip cards share one 3-col rail grid */
+/* Bumble validation — each column: phone slice + issue card stacked */
 .validationThreeCol {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(8px, 2.4vw, 18px);
   width: 100%;
   max-width: 100%;
   min-width: 0;
   margin-top: clamp(16px, 2.5vw, 22px);
+  align-items: start;
 }
 
-.validationPhoneRow {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(14px, 2vw, 18px);
-  width: 100%;
+.validationCol {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 2vw, 14px);
+  min-width: 0;
 }
 
 .validationPhoneCol {
   position: relative;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: clamp(8px, 2vw, 12px);
   border: 1px solid var(--color-border-subtle);
   background: rgba(10, 10, 12, 0.5);
   line-height: 0;
@@ -1859,31 +1895,18 @@
   min-width: 0;
 }
 
-.validationPhoneSlice {
+.validationPhoneCol .validationPhoneSlice {
   width: 300% !important;
   max-width: none !important;
   height: auto !important;
+  object-fit: cover !important;
+  object-position: left top !important;
   display: block;
 }
 
-/* Bumble validation — three issue cards in one row; quote on card back (flip) */
-.caseStudyPageAccentBumble .issueTestStack {
-  margin-top: clamp(14px, 2vw, 18px);
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(14px, 2vw, 18px);
-}
-
-@media (min-width: 1024px) {
-  .caseStudyPageAccentBumble .validationPhoneRow {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    align-items: stretch;
-  }
-
-  .caseStudyPageAccentBumble .issueTestStack {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    align-items: stretch;
-  }
+/* Bumble validation — flip card under each phone column */
+.caseStudyPageAccentBumble .validationCol .issueTestFlip {
+  flex: 1 1 auto;
 }
 
 .caseStudyPageAccentBumble .issueTestFlip {
@@ -1960,6 +1983,58 @@
 
 .caseStudyPageAccentBumble .issueTestCardBullets {
   width: 100%;
+}
+
+/* Mobile / tablet: one phone + one card per row — sized to fit both in one viewport */
+@media (max-width: 1023px) {
+  .validationThreeCol {
+    grid-template-columns: 1fr;
+    gap: clamp(40px, 8vh, 56px);
+  }
+
+  .validationCol {
+    gap: clamp(10px, 2vh, 14px);
+  }
+
+  .validationPhoneCol {
+    width: min(330px, 91vw);
+    max-width: 100%;
+    height: auto;
+    margin-inline: auto;
+    aspect-ratio: 512 / 1024;
+  }
+
+  .validationPhoneCol .validationPhoneSlice {
+    width: 300% !important;
+    height: auto !important;
+    max-height: 100%;
+    object-fit: unset !important;
+    object-position: left top !important;
+  }
+
+  .caseStudyPageAccentBumble .validationCol .issueTestFlip {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  .caseStudyPageAccentBumble .validationCol .issueTestFlipFaceFront,
+  .caseStudyPageAccentBumble .validationCol .issueTestFlipFaceBack {
+    padding: clamp(14px, 3.5vw, 20px);
+  }
+
+  .caseStudyPageAccentBumble .validationCol .issueTestCardTitle {
+    font-size: 15px;
+  }
+
+  .caseStudyPageAccentBumble .validationCol .issueTestCardBullets {
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .caseStudyPageAccentBumble .validationCol .issueTestCardNum {
+    font-size: clamp(32px, 10vw, 44px);
+  }
 }
 
 .caseStudyPageAccentBumble .issueTestFlipFaceBack {

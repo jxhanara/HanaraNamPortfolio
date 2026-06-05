@@ -1009,14 +1009,17 @@
     white-space: normal;
   }
 
+  /* Mobile/tablet: keep all three recordings side by side (scaled down),
+     centered under the thumbnail, instead of stacking one per screen. */
   .mediaStrip {
-    grid-template-columns: 1fr;
-    max-width: 420px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(8px, 2.4vw, 16px);
+    max-width: var(--content-max);
   }
 
   .mediaCell {
-    aspect-ratio: 9 / 16;
-    max-height: 480px;
+    aspect-ratio: 321 / 624;
+    max-height: none;
   }
 }
 
@@ -1048,15 +1051,6 @@
 
   .heroMeta {
     font-size: 20px;
-  }
-
-  .projectHead {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .projectDate {
-    order: -1;
   }
 
   .navContent {

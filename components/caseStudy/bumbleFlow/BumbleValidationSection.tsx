@@ -5,6 +5,8 @@ import { caseStudyRailImageSizes } from "../caseStudyMedia";
 
 const INITIAL_CONCEPT_SRC = "/assets/bumbleflow/BumbleFlow_InitialConcept.png";
 
+const PHONE_SLICE_OFFSETS = ["translateX(0)", "translateX(-33.333%)", "translateX(-66.666%)"] as const;
+
 export function BumbleValidationSection() {
   return (
     <section id="validation" className={cs.section}>
@@ -15,9 +17,9 @@ export function BumbleValidationSection() {
       <p className={`${cs.body} ${cs.validationIssuesIntro}`}>{bumbleValidation.issuesIntro}</p>
 
       <div className={cs.validationThreeCol}>
-        <div className={cs.validationPhoneRow}>
-          {[0, 1, 2].map((index) => (
-            <div key={index} className={cs.validationPhoneCol}>
+        {bumbleValidation.issueModules.map((m, index) => (
+          <div key={m.n} className={cs.validationCol}>
+            <div className={cs.validationPhoneCol}>
               <Image
                 className={`${cs.validationConceptImg} ${cs.validationPhoneSlice}`}
                 src={INITIAL_CONCEPT_SRC}
@@ -25,24 +27,12 @@ export function BumbleValidationSection() {
                 width={bumbleValidation.initialConceptWidth}
                 height={bumbleValidation.initialConceptHeight}
                 sizes={caseStudyRailImageSizes}
-                style={{
-                  transform:
-                    index === 0
-                      ? "translateX(0)"
-                      : index === 1
-                        ? "translateX(-33.333%)"
-                        : "translateX(-66.666%)",
-                }}
-                aria-hidden
+                style={{ transform: PHONE_SLICE_OFFSETS[index] }}
+                aria-hidden={index !== 0}
               />
             </div>
-          ))}
-        </div>
 
-        <div className={cs.issueTestStack}>
-          {bumbleValidation.issueModules.map((m) => (
             <article
-              key={m.n}
               className={cs.issueTestFlip}
               tabIndex={0}
               aria-label={`${m.title}. Hover or focus to read user quote.`}
@@ -70,8 +60,8 @@ export function BumbleValidationSection() {
                 </div>
               </div>
             </article>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
 
       <div className={cs.validationSynthesisCallout}>

@@ -49,29 +49,26 @@
   min-width: 0;
 }
 
-@media (max-width: 980px) {
-  .scrollPinInner {
-    position: static;
-    height: auto;
-  }
-}
-
-/* —— Grid: phones (dominant) | timeline (slim) | description (narrow) —— */
+/* —— Walkthrough layout: mobile = vertical stack; desktop = 3-column grid —— */
 .walkthroughGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 2.1fr) auto minmax(0, 0.68fr);
-  gap: clamp(20px, 3vw, 44px);
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   width: 100%;
   min-width: 0;
+  gap: 0;
 }
 
-@media (max-width: 980px) {
+@media (min-width: 1025px) {
   .walkthroughGrid {
-    grid-template-columns: 1fr;
-    gap: 24px;
+    display: grid;
+    grid-template-columns: minmax(0, 2.1fr) auto minmax(0, 0.68fr);
+    gap: clamp(20px, 3vw, 44px);
+    align-items: center;
   }
 }
+
 
 /* —— Left column: dual phones —— */
 .phonesWrap {
@@ -218,11 +215,11 @@
   justify-content: center;
 }
 
-@media (max-width: 980px) {
+@media (max-width: 1024px) {
   .timelineColumn {
     flex-direction: row;
     height: auto;
-    padding: 8px 0;
+    overflow: visible;
   }
 }
 
@@ -236,10 +233,11 @@
   gap: 0;
 }
 
-@media (max-width: 980px) {
+@media (max-width: 1024px) {
   .timelineList {
     flex-direction: row;
     align-items: center;
+    width: 100%;
   }
 }
 
@@ -250,9 +248,16 @@
   gap: 0;
 }
 
-@media (max-width: 980px) {
+@media (max-width: 1024px) {
   .timelineItem {
     flex-direction: row;
+    flex: 1 1 0;
+    min-width: 0;
+    align-items: center;
+  }
+
+  .timelineItem:last-child {
+    flex: 0 0 auto;
   }
 }
 
@@ -261,6 +266,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   width: 15px;
   height: 15px;
   padding: 0;
@@ -302,6 +308,15 @@
   transform: scale(1.12);
 }
 
+@media (max-width: 1024px) {
+  .timelineDotActive {
+    transform: scale(1.08);
+    box-shadow:
+      0 0 0 3px rgba(255, 206, 8, 0.18),
+      0 0 8px rgba(255, 206, 8, 0.45);
+  }
+}
+
 .timelineLine {
   width: 1.5px;
   height: clamp(28px, 5vh, 56px);
@@ -312,9 +327,11 @@
   background: rgba(255, 255, 255, 0.32);
 }
 
-@media (max-width: 980px) {
+@media (max-width: 1024px) {
   .timelineLine {
-    width: clamp(20px, 4vw, 40px);
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 4px;
     height: 1.5px;
   }
 }
@@ -398,4 +415,123 @@
   line-height: 1.62;
   color: rgba(255, 255, 255, 0.74);
   max-width: 44ch;
+}
+
+/* Mobile / tablet: vertical stack — phones → timeline → step copy */
+@media (max-width: 1024px) {
+  .dualPhoneRail {
+    overflow-x: visible;
+  }
+
+  .scrollPinInner {
+    position: sticky;
+    top: var(--scroll-anchor-offset, 96px);
+    height: calc(100dvh - var(--scroll-anchor-offset, 96px) - 20px);
+    min-height: 0;
+    max-height: calc(100dvh - var(--scroll-anchor-offset, 96px) - 20px);
+    overflow-x: visible;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding-top: clamp(8px, 1.5vh, 16px);
+    box-sizing: border-box;
+  }
+
+  .walkthroughGrid {
+    height: 100%;
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow-x: visible;
+    overflow-y: hidden;
+    align-items: stretch;
+  }
+
+  .phonesWrap {
+    order: 1;
+    flex: 0 0 auto;
+    width: 100%;
+    align-items: stretch;
+    margin: 0 0 clamp(20px, 4vh, 32px);
+    justify-content: flex-start;
+  }
+
+  .phonesRow {
+    height: auto !important;
+    max-height: none !important;
+    flex: none !important;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: stretch;
+    gap: clamp(12px, 3vw, 20px);
+  }
+
+  /* Collapse hidden phone so the visible recording can span the full content rail */
+  .phoneColumn:has(.phoneStage.phoneHidden) {
+    display: none;
+  }
+
+  .phoneColumn {
+    height: auto !important;
+    max-height: none !important;
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: none;
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .phoneLabel {
+    align-self: flex-start;
+    width: 100%;
+  }
+
+  .phoneStage {
+    width: 100%;
+    height: auto;
+    max-height: min(54dvh, 520px);
+    max-width: 100%;
+    aspect-ratio: 375 / 812;
+  }
+
+  .timelineColumn {
+    order: 2;
+    flex: 0 0 auto;
+    width: 100%;
+    align-self: stretch;
+    height: auto !important;
+    min-height: 0;
+    margin: 0 0 clamp(18px, 3.5vh, 28px);
+    padding: clamp(6px, 1.2vh, 12px) clamp(10px, 2.5vw, 14px);
+    justify-content: stretch;
+    flex-direction: row;
+    overflow: visible;
+    box-sizing: border-box;
+  }
+
+  .timelineList {
+    width: 100%;
+    overflow: visible;
+  }
+
+  .descriptionColumn {
+    order: 3;
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 100%;
+    min-height: 0;
+    justify-self: unset;
+    text-align: left;
+    align-self: stretch;
+    padding: 0;
+  }
+
+  .stepCard {
+    min-height: 0;
+  }
+
+  .stepBody {
+    max-width: none;
+  }
 }

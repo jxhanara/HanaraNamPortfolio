@@ -216,9 +216,9 @@ export default function AboutPage() {
             <p className={styles.heroTag}>
               like <span>panera</span> &nbsp;:D
             </p>
-            <p className={`${styles.heroTag} ${styles.heroTagCenter}`}>
+            <p className={`${styles.heroTag} ${styles.heroTagCenter} ${styles.heroTagRight}`}>
               designer, daughter,
-              <br />
+              <br className={styles.heroTagBreak} />
               K-drama enthusiast.
             </p>
             <div className={styles.heroScroll}>Scroll to read</div>
@@ -504,38 +504,44 @@ export default function AboutPage() {
                     <i>/ {String(ARCHIVE.length).padStart(2, "0")}</i>
                   </span>
                 </div>
-                <h3 className={styles.dTitle}>{active.title}</h3>
-                <p className={styles.dMeta}>{active.meta}</p>
-                <p className={styles.dBlurb}>{active.blurb}</p>
-                {active.linkLabel && active.link ? (
-                  <a
-                    className={styles.dLink}
-                    href={active.link}
-                    {...(active.linkExternal
-                      ? { target: "_blank", rel: "noreferrer" }
-                      : {})}
-                  >
-                    {active.linkLabel}
-                  </a>
-                ) : null}
+                <div className={styles.lovesDetailContent}>
+                  <div className={styles.dBodyRow}>
+                    <div className={styles.dTitleStack}>
+                      <h3 className={styles.dTitle}>{active.title}</h3>
+                      <p className={styles.dMeta}>{active.meta}</p>
+                    </div>
+                    <p className={styles.dBlurb}>{active.blurb}</p>
+                  </div>
+                  {active.linkLabel && active.link ? (
+                    <a
+                      className={styles.dLink}
+                      href={active.link}
+                      {...(active.linkExternal
+                        ? { target: "_blank", rel: "noreferrer" }
+                        : {})}
+                    >
+                      {active.linkLabel}
+                    </a>
+                  ) : null}
 
-                <div className={styles.lovesNav}>
-                  <button
-                    type="button"
-                    className={styles.lovesNavBtn}
-                    onClick={() => selectArchive(activeIdx - 1)}
-                    aria-label="Previous photo"
-                  >
-                    ←
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.lovesNavBtn}
-                    onClick={() => selectArchive(activeIdx + 1)}
-                    aria-label="Next photo"
-                  >
-                    →
-                  </button>
+                  <div className={styles.lovesNav}>
+                    <button
+                      type="button"
+                      className={styles.lovesNavBtn}
+                      onClick={() => selectArchive(activeIdx - 1)}
+                      aria-label="Previous photo"
+                    >
+                      ←
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.lovesNavBtn}
+                      onClick={() => selectArchive(activeIdx + 1)}
+                      aria-label="Next photo"
+                    >
+                      →
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

@@ -279,7 +279,7 @@
   .centerColumn {
     grid-column: 1;
     grid-row: auto;
-    order: -1;
+    order: 3;
   }
 
   .centerHub {
