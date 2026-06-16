@@ -72,12 +72,37 @@
 
 /* —— Left column: dual phones —— */
 .phonesWrap {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
   min-width: 0;
   width: 100%;
+}
+
+.scrubSpeedBadge {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  z-index: 2;
+  transform: translateX(-50%);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 206, 8, 0.45);
+  background: rgba(42, 38, 14, 0.92);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #ffce08;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.scrubSpeedBadgeVisible {
+  opacity: 1;
 }
 
 .phonesRow {
@@ -299,6 +324,11 @@
   border-color: rgba(255, 255, 255, 0.28);
 }
 
+.timelineDotPassed {
+  background: #ffce08;
+  border-color: #ffce08;
+}
+
 .timelineDotActive {
   background: #ffce08;
   border-color: #ffce08;
@@ -323,6 +353,24 @@
   background: rgba(255, 255, 255, 0.18);
 }
 
+.timelineLineTrack {
+  position: relative;
+  flex-shrink: 0;
+  width: 1.5px;
+  height: clamp(28px, 5vh, 56px);
+  background: rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+}
+
+.timelineLineFill {
+  position: absolute;
+  inset: 0;
+  background: #ffce08;
+  transform-origin: top center;
+  transform: scaleY(var(--segment-fill, 0));
+  will-change: transform;
+}
+
 .timelineLinePast {
   background: rgba(255, 255, 255, 0.32);
 }
@@ -333,6 +381,18 @@
     width: auto;
     min-width: 4px;
     height: 1.5px;
+  }
+
+  .timelineLineTrack {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 4px;
+    height: 1.5px;
+  }
+
+  .timelineLineFill {
+    transform-origin: left center;
+    transform: scaleX(var(--segment-fill, 0));
   }
 }
 
