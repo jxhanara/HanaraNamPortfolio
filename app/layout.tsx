@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Caveat, Cormorant, DM_Sans, Instrument_Serif } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { LeaveAMarkRoot } from "@/components/leaveAMark/LeaveAMarkRoot";
 import "./globals.css";
 
@@ -77,6 +78,7 @@ export default function RootLayout({
       </head>
       <body className={dmSans.className}>
         <LeaveAMarkRoot>{children}</LeaveAMarkRoot>
+        <Analytics />
       </body>
     </html>
   );
