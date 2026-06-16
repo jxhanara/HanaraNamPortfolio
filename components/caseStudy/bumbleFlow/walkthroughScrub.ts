@@ -56,6 +56,13 @@ export type DualPhoneScrubStep = {
   jenniferEndTime?: number | null;
 };
 
+/** Which phones are actively playing in a step — used to group steps into phases. */
+function stepPlaybackSignature(step: DualPhoneScrubStep): string {
+  const johnActive = step.johnVisible !== false && step.johnPlay;
+  const jenniferActive = step.jenniferVisible && step.jenniferPlay;
+  return `${johnActive ? 1 : 0}-${jenniferActive ? 1 : 0}`;
+}
+
 export type DualPhoneScrubState = {
   stepIndex: number;
   stepFloat: number;
@@ -81,14 +88,15 @@ export function resolveDualPhoneScrub(
   const step = steps[idx];
   const next = idx < n - 1 ? steps[idx + 1] : null;
 
-  const johnEnd = segmentEnd(
+  // Per-step ends drive the scrub position (each step maps to its own slice).
+  const johnStepEnd = segmentEnd(
     step.johnPauseAt,
     step.johnTime,
     next?.johnTime,
     step.johnEndTime,
     durations.john,
   );
-  const jenniferEnd = segmentEnd(
+  const jenniferStepEnd = segmentEnd(
     step.jenniferPauseAt,
     step.jenniferTime,
     next?.jenniferTime,
@@ -99,15 +107,56 @@ export function resolveDualPhoneScrub(
   const johnVisible = step.johnVisible !== false;
   const jenniferVisible = step.jenniferVisible;
 
+  // A "phase" is a run of consecutive steps where the same phone(s) are
+  // playing. Within a phase the video should play straight through on release;
+  // it only pauses at the phase boundary, where a phone hands off to the other.
+  // Without this it stops at every intermediate dot, which reads as "it keeps
+  // stopping."
+  const phaseSig = stepPlaybackSignature(step);
+  let phaseLast = idx;
+  while (
+    phaseLast + 1 < n &&
+    stepPlaybackSignature(steps[phaseLast + 1]) === phaseSig
+  ) {
+    phaseLast += 1;
+  }
+  const lastInPhase = steps[phaseLast];
+  const afterPhase = phaseLast < n - 1 ? steps[phaseLast + 1] : null;
+
+  const johnEnd = segmentEnd(
+    lastInPhase.johnPauseAt,
+    lastInPhase.johnTime,
+    afterPhase?.johnTime,
+    lastInPhase.johnEndTime,
+    durations.john,
+  );
+  const jenniferEnd = segmentEnd(
+    lastInPhase.jenniferPauseAt,
+    lastInPhase.jenniferTime,
+    afterPhase?.jenniferTime,
+    lastInPhase.jenniferEndTime,
+    durations.jennifer,
+  );
+
+  // The final step of the whole walkthrough has no following dot to scrub
+  // toward, so the scroll range would otherwise drag the video to its very end —
+  // leaving nothing to play on release. Pin playable videos to the segment start
+  // so releasing on the final step plays the closing segment through at 1×.
+  const isLastStep = idx >= n - 1;
+
   const johnTime =
-    johnVisible && (step.johnPlay || step.johnTime < johnEnd)
-      ? lerp(step.johnTime, johnEnd, t)
-      : step.johnTime;
+    isLastStep
+      ? step.johnTime
+      : johnVisible && (step.johnPlay || step.johnTime < johnStepEnd)
+        ? lerp(step.johnTime, johnStepEnd, t)
+        : step.johnTime;
 
   const jenniferTime =
-    jenniferVisible && step.jenniferPlay
-      ? lerp(step.jenniferTime, jenniferEnd, t)
-      : step.jenniferTime;
+    isLastStep
+      ? step.jenniferTime
+      : jenniferVisible && step.jenniferPlay
+        ? lerp(step.jenniferTime, jenniferStepEnd, t)
+        : step.jenniferTime;
 
   return {
     stepIndex: idx,
