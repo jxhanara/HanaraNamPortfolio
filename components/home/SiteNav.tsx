@@ -7,7 +7,7 @@ import { useLeaveAMarkNavOptional } from "@/components/leaveAMark/LeaveAMarkNavC
 import styles from "./styles.module.css";
 
 const RESUME_URL =
-  "https://drive.google.com/file/d/10sxb5ZLAJiee6GgIrhVycpQjIIojwHlZ/view?usp=sharing";
+  "https://drive.google.com/file/d/1MQQmkibNpp2091AASSpuvas77AQEfqPZ/view?usp=sharing";
 
 function NavPrimaryLinks() {
   return (
