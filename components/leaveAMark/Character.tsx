@@ -4,7 +4,7 @@ import { useId } from "react";
 import type { Gradient } from "./constants";
 import styles from "./LeaveAMark.module.css";
 
-const CHARACTER_SRC = "/images/cutecharacter.png";
+const CHARACTER_SRC = "/images/leaveamark.png";
 
 export type CharacterPose = "idle" | "hover" | "active" | "wave" | "tap";
 

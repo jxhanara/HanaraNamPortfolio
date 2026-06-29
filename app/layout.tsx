@@ -74,7 +74,7 @@ export default function RootLayout({
       <head>
         {/* Mark mounts client-side after hydration; warming the sprite in cache
             avoids a visible pop-in when the launcher/intro first paints. */}
-        <link rel="preload" as="image" href="/images/cutecharacter.png" />
+        <link rel="preload" as="image" href="/images/leaveamark.png" />
       </head>
       <body className={dmSans.className}>
         <LeaveAMarkRoot>{children}</LeaveAMarkRoot>
