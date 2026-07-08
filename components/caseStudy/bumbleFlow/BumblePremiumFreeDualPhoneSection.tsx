@@ -32,6 +32,12 @@ export function PrototypePremiumFreeWalkthrough() {
     jenniferVideoRef,
     setJohnVisible,
     setJenniferVisible,
+    handoff: {
+      handoffStepIndex: bumblePremiumFreeDualPhone.handoffStepIndex,
+      johnPauseAtSendTime: bumblePremiumFreeDualPhone.johnPauseAtSendTime,
+      jenniferSendTime: bumblePremiumFreeDualPhone.jenniferSendTime,
+      johnResumeAtReceiveTime: bumblePremiumFreeDualPhone.johnResumeAtReceiveTime,
+    },
   });
 
   const { stepFloat, stepIndex, isScrubbing } = useWalkthroughPinScroll({

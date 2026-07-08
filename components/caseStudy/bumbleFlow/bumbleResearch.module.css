@@ -1,5 +1,15 @@
 /* Research — theme cards + engagement / bridge blocks */
 
+.analyticsLink {
+  color: #ffce08;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.analyticsLink:hover {
+  color: #ffe566;
+}
+
 .whyBlock {
   margin-top: clamp(32px, 4vw, 44px);
   display: flex;

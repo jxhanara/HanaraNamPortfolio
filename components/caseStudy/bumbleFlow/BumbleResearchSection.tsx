@@ -9,11 +9,29 @@ export function BumbleResearchSection() {
     <section id="research" className={cs.section}>
       <p className={cs.sectionEyebrow}>{bumbleResearch.eyebrow}</p>
       <h2 className={cs.h2}>{bumbleResearch.title}</h2>
-      {bumbleResearch.lead.map((p) => (
-        <p key={p.slice(0, 32)} className={cs.body}>
-          {p}
-        </p>
-      ))}
+      {bumbleResearch.lead.map((p) => {
+        const [before, after] = p.split("{{analyticsLink}}");
+        return (
+          <p key={p.slice(0, 32)} className={cs.body}>
+            {after !== undefined ? (
+              <>
+                {before}
+                <a
+                  href={bumbleResearch.analyticsLinkHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={rs.analyticsLink}
+                >
+                  {bumbleResearch.analyticsLinkText}
+                </a>
+                {after}
+              </>
+            ) : (
+              p
+            )}
+          </p>
+        );
+      })}
 
       <BumbleEngagementDropVisual />
 

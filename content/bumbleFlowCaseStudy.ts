@@ -75,8 +75,11 @@ export const bumbleResearch = {
   title:
     "Proximity without intent is not a date. It is a notification users learned to ignore.",
   lead: [
-    "While the brief focused on proximity, the data told a different story — engagement with proximity alerts fell from 18% to 6% in six months, suggesting “nearby” wasn’t enough to motivate users.",
+    'The brief called for proximity features to boost engagement. But before jumping into design, I looked at the provided {{analyticsLink}} to check whether proximity alerts were even working. They weren’t. Engagement had dropped from 18% to 6% in six months, meaning users being "nearby" wasn’t translating into them actually doing anything.',
   ],
+  analyticsLinkText: "2025 analytics",
+  analyticsLinkHref:
+    "https://docs.google.com/spreadsheets/d/1e5G8JZvvEZIklNBvOK40mduajiMdeOMR/edit?gid=1264720868#gid=1264720868",
   engagementCaption: "Engagement with proximity alerts",
   engagementWasLabel: "Six months ago",
   engagementWasValue: "18%",
@@ -492,7 +495,7 @@ export const bumblePrototypeDualPhone = {
    */
   kevinPauseAtTime: 112,
   lindseyResumeKevinAt: 19,
-  kevinResumeAtTime: 118 as number | null,
+  kevinResumeAtTime: 119 as number | null,
   /**
    * Each step exposes:
    *   - `kevinTime` — where to seek Kevin's recording when this step becomes active
@@ -593,6 +596,17 @@ export const bumblePremiumFreeDualPhone = {
   title: "Protected availability, guided coordination",
   description:
     "With only one synced calendar, the system helps both users coordinate while keeping availability private. John (Free) is on the left, Jennifer (Premium) on the right. John suggests broad time windows, while Jennifer sees specific options based on her schedule. Scroll to advance the timeline.",
+  /**
+   * Chat-suggestion sync (steps 4–6).
+   *   - John freezes at `johnPauseAtSendTime` (33s — yellow send only).
+   *   - Jennifer plays profile + calendar (steps 4–5 first half).
+   *   - Once Jennifer reaches `jenniferSendTime` (17s — yellow send bubble),
+   *     John resumes at `johnResumeAtReceiveTime` (35s — received message).
+   */
+  handoffStepIndex: 4,
+  johnPauseAtSendTime: 33,
+  jenniferSendTime: 17,
+  johnResumeAtReceiveTime: 35,
   steps: [
     {
       id: "discovering-match",
@@ -665,7 +679,7 @@ export const bumblePremiumFreeDualPhone = {
       title: "Clear Boundaries Between Free and Premium",
       body: "John receives Jennifer’s proposed time and can accept it or continue the conversation. He can see the meeting suggestion, but not Jennifer’s full availability. This keeps scheduling easy while preserving the value of Premium access.",
       johnTime: 33,
-      johnPlay: true,
+      johnPlay: false,
       johnPauseAt: null as number | null,
       jenniferVisible: true,
       jenniferTime: 17,

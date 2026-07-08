@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, type MutableRefObject } from "react";
 import type { KevinLindseyScrubState, KevinLindseyScrubStep } from "./walkthroughScrub";
-import { resolveKevinLindseyScrub } from "./walkthroughScrub";
+import { resolveKevinLindseyScrub, kevinLindseyHandoffPhase } from "./walkthroughScrub";
 import {
   playVideoNormal,
   scrubVideo,
@@ -36,12 +36,23 @@ export function useKevinLindseyWalkthroughPlayback({
   const inViewRef = useRef(false);
   const kevinLimitsRef = useRef<WalkthroughPlaybackLimits | null>(null);
   const lindseyLimitsRef = useRef<WalkthroughPlaybackLimits | null>(null);
+  const handoffSyncedRef = useRef(false);
+  const isScrollingRef = useRef(false);
+  const stepFloatRef = useRef(0);
 
   useSegmentBoundaryPause(kevinVideoRef, kevinLimitsRef);
   useSegmentBoundaryPause(lindseyVideoRef, lindseyLimitsRef);
 
   const applyState = useCallback(
     (state: KevinLindseyScrubState, isScrolling: boolean) => {
+      isScrollingRef.current = isScrolling;
+      stepFloatRef.current = state.stepFloat;
+
+      const handoffStepIndex = steps.findIndex((s) => s.lindseyShowAtKevinTime != null);
+      if (state.stepIndex !== handoffStepIndex) {
+        handoffSyncedRef.current = false;
+      }
+
       setLindseyVisible(state.lindseyVisible);
 
       kevinLimitsRef.current = {
@@ -60,8 +71,10 @@ export function useKevinLindseyWalkthroughPlayback({
         pin != null &&
         pin.getBoundingClientRect().top < window.innerHeight &&
         pin.getBoundingClientRect().bottom > 0;
+      inViewRef.current = inView;
 
       if (isScrolling || !inView) {
+        handoffSyncedRef.current = false;
         scrubVideo(kevin, state.kevinTime);
         scrubVideo(lindsey, state.lindseyTime);
         return;
@@ -79,7 +92,7 @@ export function useKevinLindseyWalkthroughPlayback({
         scrubVideo(lindsey, state.lindseyTime);
       }
     },
-    [kevinVideoRef, lindseyVideoRef, pinRef, setLindseyVisible],
+    [steps, kevinVideoRef, lindseyVideoRef, pinRef, setLindseyVisible],
   );
 
   const applyScrub = useCallback(
@@ -104,6 +117,56 @@ export function useKevinLindseyWalkthroughPlayback({
       applyState,
     ],
   );
+
+  // When Lindsey reaches her Send moment during idle playback, resume Kevin
+  // at the frame where he receives her counter-suggestion.
+  useEffect(() => {
+    const lindsey = lindseyVideoRef.current;
+    if (!lindsey || kevinResumeAtTime == null) return;
+
+    const handoffStepIndex = steps.findIndex((s) => s.lindseyShowAtKevinTime != null);
+    if (handoffStepIndex < 0) return;
+
+    const onTime = () => {
+      if (
+        isScrollingRef.current ||
+        handoffSyncedRef.current ||
+        !inViewRef.current ||
+        kevinLindseyHandoffPhase(stepFloatRef.current, handoffStepIndex) !== "lindsey-send"
+      ) {
+        return;
+      }
+
+      if (lindsey.currentTime < lindseyResumeKevinAt - 0.08) return;
+
+      handoffSyncedRef.current = true;
+
+      const kevin = kevinVideoRef.current;
+      const nextKevinEnd =
+        handoffStepIndex < steps.length - 1
+          ? steps[handoffStepIndex + 1].kevinTime
+          : durationsRef.current.kevin;
+
+      kevinLimitsRef.current = { shouldPlay: true, end: nextKevinEnd };
+      lindseyLimitsRef.current = {
+        shouldPlay: true,
+        end: durationsRef.current.lindsey,
+      };
+
+      playVideoNormal(kevin, kevinResumeAtTime);
+      playVideoNormal(lindsey, lindsey.currentTime);
+    };
+
+    lindsey.addEventListener("timeupdate", onTime);
+    return () => lindsey.removeEventListener("timeupdate", onTime);
+  }, [
+    steps,
+    durationsRef,
+    kevinVideoRef,
+    lindseyVideoRef,
+    lindseyResumeKevinAt,
+    kevinResumeAtTime,
+  ]);
 
   useEffect(() => {
     const pin = pinRef.current;

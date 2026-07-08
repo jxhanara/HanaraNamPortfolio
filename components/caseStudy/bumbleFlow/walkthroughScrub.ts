@@ -63,6 +63,32 @@ function stepPlaybackSignature(step: DualPhoneScrubStep): string {
   return `${johnActive ? 1 : 0}-${jenniferActive ? 1 : 0}`;
 }
 
+export type DualPhoneHandoffConfig = {
+  /** Step index (0-based) where Jennifer sends and John resumes — step 5 = 4. */
+  handoffStepIndex: number;
+  /** John freezes here after sending his yellow suggestion. */
+  johnPauseAtSendTime: number;
+  /** Jennifer's yellow send bubble in her recording. */
+  jenniferSendTime: number;
+  /** John seeks here once Jennifer sends so he shows the received message. */
+  johnResumeAtReceiveTime: number;
+};
+
+/** Scroll fraction within the handoff step (must match resolveDualPhoneScrub). */
+export const DUAL_PHONE_HANDOFF = {
+  jenniferSendEnd: 0.5,
+} as const;
+
+export function dualPhoneHandoffPhase(
+  stepFloat: number,
+  handoffStepIndex: number,
+): "jennifer-send" | "sync" | null {
+  if (Math.floor(stepFloat) !== handoffStepIndex) return null;
+  const t = stepFloat - handoffStepIndex;
+  if (t < DUAL_PHONE_HANDOFF.jenniferSendEnd) return "jennifer-send";
+  return "sync";
+}
+
 export type DualPhoneScrubState = {
   stepIndex: number;
   stepFloat: number;
@@ -80,6 +106,7 @@ export function resolveDualPhoneScrub(
   steps: readonly DualPhoneScrubStep[],
   stepFloat: number,
   durations: { john: number; jennifer: number },
+  handoff?: DualPhoneHandoffConfig,
 ): DualPhoneScrubState {
   const n = steps.length;
   const clamped = Math.max(0, Math.min(stepFloat, n - 0.0001));
@@ -110,8 +137,6 @@ export function resolveDualPhoneScrub(
   // A "phase" is a run of consecutive steps where the same phone(s) are
   // playing. Within a phase the video should play straight through on release;
   // it only pauses at the phase boundary, where a phone hands off to the other.
-  // Without this it stops at every intermediate dot, which reads as "it keeps
-  // stopping."
   const phaseSig = stepPlaybackSignature(step);
   let phaseLast = idx;
   while (
@@ -123,14 +148,14 @@ export function resolveDualPhoneScrub(
   const lastInPhase = steps[phaseLast];
   const afterPhase = phaseLast < n - 1 ? steps[phaseLast + 1] : null;
 
-  const johnEnd = segmentEnd(
+  let johnEnd = segmentEnd(
     lastInPhase.johnPauseAt,
     lastInPhase.johnTime,
     afterPhase?.johnTime,
     lastInPhase.johnEndTime,
     durations.john,
   );
-  const jenniferEnd = segmentEnd(
+  let jenniferEnd = segmentEnd(
     lastInPhase.jenniferPauseAt,
     lastInPhase.jenniferTime,
     afterPhase?.jenniferTime,
@@ -138,25 +163,76 @@ export function resolveDualPhoneScrub(
     durations.jennifer,
   );
 
-  // The final step of the whole walkthrough has no following dot to scrub
-  // toward, so the scroll range would otherwise drag the video to its very end —
-  // leaving nothing to play on release. Pin playable videos to the segment start
-  // so releasing on the final step plays the closing segment through at 1×.
   const isLastStep = idx >= n - 1;
+  const jenniferOnlyStepIndex = handoff
+    ? steps.findIndex((s) => s.jenniferVisible && s.jenniferPlay && !s.johnPlay)
+    : -1;
 
-  const johnTime =
-    isLastStep
-      ? step.johnTime
-      : johnVisible && (step.johnPlay || step.johnTime < johnStepEnd)
-        ? lerp(step.johnTime, johnStepEnd, t)
-        : step.johnTime;
+  let johnTime: number;
+  let jenniferTime: number;
+  let johnShouldPlay = johnVisible && step.johnPlay;
+  let jenniferShouldPlay = jenniferVisible && step.jenniferPlay;
 
-  const jenniferTime =
-    isLastStep
-      ? step.jenniferTime
-      : jenniferVisible && step.jenniferPlay
+  if (handoff && idx === handoff.handoffStepIndex) {
+    // Step 5: first half Jennifer sends, second half John receives.
+    const JENNIFER_SEND_END = DUAL_PHONE_HANDOFF.jenniferSendEnd;
+    const jenniferStart = step.jenniferTime;
+
+    if (t < JENNIFER_SEND_END) {
+      johnTime = handoff.johnPauseAtSendTime;
+      jenniferTime = lerp(
+        jenniferStart,
+        handoff.jenniferSendTime,
+        t / JENNIFER_SEND_END,
+      );
+      johnShouldPlay = false;
+      jenniferShouldPlay = true;
+      johnEnd = handoff.johnPauseAtSendTime;
+      jenniferEnd = handoff.jenniferSendTime;
+    } else {
+      const tail = (t - JENNIFER_SEND_END) / (1 - JENNIFER_SEND_END);
+      johnTime = lerp(handoff.johnResumeAtReceiveTime, durations.john, tail);
+      jenniferTime = lerp(handoff.jenniferSendTime, durations.jennifer, tail);
+      johnShouldPlay = true;
+      jenniferShouldPlay = true;
+      johnEnd = durations.john;
+      jenniferEnd = durations.jennifer;
+    }
+  } else if (
+    handoff &&
+    idx >= jenniferOnlyStepIndex &&
+    idx < handoff.handoffStepIndex
+  ) {
+    // Step 4: Jennifer only — John stays frozen on his sent message.
+    johnTime = handoff.johnPauseAtSendTime;
+    jenniferTime =
+      jenniferVisible && step.jenniferPlay
         ? lerp(step.jenniferTime, jenniferStepEnd, t)
         : step.jenniferTime;
+    johnShouldPlay = false;
+    jenniferShouldPlay = jenniferVisible && step.jenniferPlay;
+    johnEnd = handoff.johnPauseAtSendTime;
+  } else if (handoff && isLastStep) {
+    // Step 6: both pick up after the sync and play to the end.
+    johnTime = handoff.johnResumeAtReceiveTime;
+    jenniferTime = handoff.jenniferSendTime;
+    johnShouldPlay = true;
+    jenniferShouldPlay = true;
+    johnEnd = durations.john;
+    jenniferEnd = durations.jennifer;
+  } else if (isLastStep) {
+    johnTime = step.johnTime;
+    jenniferTime = step.jenniferTime;
+  } else {
+    johnTime =
+      johnVisible && (step.johnPlay || step.johnTime < johnStepEnd)
+        ? lerp(step.johnTime, johnStepEnd, t)
+        : step.johnTime;
+    jenniferTime =
+      jenniferVisible && step.jenniferPlay
+        ? lerp(step.jenniferTime, jenniferStepEnd, t)
+        : step.jenniferTime;
+  }
 
   return {
     stepIndex: idx,
@@ -165,8 +241,8 @@ export function resolveDualPhoneScrub(
     jenniferTime,
     johnVisible,
     jenniferVisible,
-    johnShouldPlay: johnVisible && step.johnPlay,
-    jenniferShouldPlay: jenniferVisible && step.jenniferPlay,
+    johnShouldPlay,
+    jenniferShouldPlay,
     johnEnd,
     jenniferEnd,
   };
@@ -176,6 +252,23 @@ export type KevinLindseyScrubStep = {
   kevinTime: number;
   lindseyShowAtKevinTime: number | null;
 };
+
+/** Scroll fractions within the step-5 handoff (must match resolveKevinLindseyScrub). */
+export const KEVIN_LINDSEY_HANDOFF = {
+  kevinSendEnd: 0.42,
+  lindseySendEnd: 0.72,
+} as const;
+
+export function kevinLindseyHandoffPhase(
+  stepFloat: number,
+  handoffStepIndex: number,
+): "kevin-send" | "lindsey-send" | "sync" | null {
+  if (Math.floor(stepFloat) !== handoffStepIndex) return null;
+  const t = stepFloat - handoffStepIndex;
+  if (t < KEVIN_LINDSEY_HANDOFF.kevinSendEnd) return "kevin-send";
+  if (t < KEVIN_LINDSEY_HANDOFF.lindseySendEnd) return "lindsey-send";
+  return "sync";
+}
 
 export type KevinLindseyScrubState = {
   stepIndex: number;
@@ -205,40 +298,68 @@ export function resolveKevinLindseyScrub(
   const step = steps[idx];
   const next = idx < n - 1 ? steps[idx + 1] : null;
 
-  const kevinEnd = next?.kevinTime ?? kevinDuration;
-  let kevinTime = lerp(step.kevinTime, kevinEnd, t);
+  const kevinStepEnd = next?.kevinTime ?? kevinDuration;
+  const isLastStep = idx >= n - 1;
 
+  let kevinTime = lerp(step.kevinTime, kevinStepEnd, t);
   let lindseyVisible = false;
   let lindseyTime = 0;
+  let kevinShouldPlay = true;
+  let lindseyShouldPlay = false;
+  let kevinEnd = kevinStepEnd;
+  let lindseyEnd = lindseyDuration;
 
   const handoffStep = step.lindseyShowAtKevinTime != null;
   if (handoffStep) {
-    const handoffStart = step.kevinTime;
-    const handoffEnd = kevinPauseAtTime;
-    const handoffSpan = Math.max(handoffEnd - handoffStart, 0.001);
-    const kevinPhaseEnd = handoffStart + handoffSpan * 0.55;
+    // Step 5 choreography:
+    //   A — Kevin sends his suggestion and freezes
+    //   B — Lindsey appears, picks a time, sends (Kevin stays frozen)
+    //   C — Kevin receives Lindsey's counter; both play to the end
+    const KEVIN_SEND_END = KEVIN_LINDSEY_HANDOFF.kevinSendEnd;
+    const LINDSEY_SEND_END = KEVIN_LINDSEY_HANDOFF.lindseySendEnd;
 
-    if (t < 0.55) {
-      kevinTime = lerp(step.kevinTime, kevinPhaseEnd, t / 0.55);
+    if (t < KEVIN_SEND_END) {
+      kevinTime = lerp(step.kevinTime, kevinPauseAtTime, t / KEVIN_SEND_END);
       lindseyVisible = false;
+      kevinShouldPlay = true;
+      kevinEnd = kevinPauseAtTime;
+    } else if (t < LINDSEY_SEND_END) {
+      kevinTime = kevinPauseAtTime;
+      lindseyVisible = true;
+      lindseyTime = lerp(
+        0,
+        lindseyResumeKevinAt,
+        (t - KEVIN_SEND_END) / (LINDSEY_SEND_END - KEVIN_SEND_END),
+      );
+      kevinShouldPlay = false;
+      lindseyShouldPlay = true;
+      kevinEnd = kevinPauseAtTime;
+      lindseyEnd = lindseyResumeKevinAt;
     } else {
+      const tail = (t - LINDSEY_SEND_END) / (1 - LINDSEY_SEND_END);
       kevinTime =
         kevinResumeAtTime != null
-          ? lerp(kevinPauseAtTime, kevinResumeAtTime, (t - 0.55) / 0.45)
+          ? lerp(kevinResumeAtTime, kevinStepEnd, tail)
           : kevinPauseAtTime;
+      lindseyTime = lerp(lindseyResumeKevinAt, lindseyDuration, tail);
       lindseyVisible = true;
-      lindseyTime = lerp(0, lindseyResumeKevinAt, (t - 0.55) / 0.45);
-      if (t > 0.85) {
-        const tail = (t - 0.85) / 0.15;
-        lindseyTime = lerp(lindseyResumeKevinAt, lindseyDuration, tail);
-        if (kevinResumeAtTime != null) {
-          kevinTime = lerp(kevinResumeAtTime, kevinEnd, tail);
-        }
-      }
+      kevinShouldPlay = kevinResumeAtTime != null;
+      lindseyShouldPlay = true;
+      kevinEnd = kevinStepEnd;
+      lindseyEnd = lindseyDuration;
     }
-  } else {
-    kevinTime = lerp(step.kevinTime, kevinEnd, t);
+  } else if (isLastStep) {
+    // Final step: pin Kevin to the segment start so releasing scroll plays
+    // the closing beat instead of scrubbing to the last frame.
+    kevinTime = step.kevinTime;
     lindseyVisible = false;
+    kevinShouldPlay = true;
+    kevinEnd = kevinDuration;
+  } else {
+    kevinTime = lerp(step.kevinTime, kevinStepEnd, t);
+    lindseyVisible = false;
+    kevinShouldPlay = true;
+    kevinEnd = kevinStepEnd;
   }
 
   return {
@@ -247,10 +368,10 @@ export function resolveKevinLindseyScrub(
     kevinTime,
     lindseyTime,
     lindseyVisible,
-    kevinShouldPlay: true,
-    lindseyShouldPlay: lindseyVisible,
+    kevinShouldPlay,
+    lindseyShouldPlay,
     kevinEnd,
-    lindseyEnd: lindseyDuration,
+    lindseyEnd,
   };
 }
 
